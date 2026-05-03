@@ -64,8 +64,8 @@ export function HeroSection() {
 
               <select className="border rounded-lg p-3 w-full">
                 <option>All Cities</option>
-                <option>Kigali</option>
-                <option>Huye</option>
+                <option>Rubavu</option>
+                <option>Musanze</option>
               </select>
 
               <div className="flex flex-wrap gap-2 items-center">
