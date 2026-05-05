@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 
-export default function PropertySearch() {
+function PropertySearch() {
   const [tab, setTab] = useState("sale");
   const [bedrooms, setBedrooms] = useState("any");
   const [showFilters, setShowFilters] = useState(false);
@@ -146,5 +146,58 @@ export default function PropertySearch() {
         </div>
       </div>
     </div>
+  );
+}
+
+export function HeroSection() {
+  return (
+    <section className="relative min-h-[70vh] sm:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="https://images.unsplash.com/photo-1580835018727-6a6971c2223d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwbGFrZSUyMHNjZW5pYyUyMHZpZXclMjBtb3VudGFpbnN8ZW58MXx8fHwxNzc3NDU3NjY0fDA&ixlib=rb-4.1.0&q=80&w=1080"
+          alt="Lake Kivu sunset"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/50"></div>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center py-8 sm:py-12">
+        {/* Main Headline */}
+        <h1 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-3 sm:mb-4">
+          Own a Piece of <span className="text-amber-400">Lake Kivu Paradise</span>
+          <br className="hidden sm:block" />
+          <span className="sm:hidden"> </span>Before Prices Rise
+        </h1>
+
+        {/* Sub-headline */}
+        <p className="text-sm sm:text-lg lg:text-xl text-gray-200 mb-6 sm:mb-8 max-w-3xl mx-auto">
+          Waiting 12 months could cost you <span className="font-bold text-amber-300">RWF 50M – 150M+</span> in lost equity.
+          <br className="hidden sm:block" />
+          <span className="sm:hidden"> </span>Tourism is booming. Infrastructure is ready. The time is now.
+        </p>
+
+        <PropertySearch />
+
+
+        {/* CTAs */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-4 sm:mb-6">
+          <button className="px-6 sm:px-8 py-2 sm:py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors text-sm sm:text-base font-medium">
+            Browse All Properties
+          </button>
+          <button className="px-6 sm:px-8 py-2 sm:py-3 bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 rounded-lg transition-colors text-sm sm:text-base font-medium">
+            Download Free Investment Guide
+          </button>
+        </div>
+
+        {/* Trust Line */}
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-gray-200">
+          <span>✓ Title-Ready Listings</span>
+          <span>✓ 100+ Happy Investors</span>
+          <span>✓ Located in Gisenyi</span>
+        </div>
+      </div>
+    </section>
   );
 }

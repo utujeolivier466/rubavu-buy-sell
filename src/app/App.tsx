@@ -1,5 +1,5 @@
 import { Header } from './components/Header';
-import PropertySearch from './components/HeroSection';
+import { HeroSection } from './components/HeroSection';
 import { FeaturedProperties } from './components/FeaturedProperties';
 import { WhyInvest } from './components/WhyInvest';
 import { PropertySpecialties } from './components/PropertySpecialties';
@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <PropertySearch />
+      <HeroSection />
       <FeaturedProperties />
       <WhyInvest />
       <PropertySpecialties />
