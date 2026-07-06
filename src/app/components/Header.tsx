@@ -4,6 +4,7 @@ import logoImage from './asset/logo.png';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const whatsappUrl = `https://wa.me/250782424382?text=${encodeURIComponent("Hello, I'm interested in properties in Gisenyi, Rugerero, Buhaza, or Kanembwe.")}`;
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
@@ -24,22 +25,21 @@ export function Header() {
             <a href="#properties" className="text-gray-700 hover:text-teal-600 transition-colors">Properties</a>
             <a href="#lakefront" className="text-gray-700 hover:text-teal-600 transition-colors">Lake Kivu Waterfront</a>
             <a href="#investment" className="text-gray-700 hover:text-teal-600 transition-colors">Investment Opportunities</a>
-            <a href="#resources" className="text-gray-700 hover:text-teal-600 transition-colors">Resources</a>
-            <a href="#about" className="text-gray-700 hover:text-teal-600 transition-colors">About Us</a>
             <a href="#contact" className="text-gray-700 hover:text-teal-600 transition-colors">Contact</a>
           </nav>
 
           {/* Right Side Actions */}
           <div className="hidden md:flex items-center gap-2 lg:gap-4">
-            <div className="hidden lg:flex items-center gap-2 text-gray-700">
-              <Phone className="w-4 h-4" />
-              <span className="text-sm">+250 782 424 382</span>
-            </div>
-            <button className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-3 lg:px-4 py-2 rounded-lg transition-colors text-sm">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-3 lg:px-4 py-2 rounded-lg transition-colors text-sm"
+            >
               <MessageCircle className="w-4 h-4" />
-              <span className="hidden lg:inline">Chat on WhatsApp</span>
+              <span className="hidden lg:inline">Chat via WhatsApp</span>
               <span className="lg:hidden">WhatsApp</span>
-            </button>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -65,18 +65,29 @@ export function Header() {
               <Phone className="w-4 h-4" />
               <span>+250 782 424 382</span>
             </div>
-            <button className="flex items-center justify-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg w-full text-sm">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg w-full text-sm"
+            >
               <MessageCircle className="w-4 h-4" />
-              <span>Chat on WhatsApp</span>
-            </button>
+              <span>Chat via WhatsApp</span>
+            </a>
           </nav>
         )}
       </div>
 
-      {/* Floating WhatsApp Button (Mobile) */}
-      <button className="fixed bottom-6 right-6 lg:hidden bg-green-500 text-white p-4 rounded-full shadow-lg z-50 hover:bg-green-600 transition-colors">
+      {/* Floating WhatsApp Button */}
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg z-50 hover:bg-green-600 transition-colors"
+        aria-label="Chat via WhatsApp"
+      >
         <MessageCircle className="w-6 h-6" />
-      </button>
+      </a>
     </header>
   );
 }
