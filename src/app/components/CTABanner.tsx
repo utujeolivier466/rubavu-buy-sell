@@ -1,6 +1,8 @@
 import { MessageCircle, Video } from 'lucide-react';
 
 export function CTABanner() {
+  const whatsappUrl = `https://wa.me/250782424382?text=${encodeURIComponent("Hello, I'm interested in properties in Gisenyi, Rugerero, Buhaza, or Kanembwe.")}`;
+
   return (
     <section className="relative py-12 sm:py-16 lg:py-20 overflow-hidden">
       {/* Background Image with Overlay */}
@@ -24,13 +26,18 @@ export function CTABanner() {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-          <button className="flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-green-500 hover:bg-green-600 text-white text-base sm:text-lg rounded-lg transition-colors shadow-lg">
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-green-500 hover:bg-green-600 text-white text-base sm:text-lg rounded-lg transition-colors shadow-lg"
+          >
             <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
-            <span>Chat on WhatsApp Now</span>
-          </button>
+            <span>Chat via WhatsApp Now</span>
+          </a>
           <button className="flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-white hover:bg-gray-100 text-gray-900 text-base sm:text-lg rounded-lg transition-colors shadow-lg">
             <Video className="w-5 h-5 sm:w-6 sm:h-6" />
-            <span>Book Virtual Tour</span>
+            <span>Book a Site Visit</span>
           </button>
         </div>
 

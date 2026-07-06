@@ -33,8 +33,10 @@ function PropertySearch() {
 
           <select className="border border-gray-300 rounded-lg p-2.5 sm:p-3 w-full text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500">
             <option>All Cities</option>
-            <option>Kigali</option>
-            <option>Huye</option>
+            <option>Gisenyi</option>
+            <option>Rugerero</option>
+            <option>Buhaza</option>
+            <option>Kanembwe</option>
           </select>
 
           <div className="flex gap-1 sm:gap-2 items-center overflow-x-auto pb-2 sm:pb-0">
