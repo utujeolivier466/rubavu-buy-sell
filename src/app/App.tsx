@@ -7,7 +7,7 @@ import { PropertySpecialties } from './components/PropertySpecialties';
 import { Testimonials } from './components/Testimonials';
 import { CTABanner } from './components/CTABanner';
 import { Footer } from './components/Footer';
-import PropertiesPage from './components/PropertiesPage';
+import PropertiesPage from './components/Propertiespage';
 import PropertyDetailPage from './components/PropertyDetailPage';
 
 function HomePage() {
