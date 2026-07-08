@@ -34,7 +34,7 @@ export function Header() {
             <img src={logoImage} alt="Rubavu logo" className="h-16 w-auto rounded-md object-contain" />
             <div className="hidden md:block text-left">
               <div className="text-sm sm:text-base font-semibold text-gray-900">Rubavu Buy and Sell Ltd</div>
-              <div className="text-xs sm:text-sm text-gray-600">Lake Kivu Properties | Buy • Sell • Invest</div>
+              <div className="text-xs sm:text-sm text-gray-600">Your Trusted Real Estate Partner</div>
             </div>
           </button>
 

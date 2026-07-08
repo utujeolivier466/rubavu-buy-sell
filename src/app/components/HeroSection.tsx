@@ -1,45 +1,52 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+type ListingTab = 'sale' | 'rent';
+type SortOption = 'newest' | 'price_asc' | 'price_desc';
+
 function PropertySearch() {
   const navigate = useNavigate();
-  const [tab, setTab] = useState<"sale" | "rent">("sale");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [bedrooms, setBedrooms] = useState("any");
+
+  const [tab, setTab] = useState<ListingTab>('sale');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [bedrooms, setBedrooms] = useState('any');
   const [showFilters, setShowFilters] = useState(false);
 
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  const [bathrooms, setBathrooms] = useState("");
-  const [propertyType, setPropertyType] = useState("");
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+  const [bathrooms, setBathrooms] = useState('');
+  const [propertyType, setPropertyType] = useState('');
   const [features, setFeatures] = useState<string[]>([]);
   const [utilities, setUtilities] = useState<string[]>([]);
-  const [minSize, setMinSize] = useState("");
-  const [sortBy, setSortBy] = useState<"newest" | "price_asc" | "price_desc">("newest");
+  const [minSize, setMinSize] = useState('');
+  const [sortBy, setSortBy] = useState<SortOption>('newest');
 
-  const toggleInArray = (arr: string[], setArr: (val: string[]) => void, value: string) => {
+  const toggleInArray = (
+    arr: string[],
+    setArr: React.Dispatch<React.SetStateAction<string[]>>,
+    value: string
+  ) => {
     setArr(arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value]);
   };
 
   const handleSearch = () => {
     const params = new URLSearchParams();
 
-    params.set("listing_type", tab === "sale" ? "Sale" : "Rent");
-    if (address) params.set("q", address);
-    if (city && city !== "All Cities") params.set("city", city);
-    if (bedrooms !== "any") params.set("bedrooms", bedrooms.replace("+", ""));
-    if (minPrice) params.set("min_price", minPrice);
-    if (maxPrice) params.set("max_price", maxPrice);
-    if (bathrooms && bathrooms !== "Any Bathrooms") params.set("bathrooms", bathrooms.replace("+", ""));
-    if (propertyType && propertyType !== "All Types" && propertyType !== "All") params.set("type", propertyType);
-    if (minSize) params.set("min_size", minSize);
-    if (sortBy !== "newest") params.set("sort", sortBy);
-    features.forEach((f) => params.append("feature", f.toLowerCase()));
-    utilities.forEach((u) => params.append("utility", u.toLowerCase()));
+    params.set('listing_type', tab === 'sale' ? 'Sale' : 'Rent');
+    if (address) params.set('q', address);
+    if (city && city !== 'All Cities') params.set('city', city);
+    if (bedrooms !== 'any') params.set('bedrooms', bedrooms.replace('+', ''));
+    if (minPrice) params.set('min_price', minPrice);
+    if (maxPrice) params.set('max_price', maxPrice);
+    if (bathrooms && bathrooms !== 'Any Bathrooms') params.set('bathrooms', bathrooms.replace('+', ''));
+    if (propertyType && propertyType !== 'All Types' && propertyType !== 'All') params.set('type', propertyType);
+    if (minSize) params.set('min_size', minSize);
+    if (sortBy !== 'newest') params.set('sort', sortBy);
+    features.forEach((f) => params.append('feature', f.toLowerCase()));
+    utilities.forEach((u) => params.append('utility', u.toLowerCase()));
 
-    navigate(`/properties?${params.toString()}`)
-    window.location.href = `/properties?${params.toString()}`;
+    navigate(`/properties?${params.toString()}`);
   };
 
   return (
@@ -47,12 +54,12 @@ function PropertySearch() {
       <div className="bg-white shadow-xl rounded-lg sm:rounded-2xl p-3 sm:p-6 space-y-3 sm:space-y-6">
         {/* Tabs */}
         <div className="flex gap-2 sm:gap-4 flex-wrap">
-          {(["sale", "rent"] as const).map((t) => (
+          {(['sale', 'rent'] as ListingTab[]).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
               className={`px-3 sm:px-4 py-2 rounded-lg font-medium capitalize text-sm sm:text-base transition-colors ${
-                tab === t ? "bg-yellow-500 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                tab === t ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               For {t}
@@ -83,17 +90,17 @@ function PropertySearch() {
           </select>
 
           <div className="flex gap-1 sm:gap-2 items-center overflow-x-auto pb-2 sm:pb-0">
-            {["any", "2", "3", "4", "5+"].map((b) => (
+            {['any', '2', '3', '4', '5+'].map((b) => (
               <button
                 key={b}
                 onClick={() => setBedrooms(b)}
                 className={`px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition-colors ${
                   bedrooms === b
-                    ? "bg-yellow-500 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? 'bg-yellow-500 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                {b === "any" ? "Any" : b}
+                {b === 'any' ? 'Any' : b}
               </button>
             ))}
           </div>
@@ -143,7 +150,7 @@ function PropertySearch() {
             <div className="sm:col-span-2 lg:col-span-2">
               <p className="text-xs sm:text-sm font-medium mb-2">Features</p>
               <div className="flex gap-3 sm:gap-4 text-xs sm:text-sm flex-wrap">
-                {["Pool", "Parking", "Garden"].map((f) => (
+                {['Pool', 'Parking', 'Garden'].map((f) => (
                   <label key={f} className="flex items-center gap-1.5 cursor-pointer">
                     <input
                       type="checkbox"
@@ -159,7 +166,7 @@ function PropertySearch() {
             <div className="sm:col-span-2 lg:col-span-2">
               <p className="text-xs sm:text-sm font-medium mb-2">Utilities</p>
               <div className="flex gap-3 sm:gap-4 text-xs sm:text-sm flex-wrap">
-                {["Electricity", "Water", "Internet"].map((u) => (
+                {['Electricity', 'Water', 'Internet'].map((u) => (
                   <label key={u} className="flex items-center gap-1.5 cursor-pointer">
                     <input
                       type="checkbox"
@@ -181,7 +188,7 @@ function PropertySearch() {
 
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as "newest" | "price_asc" | "price_desc")}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
               className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
             >
               <option value="newest">Newest First</option>
@@ -198,18 +205,18 @@ function PropertySearch() {
               onClick={() => setShowFilters(!showFilters)}
               className="font-medium border border-gray-300 px-3 py-2 sm:py-1.5 rounded-lg text-sm sm:text-base hover:bg-gray-50 transition-colors w-full sm:w-auto"
             >
-              {showFilters ? "Hide Filters" : "Show Filters"}
+              {showFilters ? 'Hide Filters' : 'Show Filters'}
             </button>
 
             <div className="flex gap-1.5 sm:gap-2 items-center overflow-x-auto pb-2 sm:pb-0">
-              {["All", "Apartment", "Commercial", "House", "Land"].map((f) => (
+              {['All', 'Apartment', 'Commercial', 'House', 'Land'].map((f) => (
                 <button
                   key={f}
                   onClick={() => setPropertyType(f)}
                   className={`px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-colors ${
                     propertyType === f
-                      ? "bg-yellow-500 text-white"
-                      : "bg-gray-100 hover:bg-gray-200"
+                      ? 'bg-yellow-500 text-white'
+                      : 'bg-gray-100 hover:bg-gray-200'
                   }`}
                 >
                   {f}
@@ -229,6 +236,7 @@ function PropertySearch() {
     </div>
   );
 }
+
 export { PropertySearch };
 
 export function HeroSection() {
