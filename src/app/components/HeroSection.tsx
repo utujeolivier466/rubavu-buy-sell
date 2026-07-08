@@ -1,16 +1,53 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function PropertySearch() {
-  const [tab, setTab] = useState("sale");
+  const navigate = useNavigate();
+  const [tab, setTab] = useState<"sale" | "rent">("sale");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
   const [bedrooms, setBedrooms] = useState("any");
   const [showFilters, setShowFilters] = useState(false);
+
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [bathrooms, setBathrooms] = useState("");
+  const [propertyType, setPropertyType] = useState("");
+  const [features, setFeatures] = useState<string[]>([]);
+  const [utilities, setUtilities] = useState<string[]>([]);
+  const [minSize, setMinSize] = useState("");
+  const [sortBy, setSortBy] = useState<"newest" | "price_asc" | "price_desc">("newest");
+
+  const toggleInArray = (arr: string[], setArr: (val: string[]) => void, value: string) => {
+    setArr(arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value]);
+  };
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+
+    params.set("listing_type", tab === "sale" ? "Sale" : "Rent");
+    if (address) params.set("q", address);
+    if (city && city !== "All Cities") params.set("city", city);
+    if (bedrooms !== "any") params.set("bedrooms", bedrooms.replace("+", ""));
+    if (minPrice) params.set("min_price", minPrice);
+    if (maxPrice) params.set("max_price", maxPrice);
+    if (bathrooms && bathrooms !== "Any Bathrooms") params.set("bathrooms", bathrooms.replace("+", ""));
+    if (propertyType && propertyType !== "All Types" && propertyType !== "All") params.set("type", propertyType);
+    if (minSize) params.set("min_size", minSize);
+    if (sortBy !== "newest") params.set("sort", sortBy);
+    features.forEach((f) => params.append("feature", f.toLowerCase()));
+    utilities.forEach((u) => params.append("utility", u.toLowerCase()));
+
+    navigate(`/properties?${params.toString()}`)
+    window.location.href = `/properties?${params.toString()}`;
+  };
 
   return (
     <div className="w-full px-3 py-4 sm:px-4 lg:px-0 lg:max-w-6xl lg:mx-auto">
       <div className="bg-white shadow-xl rounded-lg sm:rounded-2xl p-3 sm:p-6 space-y-3 sm:space-y-6">
         {/* Tabs */}
         <div className="flex gap-2 sm:gap-4 flex-wrap">
-          {["sale", "rent"].map((t) => (
+          {(["sale", "rent"] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -27,11 +64,17 @@ function PropertySearch() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
           <input
             type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
             placeholder="Enter an address, town, street"
             className="border border-gray-300 rounded-lg p-2.5 sm:p-3 w-full text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
           />
 
-          <select className="border border-gray-300 rounded-lg p-2.5 sm:p-3 w-full text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500">
+          <select
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            className="border border-gray-300 rounded-lg p-2.5 sm:p-3 w-full text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
+          >
             <option>All Cities</option>
             <option>Gisenyi</option>
             <option>Rugerero</option>
@@ -63,22 +106,34 @@ function PropertySearch() {
         {showFilters && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
             <input
+              value={minPrice}
+              onChange={(e) => setMinPrice(e.target.value)}
               placeholder="Min Price"
               className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
             <input
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
               placeholder="Max Price"
               className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
 
-            <select className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500">
+            <select
+              value={bathrooms}
+              onChange={(e) => setBathrooms(e.target.value)}
+              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            >
               <option>Any Bathrooms</option>
               <option>1</option>
               <option>2</option>
               <option>3+</option>
             </select>
 
-            <select className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500">
+            <select
+              value={propertyType}
+              onChange={(e) => setPropertyType(e.target.value)}
+              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            >
               <option>All Types</option>
               <option>Apartment</option>
               <option>House</option>
@@ -90,7 +145,12 @@ function PropertySearch() {
               <div className="flex gap-3 sm:gap-4 text-xs sm:text-sm flex-wrap">
                 {["Pool", "Parking", "Garden"].map((f) => (
                   <label key={f} className="flex items-center gap-1.5 cursor-pointer">
-                    <input type="checkbox" className="w-4 h-4 cursor-pointer" /> {f}
+                    <input
+                      type="checkbox"
+                      checked={features.includes(f)}
+                      onChange={() => toggleInArray(features, setFeatures, f)}
+                      className="w-4 h-4 cursor-pointer"
+                    /> {f}
                   </label>
                 ))}
               </div>
@@ -101,21 +161,32 @@ function PropertySearch() {
               <div className="flex gap-3 sm:gap-4 text-xs sm:text-sm flex-wrap">
                 {["Electricity", "Water", "Internet"].map((u) => (
                   <label key={u} className="flex items-center gap-1.5 cursor-pointer">
-                    <input type="checkbox" className="w-4 h-4 cursor-pointer" /> {u}
+                    <input
+                      type="checkbox"
+                      checked={utilities.includes(u)}
+                      onChange={() => toggleInArray(utilities, setUtilities, u)}
+                      className="w-4 h-4 cursor-pointer"
+                    /> {u}
                   </label>
                 ))}
               </div>
             </div>
 
             <input
+              value={minSize}
+              onChange={(e) => setMinSize(e.target.value)}
               placeholder="Min Size (sqm)"
               className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
 
-            <select className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500">
-              <option>Newest First</option>
-              <option>Price Low to High</option>
-              <option>Price High to Low</option>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as "newest" | "price_asc" | "price_desc")}
+              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            >
+              <option value="newest">Newest First</option>
+              <option value="price_asc">Price Low to High</option>
+              <option value="price_desc">Price High to Low</option>
             </select>
           </div>
         )}
@@ -131,20 +202,26 @@ function PropertySearch() {
             </button>
 
             <div className="flex gap-1.5 sm:gap-2 items-center overflow-x-auto pb-2 sm:pb-0">
-              {["All", "Apartment", "Commercial", "House", "Land"].map(
-                (f) => (
-                  <button
-                    key={f}
-                    className="px-2.5 sm:px-3 py-1 rounded-full bg-gray-100 text-xs sm:text-sm font-medium whitespace-nowrap hover:bg-gray-200 transition-colors"
-                  >
-                    {f}
-                  </button>
-                )
-              )}
+              {["All", "Apartment", "Commercial", "House", "Land"].map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setPropertyType(f)}
+                  className={`px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-colors ${
+                    propertyType === f
+                      ? "bg-yellow-500 text-white"
+                      : "bg-gray-100 hover:bg-gray-200"
+                  }`}
+                >
+                  {f}
+                </button>
+              ))}
             </div>
           </div>
 
-          <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-colors w-full sm:w-auto">
+          <button
+            onClick={handleSearch}
+            className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-colors w-full sm:w-auto"
+          >
             Find Properties
           </button>
         </div>
@@ -152,6 +229,7 @@ function PropertySearch() {
     </div>
   );
 }
+export { PropertySearch };
 
 export function HeroSection() {
   return (
