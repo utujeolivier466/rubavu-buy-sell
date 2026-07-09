@@ -51,6 +51,23 @@ export interface Property {
   updated_at: string;
 }
 
+export type SubmissionStatus = 'pending' | 'reviewed' | 'converted' | 'rejected';
+
+export interface PropertySubmission {
+  id: string;
+  full_name: string;
+  phone: string;
+  location_text: string;
+  price: number;
+  currency: string;
+  property_type: 'Apartment' | 'Commercial' | 'House' | 'Land';
+  upi?: string | null;
+  photo_urls?: string[] | null;
+  status: SubmissionStatus;
+  converted_property_id?: string | null;
+  created_at: string;
+}
+
 export type InquirySource = 'whatsapp' | 'site_visit' | 'contact_form';
 export type InquiryStatus = 'new' | 'contacted' | 'closed';
 

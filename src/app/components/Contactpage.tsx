@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 
 const WHATSAPP_NUMBER = '250782424382';
@@ -10,11 +11,16 @@ function ContactPage() {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [agreed, setAgreed] = useState(false);
   const [status, setStatus] = useState<SubmitState>('idle');
 
-  const isValid = name.trim().length > 0 && (phone.trim().length > 0 || email.trim().length > 0) && message.trim().length > 0;
+  const isValid =
+    name.trim().length > 0 &&
+    (phone.trim().length > 0 || email.trim().length > 0) &&
+    message.trim().length > 0 &&
+    agreed;
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!isValid) return;
 
@@ -54,7 +60,7 @@ function ContactPage() {
           Get in Touch
         </h1>
         <p className="text-gray-600 max-w-xl mx-auto">
-          Have a question about a property, or want personalized investment advice? Reach out and our team will respond promptly.
+          Have a question about a property, or want personalized investment advice? Reach out and our team typically respond within 24 hours, Monday–Saturday.
         </p>
       </div>
 
@@ -124,10 +130,35 @@ function ContactPage() {
                 <p className="text-sm text-red-600">Something went wrong sending your message. Please try again, or message us directly on WhatsApp below.</p>
               )}
 
+              <label className="flex items-start gap-2 text-sm text-gray-700">
+                <input
+                  type="checkbox"
+                  checked={agreed}
+                  onChange={(e) => setAgreed(e.target.checked)}
+                  className="mt-1 h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                  required
+                />
+                <span className="text-gray-600">
+                  I have read and agree to the{' '}
+                  <Link to="/terms" className="text-teal-600 underline hover:text-teal-700">
+                    Terms and Conditions
+                  </Link>{' '}
+                  and{' '}
+                  <Link to="/privacy" className="text-teal-600 underline hover:text-teal-700">
+                    Privacy Policy
+                  </Link>
+                  .
+                </span>
+              </label>
+
               <button
                 type="submit"
                 disabled={!isValid || status === 'submitting'}
-                className="w-full bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors"
+                className={`w-full py-3 rounded-lg font-semibold transition-colors ${
+                  isValid
+                    ? 'bg-green-600 text-white hover:bg-green-700'
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                }`}
               >
                 {status === 'submitting' ? 'Sending…' : 'Send Message'}
               </button>
@@ -140,29 +171,22 @@ function ContactPage() {
           <div className="bg-white border border-gray-200 rounded-lg p-5 sm:p-6 shadow-sm">
             <h2 className="font-semibold text-gray-900 mb-4">Contact Details</h2>
             <div className="space-y-3 text-sm text-gray-700">
-              <p>📍 Gisenyi, Rubavu District, Rwanda</p>
+              <p className="text-gray-600">Habib Center, 1st Floor, Rubavu – Gisenyi, Rwanda              </p>
               <p>📞 <a href="tel:+250782424382" className="hover:text-yellow-600">+250 782 424 382</a></p>
               <p>✉️ <a href="mailto:info@rubavubuysell.com" className="hover:text-yellow-600">info@rubavubuysell.com</a></p>
               <p className="text-gray-500">Office hours: Monday – Saturday, 8:00 AM – 6:00 PM EAT</p>
             </div>
           </div>
 
-          <a
-            href={`https://wa.me/${WHATSAPP_NUMBER}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block bg-green-600 hover:bg-green-700 text-white text-center px-4 py-3 rounded-lg font-semibold text-sm"
-          >
-            Chat with us on WhatsApp
-          </a>
+         
 
-          <div className="rounded-lg overflow-hidden border border-gray-200">
-            <iframe
-              className="w-full h-48"
-              src="https://maps.google.com/maps?q=Gisenyi,Rubavu,Rwanda&z=13&output=embed"
-              title="Office location"
-              loading="lazy"
-            />
+          <div className="rounded-lg overflow-hidden border border-gray-200 aspect-[4/3] md:aspect-video">
+           <iframe
+             className="w-full h-full"
+            src="https://maps.google.com/maps?q=Gisenyi,Rubavu,Rwanda&z=13&output=embed"
+             title="Office location"
+            loading="lazy"
+           />
           </div>
         </div>
       </div>
