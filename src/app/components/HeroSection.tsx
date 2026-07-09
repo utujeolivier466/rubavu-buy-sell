@@ -240,6 +240,8 @@ function PropertySearch() {
 export { PropertySearch };
 
 export function HeroSection() {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-screen sm:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -273,7 +275,7 @@ export function HeroSection() {
 
         {/* CTAs */}
         <div className="flex flex-col gap-2 sm:flex-row sm:gap-3 lg:gap-4 justify-center mb-4 sm:mb-6 lg:mb-8">
-          <button className="px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 lg:py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors text-xs sm:text-sm lg:text-base font-medium w-full sm:w-auto">
+          <button onClick={() => navigate('/properties')} className="px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 lg:py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors text-xs sm:text-sm lg:text-base font-medium w-full sm:w-auto">
             Browse All Properties
           </button>
           <button className="px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 lg:py-3 bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 rounded-lg transition-colors text-xs sm:text-sm lg:text-base font-medium w-full sm:w-auto">

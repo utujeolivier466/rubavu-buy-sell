@@ -146,7 +146,7 @@ function PropertiesPage() {
                 {suggested.map((property) => (
                   <Link
                     key={property.id}
-                    to={`/properties/${property.slug || property.id}`}
+                    to={`/properties/${property.slug}`}
                     className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group"
                   >
                     <div className="relative">
@@ -191,7 +191,7 @@ function PropertiesPage() {
           {properties.map((property) => (
             <Link
               key={property.id}
-              to={`/properties/${property.slug || property.id}`}
+              to={`/properties/${property.slug}`}
               className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group"
             >
               <div className="relative">

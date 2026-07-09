@@ -8,6 +8,7 @@ const WHATSAPP_NUMBER = '250782424382';
 const fallbackProperties = [
   {
     id: 1,
+    slug: '1393sqm-residential-building-rugerero',
     title: '1,393SQM Residential Building',
     image: new URL('./asset/house 1.png', import.meta.url).href,
     size: '1,393SQM',
@@ -18,6 +19,7 @@ const fallbackProperties = [
   },
   {
     id: 2,
+    slug: '450sqm-residential-building-gisa',
     title: '450SQM Residential Building',
     image: new URL('./asset/house 2.png', import.meta.url).href,
     size: '450SQM',
@@ -28,6 +30,7 @@ const fallbackProperties = [
   },
   {
     id: 3,
+    slug: '520sqm-residential-building-gisenyi',
     title: '520SQM Residential Building',
     image: new URL('./asset/house 3.png', import.meta.url).href,
     size: '520SQM',
@@ -38,6 +41,7 @@ const fallbackProperties = [
   },
   {
     id: 4,
+    slug: '650sqm-residential-building-rubavu-district',
     title: '650SQM Residential Building',
     image: new URL('./asset/house 4.png', import.meta.url).href,
     size: '650SQM',
@@ -59,7 +63,7 @@ function formatPrice(value: string | null | undefined) {
   return String(value);
 }
 
-function mapProperty(property: { cover_image_url: any; image_urls: string | any[]; image_url: any; image: any; photo_url: any; id: any; title: any; name: any; property_title: any; size_sqm: any; size: any; city: any; location: any; property_type: any; category: any; price: string | null | undefined; projected_gain: any; }) {
+function mapProperty(property: { slug: any; cover_image_url: any; image_urls: string | any[]; image_url: any; image: any; photo_url: any; id: any; title: any; name: any; property_title: any; size_sqm: any; size: any; city: any; location: any; property_type: any; category: any; price: string | null | undefined; projected_gain: any; }) {
   const getImageUrl = () => {
     if (property.cover_image_url) return property.cover_image_url;
     if (Array.isArray(property.image_urls) && property.image_urls.length > 0) {
@@ -73,6 +77,7 @@ function mapProperty(property: { cover_image_url: any; image_urls: string | any[
 
   return {
     id: property.id,
+    slug: property.slug || property.id,
     title: property.title || property.name || property.property_title || 'Luxury Property in Rubavu',
     image: getImageUrl(),
     size: property.size_sqm
@@ -233,7 +238,7 @@ export function FeaturedProperties() {
 
                 <div className="flex gap-2">
                   <Link
-                    to={`/properties/${property.id}`}
+                    to={`/properties/${property.slug}`}
                     className="flex-1 px-3 sm:px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors text-xs sm:text-sm text-center"
                   >
                     View Details

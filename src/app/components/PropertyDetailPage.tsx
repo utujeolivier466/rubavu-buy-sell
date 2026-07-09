@@ -33,11 +33,11 @@ function PropertyDetailPage() {
     setError(null);
     setActiveImage(0);
 
-    const targetId = slug?.trim() || '';
+    const targetSlug = slug?.trim() || '';
     const { data, error } = await supabase
       .from('properties')
       .select('*, agents(name, position, photo_url, phone)')
-      .eq('id', targetId)
+      .eq('slug', targetSlug)
       .maybeSingle();
 
     if (error || !data) {
