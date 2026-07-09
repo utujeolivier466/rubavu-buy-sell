@@ -1,27 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
-
-interface Property {
-  id: string;
-  title: string;
-  property_type: string;
-  listing_type: string;
-  status: string;
-  price: number;
-  currency: string;
-  size_sqm: number;
-  location_text: string;
-  city: string;
-  cover_image_url: string | null;
-  image_urls: string[] | null;
-  is_hot_deal: boolean;
-  created_at: string;
-}
+import type { Property } from '../../../lib/types';
 
 function PropertiesPage() {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [properties, setProperties] = useState<Property[]>([]);
   const [suggested, setSuggested] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,35 +12,35 @@ function PropertiesPage() {
 
   useEffect(() => {
     fetchProperties();
-  }, [location.search]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   async function fetchProperties() {
-    setLoading(true);
-    setError(null);
-
     if (!supabase) {
-      setError('Supabase is not configured');
+      setError('Supabase is not configured yet.');
       setLoading(false);
+      setProperties([]);
+      setSuggested([]);
       return;
     }
 
-    const params = new URLSearchParams(location.search);
-    let query = supabase.from('properties').select('*');
+    setLoading(true);
+    setError(null);
 
-    // Don't filter by status initially - debug search issues first
-    // Remove this line if you want strict status filtering
-    // .eq('status', 'Available');
+    let query = supabase.from('properties').select('*').eq('status', 'Available');
 
-    const listingType = params.get('listing_type');
-    const q = params.get('q');
-    const city = params.get('city');
-    const bedrooms = params.get('bedrooms');
-    const minPrice = params.get('min_price');
-    const maxPrice = params.get('max_price');
-    const bathrooms = params.get('bathrooms');
-    const type = params.get('type');
-    const minSize = params.get('min_size');
-    const sort = params.get('sort');
+    const listingType = searchParams.get('listing_type');
+    const q = searchParams.get('q');
+    const city = searchParams.get('city');
+    const bedrooms = searchParams.get('bedrooms');
+    const minPrice = searchParams.get('min_price');
+    const maxPrice = searchParams.get('max_price');
+    const bathrooms = searchParams.get('bathrooms');
+    const type = searchParams.get('type');
+    const minSize = searchParams.get('min_size');
+    const sort = searchParams.get('sort');
+    const features = searchParams.getAll('feature'); // pool, parking, garden
+    const utilities = searchParams.getAll('utility'); // electricity, water, internet
 
     if (listingType) query = query.eq('listing_type', listingType);
     if (city) query = query.eq('city', city);
@@ -68,22 +51,33 @@ function PropertiesPage() {
     if (type) query = query.eq('property_type', type);
     if (minSize) query = query.gte('size_sqm', Number(minSize));
 
+    // Free-text search across title + location
     if (q) query = query.or(`title.ilike.%${q}%,location_text.ilike.%${q}%`);
 
+    // Feature/utility checkboxes -> boolean columns
+    if (features.includes('pool')) query = query.eq('has_pool', true);
+    if (features.includes('parking')) query = query.eq('has_parking', true);
+    if (features.includes('garden')) query = query.eq('has_garden', true);
+    if (utilities.includes('electricity')) query = query.eq('has_electricity', true);
+    if (utilities.includes('water')) query = query.eq('has_water', true);
+    if (utilities.includes('internet')) query = query.eq('has_internet', true);
+
+    // Sorting
     if (sort === 'price_asc') query = query.order('price', { ascending: true });
     else if (sort === 'price_desc') query = query.order('price', { ascending: false });
     else query = query.order('created_at', { ascending: false });
 
-    const { data, error: queryError } = await query;
+    const { data, error } = await query;
 
-    if (queryError) {
-      console.error('Property search failed:', queryError);
+    if (error) {
+      console.error('Property search failed:', error);
       setError('Something went wrong loading properties. Please try again.');
       setProperties([]);
     } else {
-      setProperties(data || []);
-      if ((data?.length || 0) === 0) {
-        fetchSuggestions();
+      const results = (data ?? []) as Property[];
+      setProperties(results);
+      if (results.length === 0) {
+        void fetchSuggestions();
       } else {
         setSuggested([]);
       }
@@ -91,20 +85,24 @@ function PropertiesPage() {
     setLoading(false);
   }
 
+  // Fallback: when a search matches nothing, show a small set of
+  // featured/available listings instead of leaving the visitor with
+  // only a WhatsApp button and no properties to look at.
   async function fetchSuggestions() {
     if (!supabase) return;
 
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('properties')
       .select('*')
+      .eq('status', 'Available')
       .eq('is_featured', true)
       .order('created_at', { ascending: false })
       .limit(4);
 
-    if (data) setSuggested(data);
+    if (!error) setSuggested((data ?? []) as Property[]);
   }
 
-  const activeFilterCount = new URLSearchParams(location.search).size;
+  const activeFilterCount = Array.from(searchParams.keys()).length;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -114,7 +112,7 @@ function PropertiesPage() {
         </h1>
         {activeFilterCount > 0 && (
           <button
-            onClick={() => navigate('/properties')}
+            onClick={() => setSearchParams({})}
             className="text-sm text-yellow-600 hover:text-yellow-700 font-medium mt-1"
           >
             Clear all filters
@@ -146,14 +144,14 @@ function PropertiesPage() {
               <h2 className="text-lg font-semibold text-gray-800 mb-4">You might also like</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
                 {suggested.map((property) => (
-                  <button
+                  <Link
                     key={property.id}
-                    onClick={() => navigate(`/properties/${property.id}`)}
-                    className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group text-left"
+                    to={`/properties/${property.slug}`}
+                    className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group"
                   >
                     <div className="relative">
                       <img
-                        src={Array.isArray(property.image_urls) && property.image_urls[0] ? property.image_urls[0] : property.cover_image_url || ''}
+                        src={property.cover_image_url || (property.image_urls && property.image_urls[0]) || ''}
                         alt={property.title}
                         className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -170,7 +168,7 @@ function PropertiesPage() {
                         {property.currency} {Number(property.price).toLocaleString()}
                       </p>
                     </div>
-                  </button>
+                  </Link>
                 ))}
               </div>
             </>
@@ -191,14 +189,14 @@ function PropertiesPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {properties.map((property) => (
-            <button
+            <Link
               key={property.id}
-              onClick={() => navigate(`/properties/${property.id}`)}
-              className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group text-left"
+              to={`/properties/${property.slug}`}
+              className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group"
             >
               <div className="relative">
                 <img
-                  src={Array.isArray(property.image_urls) && property.image_urls[0] ? property.image_urls[0] : property.cover_image_url || ''}
+                  src={property.cover_image_url || (property.image_urls && property.image_urls[0]) || ''}
                   alt={property.title}
                   className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -221,7 +219,7 @@ function PropertiesPage() {
                   {property.currency} {Number(property.price).toLocaleString()}
                 </p>
               </div>
-            </button>
+            </Link>
           ))}
         </div>
       )}

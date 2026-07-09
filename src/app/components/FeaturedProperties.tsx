@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { MessageCircle, MapPin, Maximize2 } from 'lucide-react';
 import { supabase } from '../../../lib/libsupabaseClient';
+
+const WHATSAPP_NUMBER = '250782424382';
 
 const fallbackProperties = [
   {
     id: 1,
+    slug: '1393sqm-residential-building-rugerero',
     title: '1,393SQM Residential Building',
     image: new URL('./asset/house 1.png', import.meta.url).href,
     size: '1,393SQM',
@@ -15,6 +19,7 @@ const fallbackProperties = [
   },
   {
     id: 2,
+    slug: '450sqm-residential-building-gisa',
     title: '450SQM Residential Building',
     image: new URL('./asset/house 2.png', import.meta.url).href,
     size: '450SQM',
@@ -25,6 +30,7 @@ const fallbackProperties = [
   },
   {
     id: 3,
+    slug: '520sqm-residential-building-gisenyi',
     title: '520SQM Residential Building',
     image: new URL('./asset/house 3.png', import.meta.url).href,
     size: '520SQM',
@@ -35,6 +41,7 @@ const fallbackProperties = [
   },
   {
     id: 4,
+    slug: '650sqm-residential-building-rubavu-district',
     title: '650SQM Residential Building',
     image: new URL('./asset/house 4.png', import.meta.url).href,
     size: '650SQM',
@@ -56,7 +63,7 @@ function formatPrice(value: string | null | undefined) {
   return String(value);
 }
 
-function mapProperty(property: { cover_image_url: any; image_urls: string | any[]; image_url: any; image: any; photo_url: any; id: any; title: any; name: any; property_title: any; size_sqm: any; size: any; city: any; location: any; property_type: any; category: any; price: string | null | undefined; projected_gain: any; }) {
+function mapProperty(property: { slug: any; cover_image_url: any; image_urls: string | any[]; image_url: any; image: any; photo_url: any; id: any; title: any; name: any; property_title: any; size_sqm: any; size: any; city: any; location: any; property_type: any; category: any; price: string | null | undefined; projected_gain: any; }) {
   const getImageUrl = () => {
     if (property.cover_image_url) return property.cover_image_url;
     if (Array.isArray(property.image_urls) && property.image_urls.length > 0) {
@@ -70,6 +77,7 @@ function mapProperty(property: { cover_image_url: any; image_urls: string | any[
 
   return {
     id: property.id,
+    slug: property.slug || property.id,
     title: property.title || property.name || property.property_title || 'Luxury Property in Rubavu',
     image: getImageUrl(),
     size: property.size_sqm
@@ -88,6 +96,7 @@ export function FeaturedProperties() {
   const [properties, setProperties] = useState(fallbackProperties);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isMockData, setIsMockData] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
@@ -115,19 +124,23 @@ export function FeaturedProperties() {
           console.error('Error fetching featured properties:', error);
           setError('Unable to load featured properties right now.');
           setProperties(fallbackProperties);
+          setIsMockData(true);
           return;
         }
 
         if (data?.length) {
           setProperties(data.map(mapProperty));
+          setIsMockData(false);
         } else {
           setProperties(fallbackProperties);
+          setIsMockData(true);
         }
       } catch (err) {
         console.error('Featured properties fetch failed:', err);
         if (isMounted) {
           setError('Unable to load featured properties right now.');
           setProperties(fallbackProperties);
+          setIsMockData(true);
         }
       } finally {
         if (isMounted) {
@@ -142,6 +155,26 @@ export function FeaturedProperties() {
       isMounted = false;
     };
   }, []);
+
+  function handleQuickWhatsApp(property: { id: any; title: string; location: string; price: string }) {
+    // Only log a real inquiry row when this is an actual Supabase property.
+    // Fallback/mock cards use non-UUID ids (1-4) and would fail the DB's
+    // uuid + foreign key constraints if we tried to insert against them.
+    if (!isMockData && supabase) {
+      supabase.from('inquiries').insert({
+        property_id: property.id,
+        source: 'whatsapp',
+        message: `Quick inquiry from homepage: ${property.title}`,
+      }).then(({ error }) => {
+        if (error) console.error('Inquiry log failed (non-blocking):', error);
+      });
+    }
+
+    const message = encodeURIComponent(
+      `Hi, I'm interested in "${property.title}" (${property.location}) listed at ${property.price}. Is it still available?`
+    );
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+  }
 
   return (
     <section id="properties" className="py-12 sm:py-16 lg:py-20 bg-gray-50">
@@ -204,10 +237,16 @@ export function FeaturedProperties() {
                 </div>
 
                 <div className="flex gap-2">
-                  <button className="flex-1 px-3 sm:px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors text-xs sm:text-sm">
+                  <Link
+                    to={`/properties/${property.slug}`}
+                    className="flex-1 px-3 sm:px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors text-xs sm:text-sm text-center"
+                  >
                     View Details
-                  </button>
-                  <button className="px-3 sm:px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors">
+                  </Link>
+                  <button
+                    onClick={() => handleQuickWhatsApp(property)}
+                    className="px-3 sm:px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
+                  >
                     <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4" />
                   </button>
                 </div>
