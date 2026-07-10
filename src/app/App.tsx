@@ -16,7 +16,7 @@ import { AuthProvider } from './context/Authcontext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Adminlogin from './components/Adminlogin';
 import Adminlayout from './components/Adminlayout';
-import AdminProperties from './components/AdminProperties';
+import AdminProperties from './components/Adminproperties';
 import Adminpropertyform from './components/Adminpropertyform';
 import Admininquiries from './components/Admininquiries';
 import AdminSubmissions from './components/Adminsubmissions';
