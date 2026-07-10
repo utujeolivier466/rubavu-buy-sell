@@ -52,7 +52,16 @@ function PropertiesPage() {
     if (minSize) query = query.gte('size_sqm', Number(minSize));
 
     // Free-text search across title + location
-    if (q) query = query.or(`title.ilike.%${q}%,location_text.ilike.%${q}%`);
+    if (q) {
+      const sanitizedQuery = q
+        .trim()
+        .replace(/[(),]/g, ' ')
+        .replace(/\s+/g, ' ');
+
+      if (sanitizedQuery) {
+        query = query.or(`title.ilike.%${sanitizedQuery}%,location_text.ilike.%${sanitizedQuery}%`);
+      }
+    }
 
     // Feature/utility checkboxes -> boolean columns
     if (features.includes('pool')) query = query.eq('has_pool', true);
