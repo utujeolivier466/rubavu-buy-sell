@@ -8,6 +8,29 @@ const WHATSAPP_NUMBER = '250782424382';
 type InquirySource = 'whatsapp' | 'site_visit';
 type SharePlatform = 'copy' | 'whatsapp' | 'facebook';
 
+// --- Small inline icons (no new dependency required) ---
+function IconId() { return <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h7"/></svg>; }
+function IconType() { return <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg>; }
+function IconBed() { return <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 18v-6a2 2 0 012-2h14a2 2 0 012 2v6M3 18v2M21 18v2M3 12V7a2 2 0 012-2h4a2 2 0 012 2v3"/></svg>; }
+function IconBath() { return <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 12h16M6 12V6a2 2 0 012-2h1M5 12v6a2 2 0 002 2h10a2 2 0 002-2v-6"/></svg>; }
+function IconSize() { return <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 4h6M4 4v6M20 4h-6M20 4v6M4 20h6M4 20v-6M20 20h-6M20 20v-6"/></svg>; }
+function IconPurpose() { return <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>; }
+function IconLocation() { return <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>; }
+function IconShare() { return <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.7l7.6-4.4M8.2 13.3l7.6 4.4"/></svg>; }
+
+function SpecItem({ icon, label, value }: { icon: React.ReactNode; label: string; value: React.ReactNode }) {
+  if (value === null || value === undefined || value === '') return null;
+  return (
+    <div className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
+      <div className="text-yellow-600 shrink-0">{icon}</div>
+      <div>
+        <p className="text-xs text-gray-500 leading-none mb-1">{label}</p>
+        <p className="text-sm font-semibold text-gray-900 leading-none">{value}</p>
+      </div>
+    </div>
+  );
+}
+
 function PropertyDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const [property, setProperty] = useState<Property | null>(null);
@@ -15,12 +38,18 @@ function PropertyDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [related, setRelated] = useState<Property[]>([]);
 
   useEffect(() => {
     fetchProperty();
     window.scrollTo(0, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
+
+  useEffect(() => {
+    if (property) fetchRelated(property);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [property?.id]);
 
   async function fetchProperty() {
     if (!supabase) {
@@ -50,10 +79,36 @@ function PropertyDetailPage() {
     setLoading(false);
   }
 
+ async function fetchRelated(current: Property) {
+  if (!supabase) return;
+
+  const normalize = (s?: string | null) => s?.trim().toLowerCase() || '';
+  const currentCity = normalize(current.city);
+
+  const { data, error } = await supabase
+    .from('properties')
+    .select('*')
+    .neq('id', current.id)
+    .limit(20); // pull a wider pool, then filter client-side
+
+  if (error || !data) {
+    console.error('Failed to load related properties:', error);
+    setRelated([]);
+    return;
+  }
+
+  const matches = (data as Property[]).filter((p) => {
+    const sameCity = currentCity && normalize(p.city) === currentCity;
+    const sameType = p.property_type === current.property_type;
+    return sameCity || sameType;
+  });
+
+  setRelated(matches.slice(0, 3));
+} 
+
   function logInquiry(source: InquirySource) {
     if (!supabase) return;
 
-    // Fire-and-forget: don't block the user's WhatsApp redirect on this
     supabase.from('inquiries').insert({
       property_id: property?.id,
       source,
@@ -138,12 +193,38 @@ function PropertyDetailPage() {
     property.has_internet && 'Internet',
   ].filter((v): v is string => Boolean(v));
 
+  const isUnavailable = property.status === 'Sold' || property.status === 'Rented';
+
+  const statusBadge =
+    property.status === 'Sold'
+      ? { label: 'Sold', className: 'bg-gray-700 text-white' }
+      : property.status === 'Rented'
+      ? { label: 'Rented', className: 'bg-blue-600 text-white' }
+      : property.status === 'Pending'
+      ? { label: 'Pending', className: 'bg-yellow-500 text-white' }
+      : property.is_hot_deal
+      ? { label: 'Hot Deal', className: 'bg-orange-500 text-white' }
+      : null;
+
+  // Display ID fallback — replace with a real display_id column when you add one
+  const displayId = (property as any).display_id || `RB-${property.id.toString().slice(0, 8).toUpperCase()}`;
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Breadcrumb */}
-      <Link to="/properties" className="text-sm text-gray-500 hover:text-gray-700 mb-4 inline-block">
-        ← Back to properties
-      </Link>
+      <nav className="text-sm text-gray-500 mb-4 flex flex-wrap items-center gap-1">
+        <Link to="/" className="hover:text-gray-700">Home</Link>
+        <span>/</span>
+        <Link to="/properties" className="hover:text-gray-700">Properties</Link>
+        {property.location_text && (
+          <>
+            <span>/</span>
+            <span className="hover:text-gray-700">{property.location_text}</span>
+          </>
+        )}
+        <span>/</span>
+        <span className="text-gray-800 font-medium truncate max-w-[220px]">{property.title}</span>
+      </nav>
 
       {/* Photo Gallery */}
       <div className="mb-6">
@@ -152,7 +233,7 @@ function PropertyDetailPage() {
             <img
               src={images[activeImage]}
               alt={property.title}
-              className="w-full h-full object-cover"
+              className={`w-full h-full object-cover ${isUnavailable ? 'grayscale-[30%]' : ''}`}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-gray-400">
@@ -185,25 +266,53 @@ function PropertyDetailPage() {
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{property.title}</h1>
               <p className="text-gray-500 mt-1">{property.location_text}</p>
             </div>
-            {property.is_hot_deal && (
-              <span className="bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                Hot Deal
+            {statusBadge && (
+              <span className={`text-xs font-semibold px-3 py-1 rounded-full ${statusBadge.className}`}>
+                {statusBadge.label}
               </span>
             )}
           </div>
 
-          <p className="text-2xl font-bold text-gray-900 mb-4">
-            {property.currency} {Number(property.price).toLocaleString()}
-            {property.listing_type === 'Rent' && <span className="text-base font-normal text-gray-500"> / month</span>}
-          </p>
+          {/* Price + Share row */}
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+            <p className="text-2xl font-bold text-gray-900">
+              {property.currency} {Number(property.price).toLocaleString()}
+              {property.listing_type === 'Rent' && <span className="text-base font-normal text-gray-500"> / month</span>}
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => handleShare('whatsapp')}
+                title="Share on WhatsApp"
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50"
+              >
+                <IconShare />
+              </button>
+              <button
+                onClick={() => handleShare('facebook')}
+                title="Share on Facebook"
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50"
+              >
+                <IconShare />
+              </button>
+              <button
+                onClick={() => handleShare('copy')}
+                title="Copy link"
+                className="px-3 h-9 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-medium"
+              >
+                {copied ? 'Copied!' : 'Copy Link'}
+              </button>
+            </div>
+          </div>
 
-          {/* Quick specs */}
-          <div className="flex flex-wrap gap-4 text-sm text-gray-700 border-y border-gray-200 py-4 mb-6">
-            {property.size_sqm && <span><strong>{property.size_sqm}</strong> SQM</span>}
-            {property.bedrooms != null && <span><strong>{property.bedrooms}</strong> Bedrooms</span>}
-            {property.bathrooms != null && <span><strong>{property.bathrooms}</strong> Bathrooms</span>}
-            <span className="capitalize"><strong>{property.property_type}</strong></span>
-            {property.zoning && <span>Zoning: <strong>{property.zoning}</strong></span>}
+          {/* Spec overview grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+            <SpecItem icon={<IconId />} label="ID No" value={displayId} />
+            <SpecItem icon={<IconType />} label="Type" value={property.property_type} />
+            <SpecItem icon={<IconBed />} label="Bd" value={property.bedrooms} />
+            <SpecItem icon={<IconBath />} label="Ba" value={property.bathrooms} />
+            <SpecItem icon={<IconSize />} label="Sqm" value={property.size_sqm} />
+            <SpecItem icon={<IconPurpose />} label="Purpose" value={property.listing_type === 'Rent' ? 'For Rent' : 'For Sale'} />
+            <SpecItem icon={<IconLocation />} label="Location" value={property.location_text} />
           </div>
 
           {/* Description */}
@@ -266,39 +375,40 @@ function PropertyDetailPage() {
               </div>
             </div>
           )}
-
-          {/* Share buttons */}
-          <div className="mb-6">
-            <h3 className="text-sm font-semibold text-gray-900 mb-2">Share this property</h3>
-            <div className="flex gap-2">
-              <button onClick={() => handleShare('whatsapp')} className="px-3 py-2 bg-green-100 text-green-700 rounded-lg text-sm font-medium hover:bg-green-200">
-                WhatsApp
-              </button>
-              <button onClick={() => handleShare('facebook')} className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium hover:bg-blue-200">
-                Facebook
-              </button>
-              <button onClick={() => handleShare('copy')} className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200">
-                {copied ? 'Copied!' : 'Copy Link'}
-              </button>
-            </div>
-          </div>
         </div>
 
         {/* Sidebar */}
         <div className="lg:col-span-1">
           <div className="bg-white border border-gray-200 rounded-lg p-5 sticky top-6 space-y-3">
-            <button
-              onClick={handleWhatsAppInquiry}
-              className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-semibold text-sm"
-            >
-              Chat via WhatsApp
-            </button>
-            <button
-              onClick={handleBookSiteVisit}
-              className="w-full bg-teal-600 hover:bg-teal-700 text-white px-4 py-3 rounded-lg font-semibold text-sm"
-            >
-              Book a Site Visit
-            </button>
+            {isUnavailable ? (
+              <div className="text-center py-3">
+                <p className="font-semibold text-gray-900 mb-1">
+                  This property has been {property.status === 'Sold' ? 'sold' : 'rented'}.
+                </p>
+                <p className="text-sm text-gray-500 mb-4">Browse similar available properties instead.</p>
+                <Link
+                  to="/properties"
+                  className="inline-block bg-teal-600 hover:bg-teal-700 text-white px-4 py-2.5 rounded-lg font-semibold text-sm"
+                >
+                  View Available Properties
+                </Link>
+              </div>
+            ) : (
+              <>
+                <button
+                  onClick={handleWhatsAppInquiry}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-semibold text-sm"
+                >
+                  Chat via WhatsApp
+                </button>
+                <button
+                  onClick={handleBookSiteVisit}
+                  className="w-full bg-teal-600 hover:bg-teal-700 text-white px-4 py-3 rounded-lg font-semibold text-sm"
+                >
+                  Book a Site Visit
+                </button>
+              </>
+            )}
 
             {property.agents && (
               <div className="pt-4 mt-4 border-t border-gray-200 flex items-center gap-3">
@@ -318,6 +428,36 @@ function PropertyDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Related / Similar Properties */}
+      {related.length > 0 && (
+        <div className="mt-12 pt-8 border-t border-gray-200">
+          <p className="text-xs font-semibold text-yellow-600 tracking-wide mb-1">SIMILAR PROPERTIES</p>
+          <h2 className="text-xl font-bold text-gray-900 mb-5">Related Properties</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {related.map((p) => (
+              <Link
+                key={p.id}
+                to={`/property/${p.slug}`}
+                className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
+              >
+                <div className="h-40 bg-gray-100">
+                  {p.cover_image_url && (
+                    <img src={p.cover_image_url} alt={p.title} className="w-full h-full object-cover" />
+                  )}
+                </div>
+                <div className="p-3">
+                  <p className="text-xs text-gray-500 mb-1">{p.property_type}</p>
+                  <p className="font-semibold text-gray-900 text-sm mb-2 truncate">{p.title}</p>
+                  <p className="text-xs text-gray-600">
+                    {p.bedrooms != null && `${p.bedrooms} Bd`}{p.bathrooms != null && ` · ${p.bathrooms} Ba`}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
