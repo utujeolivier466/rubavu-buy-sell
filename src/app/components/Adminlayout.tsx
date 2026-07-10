@@ -28,6 +28,9 @@ function AdminLayout() {
           <NavLink to="/admin/properties" className={navLinkClass}>
             Properties
           </NavLink>
+          <NavLink to="/admin/submissions" className={navLinkClass}>
+            Pending Inquiries
+          </NavLink>
           <NavLink to="/admin/inquiries" className={navLinkClass}>
             Inquiries
           </NavLink>
