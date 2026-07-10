@@ -16,6 +16,7 @@ const fallbackProperties = [
     zoning: 'Residential',
     price: 'RWF 150M',
     projectedGain: 'RWF 25M',
+    status: 'Available',
   },
   {
     id: 2,
@@ -27,6 +28,7 @@ const fallbackProperties = [
     zoning: 'Residential',
     price: 'RWF 45M',
     projectedGain: 'RWF 5M',
+    status: 'Available',
   },
   {
     id: 3,
@@ -38,6 +40,7 @@ const fallbackProperties = [
     zoning: 'Residential',
     price: 'RWF 320M',
     projectedGain: 'RWF 30M',
+    status: 'Available',
   },
   {
     id: 4,
@@ -49,6 +52,7 @@ const fallbackProperties = [
     zoning: 'Residential',
     price: 'RWF 400M',
     projectedGain: 'RWF 87M',
+    status: 'Available',
   },
 ];
 
@@ -63,7 +67,7 @@ function formatPrice(value: string | null | undefined) {
   return String(value);
 }
 
-function mapProperty(property: { slug: any; cover_image_url: any; image_urls: string | any[]; image_url: any; image: any; photo_url: any; id: any; title: any; name: any; property_title: any; size_sqm: any; size: any; city: any; location: any; property_type: any; category: any; price: string | null | undefined; projected_gain: any; }) {
+function mapProperty(property: { slug: any; status: any; cover_image_url: any; image_urls: string | any[]; image_url: any; image: any; photo_url: any; id: any; title: any; name: any; property_title: any; size_sqm: any; size: any; city: any; location: any; property_type: any; category: any; price: string | null | undefined; projected_gain: any; }) {
   const getImageUrl = () => {
     if (property.cover_image_url) return property.cover_image_url;
     if (Array.isArray(property.image_urls) && property.image_urls.length > 0) {
@@ -78,6 +82,7 @@ function mapProperty(property: { slug: any; cover_image_url: any; image_urls: st
   return {
     id: property.id,
     slug: property.slug || property.id,
+    status: property.status || 'Available',
     title: property.title || property.name || property.property_title || 'Luxury Property in Rubavu',
     image: getImageUrl(),
     size: property.size_sqm
@@ -156,10 +161,7 @@ export function FeaturedProperties() {
     };
   }, []);
 
-  function handleQuickWhatsApp(property: { id: any; title: string; location: string; price: string }) {
-    // Only log a real inquiry row when this is an actual Supabase property.
-    // Fallback/mock cards use non-UUID ids (1-4) and would fail the DB's
-    // uuid + foreign key constraints if we tried to insert against them.
+  function handleQuickWhatsApp(property: { id: any; title: string; location: string; price: string; status?: string }) {
     if (!isMockData && supabase) {
       supabase.from('inquiries').insert({
         property_id: property.id,
@@ -174,6 +176,13 @@ export function FeaturedProperties() {
       `Hi, I'm interested in "${property.title}" (${property.location}) listed at ${property.price}. Is it still available?`
     );
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+  }
+
+  function getBadge(status: string) {
+    if (status === 'Sold') return { label: 'Sold', className: 'bg-gray-700 text-white' };
+    if (status === 'Rented') return { label: 'Rented', className: 'bg-blue-600 text-white' };
+    if (status === 'Pending') return { label: 'Pending', className: 'bg-yellow-500 text-white' };
+    return { label: 'Hot Deal', className: 'bg-amber-500 text-white' };
   }
 
   return (
@@ -197,62 +206,71 @@ export function FeaturedProperties() {
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-          {properties.map((property) => (
-            <div key={property.id} className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-              <div className="relative h-40 sm:h-48 overflow-hidden">
-                <img
-                  src={property.image}
-                  alt={property.title}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-amber-500 text-white text-xs px-2 sm:px-3 py-1 rounded-full">
-                  Hot Deal
+          {properties.map((property) => {
+            const isUnavailable = property.status === 'Sold' || property.status === 'Rented';
+            const badge = getBadge(property.status);
+
+            return (
+              <div key={property.id} className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                <div className="relative h-40 sm:h-48 overflow-hidden">
+                  <img
+                    src={property.image}
+                    alt={property.title}
+                    className={`w-full h-full object-cover hover:scale-105 transition-transform duration-300 ${isUnavailable ? 'grayscale-[40%]' : ''}`}
+                  />
+                  <div className={`absolute top-2 sm:top-3 right-2 sm:right-3 text-xs px-2 sm:px-3 py-1 rounded-full ${badge.className}`}>
+                    {badge.label}
+                  </div>
+                </div>
+
+                <div className="p-4 sm:p-5">
+                  <h3 className="font-bold text-base sm:text-lg text-gray-900 mb-2 sm:mb-3 min-h-[3rem] sm:min-h-[3.5rem]">
+                    {property.title}
+                  </h3>
+
+                  <div className="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4 text-xs sm:text-sm text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <Maximize2 className="w-3 h-3 sm:w-4 sm:h-4 text-teal-600 flex-shrink-0" />
+                      <span>{property.size}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-teal-600 flex-shrink-0" />
+                      <span>{property.location}</span>
+                    </div>
+                    <div className="text-xs bg-teal-50 text-teal-700 px-2 py-1 rounded inline-block">
+                      {property.zoning}
+                    </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <div className="text-xl sm:text-2xl font-bold text-gray-900">{property.price}</div>
+                    {!isUnavailable && (
+                      <div className="text-xs text-green-600 font-medium">
+                        Projected 1-Year Gain: +{property.projectedGain}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Link
+                      to={`/properties/${property.slug}`}
+                      className="flex-1 px-3 sm:px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors text-xs sm:text-sm text-center"
+                    >
+                      View Details
+                    </Link>
+                    {!isUnavailable && (
+                      <button
+                        onClick={() => handleQuickWhatsApp(property)}
+                        className="px-3 sm:px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
+                      >
+                        <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-
-              <div className="p-4 sm:p-5">
-                <h3 className="font-bold text-base sm:text-lg text-gray-900 mb-2 sm:mb-3 min-h-[3rem] sm:min-h-[3.5rem]">
-                  {property.title}
-                </h3>
-
-                <div className="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4 text-xs sm:text-sm text-gray-600">
-                  <div className="flex items-center gap-2">
-                    <Maximize2 className="w-3 h-3 sm:w-4 sm:h-4 text-teal-600 flex-shrink-0" />
-                    <span>{property.size}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-teal-600 flex-shrink-0" />
-                    <span>{property.location}</span>
-                  </div>
-                  <div className="text-xs bg-teal-50 text-teal-700 px-2 py-1 rounded inline-block">
-                    {property.zoning}
-                  </div>
-                </div>
-
-                <div className="mb-3">
-                  <div className="text-xl sm:text-2xl font-bold text-gray-900">{property.price}</div>
-                  <div className="text-xs text-green-600 font-medium">
-                    Projected 1-Year Gain: +{property.projectedGain}
-                  </div>
-                </div>
-
-                <div className="flex gap-2">
-                  <Link
-                    to={`/properties/${property.slug}`}
-                    className="flex-1 px-3 sm:px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors text-xs sm:text-sm text-center"
-                  >
-                    View Details
-                  </Link>
-                  <button
-                    onClick={() => handleQuickWhatsApp(property)}
-                    className="px-3 sm:px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
-                  >
-                    <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
