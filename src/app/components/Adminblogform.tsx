@@ -10,6 +10,7 @@ function AdminBlogForm() {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState('');
+  const [slug, setSlug] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('Real Estate Tips');
@@ -39,6 +40,7 @@ function AdminBlogForm() {
     }
 
     setTitle(data.title || '');
+    setSlug(data.slug || '');
     setExcerpt(data.excerpt || '');
     setContent(data.content || '');
     setCategory(data.category || 'Real Estate Tips');
@@ -88,8 +90,15 @@ function AdminBlogForm() {
 
     const coverImageUrl = await uploadCoverImage();
 
+    const generatedSlug = (slug.trim() || title.trim())
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+
     const payload = {
       title: title.trim(),
+      slug: generatedSlug || undefined,
       excerpt: excerpt.trim() || null,
       content: content.trim(),
       category,
