@@ -9,7 +9,7 @@ import { PropertySpecialties } from './components/PropertySpecialties';
 import { Testimonials } from './components/Testimonials';
 import { CTABanner } from './components/CTABanner';
 import { Footer } from './components/Footer';
-import SEOHead from './components//Seohead';
+import SEOHead from './components/Seohead';
 import Propertiespage from './components/Propertiespage';
 import PropertyDetailPage from './components/PropertyDetailPage';
 import Contactpage from './components/Contactpage';
@@ -24,6 +24,13 @@ import Admininquiries from './components/Admininquiries';
 import AdminSubmissions from './components/Adminsubmissions';
 import TermsPage from './components/Termspage';
 import PrivacyPage from './components/Privacypage';
+import BlogListPage from './components/Bloglistpage';
+import BlogPostPage from './components/Blogpostpage';
+import AboutPage from './components/Aboutpage';
+import AdminBlog from './components/Adminblog';
+import AdminBlogForm from './components/Adminblogform';
+import AdminAgents from './components/Adminagents';
+import AdminAgentForm from './components/Adminagentform';
 
 function HomePage() {
   const location = useLocation();
@@ -68,6 +75,9 @@ function PublicLayout() {
         <Route path="/sell-property" element={<SellPropertyPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/blog" element={<BlogListPage />} />
+        <Route path="/blog/:slug" element={<BlogPostPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
       <Footer />
     </div>
@@ -96,6 +106,12 @@ function App() {
             <Route path="properties/:id/edit" element={<Adminpropertyform />} />
             <Route path="inquiries" element={<Admininquiries />} />
             <Route path="submissions" element={<AdminSubmissions />} />
+            <Route path="blog" element={<AdminBlog />} />
+            <Route path="blog/new" element={<AdminBlogForm />} />
+            <Route path="blog/:id/edit" element={<AdminBlogForm />} />
+            <Route path="agents" element={<AdminAgents />} />
+            <Route path="agents/new" element={<AdminAgentForm />} />
+            <Route path="agents/:id/edit" element={<AdminAgentForm />} />
           </Route>
 
           {/* Public site */}

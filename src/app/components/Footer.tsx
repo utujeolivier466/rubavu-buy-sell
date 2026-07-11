@@ -58,10 +58,10 @@ export function Footer() {
           <div>
             <h3 className="text-white font-bold mb-3 sm:mb-4 text-sm sm:text-base">Company</h3>
             <ul className="space-y-2 text-xs sm:text-sm mb-4 sm:mb-6">
-              <li><a href="#" className="hover:text-teal-400 transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-teal-400 transition-colors">Our Team</a></li>
-              <li><a href="#" className="hover:text-teal-400 transition-colors">Testimonials</a></li>
-              <li><a href="#" className="hover:text-teal-400 transition-colors">Contact</a></li>
+              <li><a href="/about" className="hover:text-teal-400 transition-colors">About Us</a></li>
+              <li><a href="/about#team" className="hover:text-teal-400 transition-colors">Our Team</a></li>
+              <li><a href="/" className="hover:text-teal-400 transition-colors">Testimonials</a></li>
+              <li><a href="/contact" className="hover:text-teal-400 transition-colors">Contact</a></li>
             </ul>
 
             {/* Social Media */}

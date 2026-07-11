@@ -34,6 +34,12 @@ function AdminLayout() {
           <NavLink to="/admin/inquiries" className={navLinkClass}>
             Inquiries
           </NavLink>
+          <NavLink to="/admin/blog" className={navLinkClass}>
+            Blog
+          </NavLink>
+          <NavLink to="/admin/agents" className={navLinkClass}>
+            Team / Agents
+          </NavLink>
         </nav>
 
         <div className="p-3 border-t border-gray-200">

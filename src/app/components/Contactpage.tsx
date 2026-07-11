@@ -173,7 +173,7 @@ function ContactPage() {
             <div className="space-y-3 text-sm text-gray-700">
               <p className="text-gray-600">Habib Center, 1st Floor, Rubavu – Gisenyi, Rwanda              </p>
               <p>📞 <a href="tel:+250782424382" className="hover:text-yellow-600">+250 782 424 382</a></p>
-              <p>✉️ <a href="mailto:info@rubavubuysell.com" className="hover:text-yellow-600">info@rubavubuysell.com</a></p>
+              <p>✉️ <a href="mailto:info@rubavubuysell.com" className="hover:text-yellow-600">info@rubavubuyandsell.com</a></p>
               <p className="text-gray-500">Office hours: Monday – Saturday, 8:00 AM – 6:00 PM EAT</p>
             </div>
           </div>

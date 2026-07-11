@@ -64,6 +64,8 @@ export function Header() {
             <button onClick={() => goToPage('/')} className={navButtonClass('/')}>Home</button>
             <button onClick={() => goToPage('/properties')} className={navButtonClass('/properties')}>Properties</button>
             <button onClick={() => scrollToSection('lakefront')} className="text-gray-700 hover:text-teal-600 transition-colors">Lake Kivu Waterfront</button>
+            <button onClick={() => goToPage('/about')} className={navButtonClass('/about')}>About Us</button>
+            <button onClick={() => goToPage('/blog')} className={navButtonClass('/blog')}>Blog</button>
             <button onClick={() => goToPage('/contact')} className={navButtonClass('/contact')}>Contact</button>
           </nav>
 
@@ -103,7 +105,8 @@ export function Header() {
             <button onClick={() => goToPage('/properties')} className={`${navButtonClass('/properties')} py-2 text-sm text-left`}>Properties</button>
             <button onClick={() => scrollToSection('lakefront')} className="text-gray-700 hover:text-teal-600 py-2 text-sm text-left">Lake Kivu Waterfront</button>
             <button onClick={() => scrollToSection('resources')} className="text-gray-700 hover:text-teal-600 py-2 text-sm text-left">Resources</button>
-            <button onClick={() => scrollToSection('about')} className="text-gray-700 hover:text-teal-600 py-2 text-sm text-left">About Us</button>
+            <button onClick={() => goToPage('/about')} className={`${navButtonClass('/about')} py-2 text-sm text-left`}>About Us</button>
+            <button onClick={() => goToPage('/blog')} className={`${navButtonClass('/blog')} py-2 text-sm text-left`}>Blog</button>
             <button onClick={() => goToPage('/contact')} className={`${navButtonClass('/contact')} py-2 text-sm text-left`}>Contact</button>
             <button
               onClick={() => goToPage('/sell-property')}

@@ -2,6 +2,7 @@ export interface Agent {
   id: string;
   name: string;
   position: string;
+  bio?: string | null;
   phone?: string | null;
   photo_url?: string | null;
 }
@@ -66,6 +67,21 @@ export interface PropertySubmission {
   status: SubmissionStatus;
   converted_property_id?: string | null;
   created_at: string;
+}
+
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt?: string | null;
+  content: string;
+  cover_image_url?: string | null;
+  category: string;
+  author_name: string;
+  published: boolean;
+  published_at?: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export type InquirySource = 'whatsapp' | 'site_visit' | 'contact_form';
