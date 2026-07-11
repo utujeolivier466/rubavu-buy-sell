@@ -6,7 +6,6 @@ import { HeroSection } from './components/HeroSection';
 import { FeaturedProperties } from './components/FeaturedProperties';
 import { WhyInvest } from './components/WhyInvest';
 import { PropertySpecialties } from './components/PropertySpecialties';
-import { Testimonials } from './components/Testimonials';
 import { CTABanner } from './components/CTABanner';
 import { Footer } from './components/Footer';
 import SEOHead from './components/Seohead';
@@ -58,8 +57,7 @@ function HomePage() {
       <HeroSection />
       <FeaturedProperties />
       <WhyInvest />
-      <PropertySpecialties />
-      <Testimonials />
+      <PropertySpecialties />      
       <CTABanner />
     </>
   );
