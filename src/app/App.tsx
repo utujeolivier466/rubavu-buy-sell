@@ -24,11 +24,11 @@ import Admininquiries from './components/Admininquiries';
 import AdminSubmissions from './components/Adminsubmissions';
 import TermsPage from './components/Termspage';
 import PrivacyPage from './components/Privacypage';
-import BlogListPage from './components/BlogListPage';
-import BlogPostPage from './components/BlogPostPage';
+import BlogListPage from './components/Bloglistpage';
+import BlogPostPage from './components/Blogpostpage';
 import AboutPage from './components/Aboutpage';
-import AdminBlog from './components/AdminBlog';
-import AdminBlogForm from './components/AdminBlogForm';
+import AdminBlog from './components/Adminblog';
+import AdminBlogForm from './components/Adminblogform';
 import AdminAgents from './components/Adminagents';
 import AdminAgentForm from './components/Adminagentform';
 
