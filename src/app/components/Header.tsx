@@ -1,8 +1,6 @@
 import { Menu, X, Phone, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-
-const logoImage = new URL('./asset/logo.png', import.meta.url).href;
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export function Header() {
   const navigate = useNavigate();
@@ -27,6 +25,7 @@ export function Header() {
   const goToPage = (path: string) => {
     setMobileMenuOpen(false);
     navigate(path);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // For sections that only exist within the homepage (Lake Kivu Waterfront,
@@ -52,7 +51,7 @@ export function Header() {
             onClick={() => navigate('/')}
             className="flex items-center gap-3 flex-shrink-0 hover:opacity-80 transition-opacity"
           >
-            <img src={logoImage} alt="Rubavu logo" className="h-16 w-auto rounded-md object-contain" />
+            <img src="/favicon.png" alt="Rubavu logo" className="h-16 w-auto rounded-md object-contain" />
             <div className="hidden md:block text-left">
               <div className="text-sm sm:text-base font-semibold text-gray-900">Rubavu Buy and Sell Ltd</div>
               <div className="text-xs sm:text-sm text-gray-600">Your Trusted Real Estate Partner</div>
@@ -61,12 +60,12 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-6 flex-1 justify-center">
-            <button onClick={() => goToPage('/')} className={navButtonClass('/')}>Home</button>
-            <button onClick={() => goToPage('/properties')} className={navButtonClass('/properties')}>Properties</button>
+            <Link to="/" className={navButtonClass('/')} onClick={() => goToPage('/')}>Home</Link>
+            <Link to="/properties" className={navButtonClass('/properties')} onClick={() => goToPage('/properties')}>Properties</Link>
             <button onClick={() => scrollToSection('lakefront')} className="text-gray-700 hover:text-teal-600 transition-colors">Lake Kivu Waterfront</button>
-            <button onClick={() => goToPage('/about')} className={navButtonClass('/about')}>About Us</button>
-            <button onClick={() => goToPage('/blog')} className={navButtonClass('/blog')}>Blog</button>
-            <button onClick={() => goToPage('/contact')} className={navButtonClass('/contact')}>Contact</button>
+            <Link to="/about" className={navButtonClass('/about')} onClick={() => goToPage('/about')}>About Us</Link>
+            <Link to="/blog" className={navButtonClass('/blog')} onClick={() => goToPage('/blog')}>Blog</Link>
+            <Link to="/contact" className={navButtonClass('/contact')} onClick={() => goToPage('/contact')}>Contact</Link>
           </nav>
 
           {/* Right Side Actions */}
@@ -101,13 +100,13 @@ export function Header() {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <nav className="lg:hidden mt-4 pb-4 border-t border-gray-200 pt-4 flex flex-col gap-3">
-            <button onClick={() => goToPage('/')} className={`${navButtonClass('/')} py-2 text-sm text-left`}>Home</button>
-            <button onClick={() => goToPage('/properties')} className={`${navButtonClass('/properties')} py-2 text-sm text-left`}>Properties</button>
+            <Link to="/" className={`${navButtonClass('/')} py-2 text-sm text-left`} onClick={() => goToPage('/')}>Home</Link>
+            <Link to="/properties" className={`${navButtonClass('/properties')} py-2 text-sm text-left`} onClick={() => goToPage('/properties')}>Properties</Link>
             <button onClick={() => scrollToSection('lakefront')} className="text-gray-700 hover:text-teal-600 py-2 text-sm text-left">Lake Kivu Waterfront</button>
             <button onClick={() => scrollToSection('resources')} className="text-gray-700 hover:text-teal-600 py-2 text-sm text-left">Resources</button>
-            <button onClick={() => goToPage('/about')} className={`${navButtonClass('/about')} py-2 text-sm text-left`}>About Us</button>
-            <button onClick={() => goToPage('/blog')} className={`${navButtonClass('/blog')} py-2 text-sm text-left`}>Blog</button>
-            <button onClick={() => goToPage('/contact')} className={`${navButtonClass('/contact')} py-2 text-sm text-left`}>Contact</button>
+            <Link to="/about" className={`${navButtonClass('/about')} py-2 text-sm text-left`} onClick={() => goToPage('/about')}>About Us</Link>
+            <Link to="/blog" className={`${navButtonClass('/blog')} py-2 text-sm text-left`} onClick={() => goToPage('/blog')}>Blog</Link>
+            <Link to="/contact" className={`${navButtonClass('/contact')} py-2 text-sm text-left`} onClick={() => goToPage('/contact')}>Contact</Link>
             <button
               onClick={() => goToPage('/sell-property')}
               className="flex items-center justify-center gap-2 border-2 border-teal-600 text-teal-600 px-4 py-2 rounded-lg w-full text-sm font-medium"
