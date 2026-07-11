@@ -31,6 +31,8 @@ import AdminBlog from './components/Adminblog';
 import AdminBlogForm from './components/Adminblogform';
 import AdminAgents from './components/Adminagents';
 import AdminAgentForm from './components/Adminagentform';
+import NotFoundPage from './components/Notfoundpage';
+import ErrorBoundary from './components/Errorboundary';
 
 function HomePage() {
   const location = useLocation();
@@ -78,20 +80,23 @@ function PublicLayout() {
         <Route path="/blog" element={<BlogListPage />} />
         <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="/about" element={<AboutPage />} />
+         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
     </div>
   );
 }
 
+
 function App() {
   return (
+    <ErrorBoundary>
     <HelmetProvider>
       <AuthProvider>
         <Routes>
           {/* Admin login has no public header/footer */}
           <Route path="/admin/login" element={<Adminlogin />} />
-
+ 
           {/* Protected admin dashboard */}
           <Route
             path="/admin"
@@ -113,13 +118,14 @@ function App() {
             <Route path="agents/new" element={<AdminAgentForm />} />
             <Route path="agents/:id/edit" element={<AdminAgentForm />} />
           </Route>
-
+ 
           {/* Public site */}
           <Route path="/*" element={<PublicLayout />} />
         </Routes>
       </AuthProvider>
     </HelmetProvider>
+    </ErrorBoundary>
   );
 }
-
+ 
 export default App;
