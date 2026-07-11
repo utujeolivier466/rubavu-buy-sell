@@ -49,8 +49,7 @@ export function Footer() {
               <li><a href="#" className="hover:text-teal-400 transition-colors">Why Rubavu</a></li>
               <li><a href="#" className="hover:text-teal-400 transition-colors">Market Analysis</a></li>
               <li><a href="#" className="hover:text-teal-400 transition-colors">Investment Guide</a></li>
-              <li><a href="#" className="hover:text-teal-400 transition-colors">ROI Calculator</a></li>
-              <li><a href="#" className="hover:text-teal-400 transition-colors">Diaspora Services</a></li>
+
             </ul>
           </div>
 
