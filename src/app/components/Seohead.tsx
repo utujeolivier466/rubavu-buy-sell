@@ -10,7 +10,7 @@ interface SEOHeadProps {
 
 const SITE_NAME = 'Rubavu Buy and Sell Ltd';
 const DEFAULT_IMAGE = '/og-image.png'; // lives in /public — see index.html fix
-const SITE_URL = 'https://rubavubuysell.com'; // update once the real domain is live
+const SITE_URL = 'https://rubavubuyandsell.com'; // update once the real domain is live
 
 function SEOHead({ title, description, image, url, type = 'website' }: SEOHeadProps) {
   const fullTitle = `${title} | ${SITE_NAME}`;
