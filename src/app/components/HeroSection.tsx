@@ -17,6 +17,7 @@ function PropertySearch() {
   const [maxPrice, setMaxPrice] = useState('');
   const [bathrooms, setBathrooms] = useState('');
   const [propertyType, setPropertyType] = useState('');
+  const [zoning, setZoning] = useState('');
   const [features, setFeatures] = useState<string[]>([]);
   const [utilities, setUtilities] = useState<string[]>([]);
   const [minSize, setMinSize] = useState('');
@@ -41,6 +42,7 @@ function PropertySearch() {
     if (maxPrice) params.set('max_price', maxPrice);
     if (bathrooms && bathrooms !== 'Any Bathrooms') params.set('bathrooms', bathrooms.replace('+', ''));
     if (propertyType && propertyType !== 'All Types' && propertyType !== 'All') params.set('type', propertyType);
+    if (zoning && zoning !== 'Any Zoning') params.set('zoning', zoning);
     if (minSize) params.set('min_size', minSize);
     if (sortBy !== 'newest') params.set('sort', sortBy);
     features.forEach((f) => params.append('feature', f.toLowerCase()));
@@ -145,6 +147,19 @@ function PropertySearch() {
               <option>Apartment</option>
               <option>House</option>
               <option>Land</option>
+            </select>
+
+            <select
+              value={zoning}
+              onChange={(e) => setZoning(e.target.value)}
+              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            >
+              <option>Any Zoning</option>
+              <option>Residential</option>
+              <option>Commercial</option>
+              <option>Mixed-Use</option>
+              <option>Agricultural</option>
+              <option>Industrial</option>
             </select>
 
             <div className="sm:col-span-2 lg:col-span-2">
@@ -286,7 +301,6 @@ export function HeroSection() {
         {/* Trust Line */}
         <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4 lg:gap-6 text-xs sm:text-sm text-gray-200">
           <span>✓ Title-Ready Listings</span>
-          <span>✓ 100+ Happy Investors</span>
           <span>✓ Located in Gisenyi</span>
         </div>
       </div>

@@ -1,21 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rubavu Buy and Sell | Your Trusted Real Estate Partner</title>
+    <meta name="description" content="Buy, sell, and invest in Lake Kivu waterfront properties in Rubavu, Rwanda. Title-ready listings, verified agents, and personalized investment guidance." />
 
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Rubavu buy and sell  | your trusted real estate partner</title>
-      <meta name="description" content="Rubavu buy and sell your trusted real estate partner" />
-      <link rel="icon" type="image/png" href="/src/app/components/asset/logo.png" />
-      <meta property="og:image" content="/src/app/components/asset/logo.png" />
-      <meta name="twitter:image" content="/src/app/components/asset/logo.png" />
-      <meta name="twitter:card" content="summary_large_image" />
-      <style>html, body { height: 100%; margin: 0; } #root { height: 100%; }</style>
-    </head>
+    <!-- Favicon and OG image now live in /public so they survive the production build -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta property="og:image" content="/og-image.png" />
+    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
 
-    <body>
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
-    </body>
-  </html>
-  
+    <!-- Google Analytics (GA4) -->
+    <!-- Get your Measurement ID at analytics.google.com, then add
+         VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX to your .env file -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA_MEASUREMENT_ID%"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '%VITE_GA_MEASUREMENT_ID%');
+    </script>
+
+    <style>html, body { height: 100%; margin: 0; } #root { height: 100%; }</style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

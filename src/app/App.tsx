@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { FeaturedProperties } from './components/FeaturedProperties';
@@ -8,6 +9,7 @@ import { PropertySpecialties } from './components/PropertySpecialties';
 import { Testimonials } from './components/Testimonials';
 import { CTABanner } from './components/CTABanner';
 import { Footer } from './components/Footer';
+import SEOHead from './components//Seohead';
 import Propertiespage from './components/Propertiespage';
 import PropertyDetailPage from './components/PropertyDetailPage';
 import Contactpage from './components/Contactpage';
@@ -39,6 +41,11 @@ function HomePage() {
 
   return (
     <>
+      <SEOHead
+        title="Buy, Sell & Invest in Lake Kivu Properties"
+        description="Rubavu's trusted real estate partner. Title-ready waterfront properties, houses, land, and commercial spaces in Gisenyi and across Rubavu District."
+        url="/"
+      />
       <HeroSection />
       <FeaturedProperties />
       <WhyInvest />
@@ -69,31 +76,33 @@ function PublicLayout() {
 
 function App() {
   return (
-    <AuthProvider>
-      <Routes>
-        {/* Admin login has no public header/footer */}
-        <Route path="/admin/login" element={<Adminlogin />} />
+    <HelmetProvider>
+      <AuthProvider>
+        <Routes>
+          {/* Admin login has no public header/footer */}
+          <Route path="/admin/login" element={<Adminlogin />} />
 
-        {/* Protected admin dashboard */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute>
-              <Adminlayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="properties" element={<AdminProperties />} />
-          <Route path="properties/new" element={<Adminpropertyform />} />
-          <Route path="properties/:id/edit" element={<Adminpropertyform />} />
-          <Route path="inquiries" element={<Admininquiries />} />
-          <Route path="submissions" element={<AdminSubmissions />} />
-        </Route>
+          {/* Protected admin dashboard */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <Adminlayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="properties" element={<AdminProperties />} />
+            <Route path="properties/new" element={<Adminpropertyform />} />
+            <Route path="properties/:id/edit" element={<Adminpropertyform />} />
+            <Route path="inquiries" element={<Admininquiries />} />
+            <Route path="submissions" element={<AdminSubmissions />} />
+          </Route>
 
-        {/* Public site */}
-        <Route path="/*" element={<PublicLayout />} />
-      </Routes>
-    </AuthProvider>
+          {/* Public site */}
+          <Route path="/*" element={<PublicLayout />} />
+        </Routes>
+      </AuthProvider>
+    </HelmetProvider>
   );
 }
 
