@@ -425,8 +425,8 @@ function SellPropertyPage() {
                   />
                 </div>
 
-                <div className="rounded-3xl border border-dashed border-gray-300 bg-slate-50 p-5">
-                  <div className="flex items-center justify-between gap-4 mb-3">
+                <div className="rounded-3xl border border-dashed border-gray-300 bg-slate-50 p-3 sm:p-5">
+                  <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                       <p className="text-sm font-semibold text-gray-900">Upload Property Photos</p>
                       <p className="text-sm text-gray-500">
@@ -451,16 +451,18 @@ function SellPropertyPage() {
                   {files.length > 0 ? (
                     <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
                       {files.map((file, index) => (
-                        <div key={index} className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white">
-                          <img
-                            src={URL.createObjectURL(file)}
-                            alt={file.name}
-                            className="h-24 w-full object-cover"
-                          />
+                        <div key={index} className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+                          <div className="aspect-[4/3] w-full overflow-hidden rounded-xl">
+                            <img
+                              src={URL.createObjectURL(file)}
+                              alt={file.name}
+                              className="h-full w-full object-cover object-center"
+                            />
+                          </div>
                           <button
                             type="button"
                             onClick={() => removeFile(index)}
-                            className="absolute top-2 right-2 rounded-full bg-black/70 text-white w-7 h-7 text-sm grid place-items-center"
+                            className="absolute top-2 right-2 grid h-7 w-7 place-items-center rounded-full bg-black/70 text-sm text-white"
                           >
                             ×
                           </button>
@@ -468,7 +470,9 @@ function SellPropertyPage() {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-sm text-gray-500">No photos selected yet.</p>
+                    <div className="rounded-2xl border border-dashed border-gray-200 bg-white/80 px-4 py-8 text-center text-sm text-gray-500">
+                      No photos selected yet.
+                    </div>
                   )}
                 </div>
 

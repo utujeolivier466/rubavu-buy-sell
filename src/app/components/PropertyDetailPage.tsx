@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type TouchEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { Property } from '../../../lib/types';
@@ -39,6 +39,8 @@ function PropertyDetailPage() {
   const [activeImage, setActiveImage] = useState(0);
   const [copied, setCopied] = useState(false);
   const [related, setRelated] = useState<Property[]>([]);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   useEffect(() => {
     fetchProperty();
@@ -156,6 +158,53 @@ function PropertyDetailPage() {
     }
   }
 
+  const images: string[] = property?.image_urls && property.image_urls.length > 0
+    ? property.image_urls
+    : [property?.cover_image_url].filter((v): v is string => Boolean(v));
+
+  const showNextImage = () => {
+    if (images.length <= 1) return;
+    setActiveImage((current) => (current + 1) % images.length);
+  };
+
+  const showPreviousImage = () => {
+    if (images.length <= 1) return;
+    setActiveImage((current) => (current - 1 + images.length) % images.length);
+  };
+
+  const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    setTouchStartX(event.touches[0]?.clientX ?? null);
+  };
+
+  const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    if (touchStartX === null) return;
+
+    const delta = (event.changedTouches[0]?.clientX ?? 0) - touchStartX;
+    if (delta > 50) {
+      showPreviousImage();
+    } else if (delta < -50) {
+      showNextImage();
+    }
+    setTouchStartX(null);
+  };
+
+  useEffect(() => {
+    if (!isFullscreen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsFullscreen(false);
+      } else if (event.key === 'ArrowRight') {
+        showNextImage();
+      } else if (event.key === 'ArrowLeft') {
+        showPreviousImage();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isFullscreen, images.length]);
+
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-10 animate-pulse">
@@ -176,10 +225,6 @@ function PropertyDetailPage() {
       </div>
     );
   }
-
-  const images: string[] = property.image_urls && property.image_urls.length > 0
-    ? property.image_urls
-    : [property.cover_image_url].filter((v): v is string => Boolean(v));
 
   const featureList = [
     property.has_pool && 'Pool',
@@ -228,15 +273,57 @@ function PropertyDetailPage() {
 
       {/* Photo Gallery */}
       <div className="mb-6">
-        <div className="w-full h-64 sm:h-96 lg:h-[480px] rounded-lg overflow-hidden bg-gray-100 mb-3">
+        <div className="w-full h-64 sm:h-96 lg:h-[480px] rounded-2xl overflow-hidden bg-gray-100 mb-3 shadow-sm">
           {images.length > 0 ? (
-            <img
-              src={images[activeImage]}
-              alt={property.title}
-              className={`w-full h-full object-cover ${isUnavailable ? 'grayscale-[30%]' : ''}`}
-            />
+            <div
+              className="relative h-full w-full"
+              onTouchStart={images.length > 1 ? handleTouchStart : undefined}
+              onTouchEnd={images.length > 1 ? handleTouchEnd : undefined}
+            >
+              <button
+                type="button"
+                onClick={() => setIsFullscreen(true)}
+                className="group relative h-full w-full"
+              >
+                <img
+                  src={images[activeImage]}
+                  alt={property.title}
+                  className={`h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02] ${isUnavailable ? 'grayscale-[30%]' : ''}`}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+                {images.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      aria-label="Previous image"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        showPreviousImage();
+                      }}
+                      className="absolute left-3 top-1/2 hidden -translate-y-1/2 rounded-full bg-black/60 p-2 text-white shadow-lg sm:inline-flex"
+                    >
+                      <span className="text-xl leading-none">‹</span>
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Next image"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        showNextImage();
+                      }}
+                      className="absolute right-3 top-1/2 hidden -translate-y-1/2 rounded-full bg-black/60 p-2 text-white shadow-lg sm:inline-flex"
+                    >
+                      <span className="text-xl leading-none">›</span>
+                    </button>
+                  </>
+                )}
+                <div className="absolute bottom-3 left-3 rounded-full bg-black/60 px-3 py-1 text-sm text-white backdrop-blur-sm">
+                  Tap to fullscreen • {activeImage + 1}/{images.length}
+                </div>
+              </button>
+            </div>
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-400">
+            <div className="flex h-full w-full items-center justify-center text-gray-400">
               No photos available
             </div>
           )}
@@ -247,16 +334,93 @@ function PropertyDetailPage() {
               <button
                 key={i}
                 onClick={() => setActiveImage(i)}
-                className={`shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-colors ${
+                className={`h-20 w-20 shrink-0 overflow-hidden rounded-md border-2 transition-colors ${
                   activeImage === i ? 'border-yellow-500' : 'border-transparent'
                 }`}
               >
-                <img src={img} alt={`${property.title} ${i + 1}`} className="w-full h-full object-cover" />
+                <img src={img} alt={`${property.title} ${i + 1}`} className="h-full w-full object-cover" />
               </button>
             ))}
           </div>
         )}
       </div>
+
+      {isFullscreen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/95 p-3 sm:p-6"
+          onClick={() => setIsFullscreen(false)}
+        >
+          <div className="flex h-full flex-col">
+            <div className="mb-3 flex items-center justify-between text-white">
+              <p className="text-sm font-medium">{activeImage + 1} / {images.length}</p>
+              <button
+                type="button"
+                aria-label="Close fullscreen view"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setIsFullscreen(false);
+                }}
+                className="rounded-full bg-white/10 px-3 py-2 text-sm backdrop-blur-sm"
+              >
+                Close
+              </button>
+            </div>
+            <div
+              className="relative flex-1 overflow-hidden rounded-3xl bg-black"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <img
+                src={images[activeImage]}
+                alt={property.title}
+                className="h-full w-full object-contain"
+              />
+              {images.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    aria-label="Previous image"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      showPreviousImage();
+                    }}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-3 text-white shadow-lg"
+                  >
+                    <span className="text-2xl leading-none">‹</span>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next image"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      showNextImage();
+                    }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-3 text-white shadow-lg"
+                  >
+                    <span className="text-2xl leading-none">›</span>
+                  </button>
+                </>
+              )}
+            </div>
+            {images.length > 1 && (
+              <div className="mt-3 flex justify-center gap-2 overflow-x-auto pb-1">
+                {images.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveImage(i)}
+                    className={`h-14 w-14 shrink-0 overflow-hidden rounded-lg border-2 ${
+                      activeImage === i ? 'border-yellow-500' : 'border-white/20'
+                    }`}
+                  >
+                    <img src={img} alt={`${property.title} ${i + 1}`} className="h-full w-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main content */}
