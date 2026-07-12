@@ -7,7 +7,7 @@ export default function PrivacyPage() {
         <article className="prose prose-slate max-w-none">
           <h1 className="text-slate-900">Privacy Policy</h1>
           <p className="text-sm text-slate-500">
-            Effective Date: [DATE] — Rubavu Buy and Sell Ltd
+            Effective Date: July 12, 2026 — Rubavu Buy and Sell Ltd
           </p>
 
       <h2>1. Introduction</h2>
@@ -20,11 +20,12 @@ export default function PrivacyPage() {
 
       <h2>2. Information We Collect</h2>
       <ul>
-        <li><strong>Personal Data:</strong> full name, phone number, email address, national ID or passport details.</li>
-        <li><strong>Financial Data:</strong> proof of funds or source-of-funds documentation, collected from buyers as part of our KYC process before a transaction is finalized.</li>
+        <li><strong>Personal Data:</strong> full name, phone number, and email address, collected when you contact us or submit an inquiry.</li>
+        <li><strong>Identification Documents:</strong> national ID or passport details, requested only where necessary for a specific property transaction or to comply with applicable Rwandan legal requirements — not collected from every website visitor.</li>
+        <li><strong>Financial Data:</strong> proof of funds or source-of-funds documentation, requested only from buyers where necessary for a specific transaction, not as a standard requirement.</li>
         <li><strong>Property Data:</strong> listing details, inquiries, valuation notes.</li>
         <li><strong>Media Content:</strong> photographs, videos, and floor plans submitted by property owners.</li>
-        <li><strong>Documents:</strong> title deeds and contracts submitted for verification.</li>
+        <li><strong>Documents:</strong> title deeds and contracts submitted for verification, where applicable to a specific transaction.</li>
         <li><strong>Communications:</strong> messages sent via WhatsApp, phone calls, SMS, and email.</li>
         <li><strong>Technical Data:</strong> IP address, browser/device type, and general location, collected automatically via our website.</li>
       </ul>
@@ -32,9 +33,9 @@ export default function PrivacyPage() {
       <h2>3. How We Use Your Information</h2>
       <ul>
         <li>Respond to your property inquiry and connect you with relevant listings</li>
-        <li>Verify buyer identity and source of funds (KYC) before completing a transaction</li>
-        <li>Detect and prevent fraud or money-laundering activity, and report suspicious activity to the relevant Rwandan authorities where required by law</li>
-        <li>Maintain transaction records required under Rwandan brokerage and AML obligations</li>
+        <li>Where necessary for a specific property transaction, verify buyer identity and source of funds</li>
+        <li>Help prevent fraud and protect the integrity of property transactions, and report suspicious activity to the relevant Rwandan authorities where required by law</li>
+        <li>Maintain transaction records where required under applicable Rwandan law</li>
         <li>Send follow-up communications about your inquiry or related properties</li>
       </ul>
 
@@ -42,11 +43,16 @@ export default function PrivacyPage() {
       <ul>
         <li><strong>Consent</strong> — for marketing follow-up communications</li>
         <li><strong>Contractual necessity</strong> — for buyers, sellers, or tenants engaging our brokerage services</li>
-        <li><strong>Legal obligation</strong> — for KYC, AML, and tax-related record-keeping</li>
+        <li><strong>Legal obligation</strong> — for identity verification and record-keeping where required by applicable Rwandan law</li>
       </ul>
 
       <h2>5. Third-Party Data Sharing</h2>
-      <p>We share limited personal data with:</p>
+      <p>
+        Rubavu Buy and Sell Ltd does not sell or share your personal
+        information with third parties, except where required by law or
+        necessary to complete a property transaction. Limited sharing
+        occurs only in the following circumstances:
+      </p>
       <ul>
         <li>
           <strong>WhatsApp / Meta Platforms, Inc.</strong> — messages you
@@ -69,17 +75,17 @@ export default function PrivacyPage() {
         </li>
         <li>
           <strong>Regulators and law enforcement</strong> — where required
-          for AML compliance or by Rwandan law.
+          by applicable Rwandan laws or competent authorities.
         </li>
       </ul>
-      <p>We do not sell your personal data to third parties for marketing purposes.</p>
 
       <h2>6. Data Retention</h2>
       <p>
         We retain inquiry and transaction data for as long as reasonably
-        necessary to fulfill the purpose it was collected for. KYC and
-        proof-of-funds documentation is retained for the period required
-        under applicable Rwandan AML record-keeping obligations.
+        necessary to fulfill the purpose it was collected for.
+        Identification or verification documents are retained only where
+        they were collected for a specific property transaction, and only
+        for the period required by applicable Rwandan law.
       </p>
 
       <h2>7. Data Security</h2>
@@ -93,9 +99,9 @@ export default function PrivacyPage() {
       <h2>8. Your Rights</h2>
       <p>
         You may request access to, correction of, or deletion of your
-        personal data, subject to our legal retention obligations (in
-        particular for KYC/AML records), by contacting
-        info@rubavubuysell.com.
+        personal data, subject to applicable legal and record-retention
+        requirements under Rwandan law, by contacting
+        info@rubavubuyandsell.com.
       </p>
 
       <h2>9. Children's Data</h2>
@@ -105,16 +111,8 @@ export default function PrivacyPage() {
       <p>We may update this Policy from time to time. Material changes will be reflected by updating the effective date above.</p>
 
       <h2>11. Contact</h2>
-      <p>info@rubavubuysell.com | +250 782 424 382<br />
+      <p>info@rubavubuyandsell.com | +250 782 424 382<br />
       Habib Center, 1st Floor, Rubavu – Gisenyi, Rwanda</p>
-
-      <p className="text-sm text-gray-500 mt-12 border-t pt-4">
-        This document is a template and does not constitute legal advice. It
-        should be reviewed by a licensed Rwandan attorney, particularly
-        regarding obligations under Rwanda's Law No. 058/2021 on the
-        Protection of Personal Data and Privacy, before being relied on in
-        production.
-      </p>
 
       <p className="text-sm">
         <Link to="/terms" className="text-teal-600 underline hover:text-teal-700">
