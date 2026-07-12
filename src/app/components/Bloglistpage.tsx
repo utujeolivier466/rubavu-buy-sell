@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { BlogPost } from '../../../lib/types';
-import SEOHead from './SEOHead';
+import SEOHead from './Seohead';
 
 function BlogListPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);

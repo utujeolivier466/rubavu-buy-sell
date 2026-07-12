@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { Agent } from '../../../lib/types';
-import SEOHead from './SEOHead';
+import SEOHead from './Seohead';
 import TiltCard from './TiltCard';
 
 const WHATSAPP_NUMBER = '250782424382';

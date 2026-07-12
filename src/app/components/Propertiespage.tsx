@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { Property } from '../../../lib/types';
-import SEOHead from './SEOHead';
+import SEOHead from './Seohead';
 
 function Propertiespage() {
   const [searchParams, setSearchParams] = useSearchParams();
