@@ -165,7 +165,7 @@ function AboutPage() {
       </section>
 
       {/* Meet Our Team */}
-      <section className="py-14 sm:py-20 bg-gray-50">
+      <section id="team" className="py-14 sm:py-20 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center mb-2">Meet Our Team</h2>
           <p className="text-gray-500 text-center mb-10">The people behind Rubavu Buy and Sell Ltd</p>
@@ -193,6 +193,7 @@ function AboutPage() {
                   <img
                     src={agent.photo_url}
                     alt={agent.name}
+                    loading="lazy"
                     className="w-24 h-24 rounded-full object-cover mx-auto mb-4"
                   />
                 ) : (
@@ -201,7 +202,15 @@ function AboutPage() {
                   </div>
                 )}
                 <h3 className="font-bold text-gray-900 text-lg">{agent.name}</h3>
-                <p className="text-amber-600 text-sm font-medium mb-3">{agent.position}</p>
+                <p className="text-amber-600 text-sm font-medium mb-1">{agent.position}</p>
+                {agent.phone && (
+                  <a
+                    href={`tel:${agent.phone}`}
+                    className="text-xs text-teal-600 hover:text-teal-700 font-medium block mb-3"
+                  >
+                    {agent.phone}
+                  </a>
+                )}
                 {agent.bio && (
                   <p className="text-gray-600 text-sm leading-relaxed">{agent.bio}</p>
                 )}

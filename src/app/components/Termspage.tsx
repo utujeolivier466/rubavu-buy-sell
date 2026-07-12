@@ -7,23 +7,22 @@ export default function TermsPage() {
         <article className="prose prose-slate max-w-none">
           <h1 className="text-slate-900">Terms and Conditions</h1>
           <p className="text-sm text-slate-500">
-            Effective Date: [DATE] — Rubavu Buy and Sell Ltd
+            Effective Date: July 12, 2026 — Rubavu Buy and Sell Ltd
           </p>
           <p className="text-sm text-slate-500">
             Registered Address: Habib Center, 1st Floor, Rubavu – Gisenyi, Rwanda<br />
-            Contact: info@rubavubuysell.com | +250 782 424 382
+            Contact: info@rubavubuyandsell.com | +250 782 424 382
           </p>
 
       <h2>1. Definitions</h2>
       <ul>
         <li><strong>"Company," "We," "Our," "Us"</strong> — Rubavu Buy and Sell Ltd.</li>
-        <li><strong>"Services"</strong> — property listings, brokerage, consultancy, advisory, marketing and advertising (digital and offline), property documentation, and communications (email, SMS, WhatsApp, phone calls) provided through our website, applications, and social media.</li>
+        <li><strong>"Services"</strong> — property buying assistance, property selling services, property marketing and advertising, real estate investment advice, property valuation and market analysis, commercial and residential property sales, business advertising, real estate consultation, and related communications (email, SMS, WhatsApp, phone calls) provided through our website, applications, and social media.</li>
         <li><strong>"User," "You," "Your"</strong> — any individual or entity accessing or using our Services.</li>
         <li><strong>"Property Owner"</strong> — any person, company, or developer listing a property for sale or rent through us.</li>
         <li><strong>"Client"</strong> — any buyer, tenant, or investor seeking to engage in a property transaction through us.</li>
         <li><strong>"Content"</strong> — text, images, videos, floor plans, brochures, and documents provided by the Company or by users.</li>
-        <li><strong>"KYC"</strong> — Know Your Customer identity and source-of-funds verification.</li>
-        <li><strong>"AML"</strong> — Anti-Money Laundering laws and regulations.</li>
+        <li><strong>"Verification Requirements"</strong> — identity and, where applicable, source-of-funds checks that may be requested for certain property transactions, where necessary and where required by applicable Rwandan laws.</li>
       </ul>
 
       <h2>2. Acceptance of Terms</h2>
@@ -35,13 +34,17 @@ export default function TermsPage() {
       </p>
 
       <h2>3. Scope of Services</h2>
-      <p>Rubavu Buy and Sell Ltd operates as a licensed real estate agency and brokerage. Our Services include:</p>
+      <p>Rubavu Buy and Sell Ltd is a professional real estate company operating in Rubavu District, Rwanda. Our Services include:</p>
       <ul>
-        <li>Advertising properties for sale and rent</li>
-        <li>Representing buyers, sellers, or landlords in negotiations</li>
-        <li>Providing consultancy, advisory, and valuation input</li>
-        <li>Publishing property content across our website, applications, and social media</li>
-        <li>Connecting buyers, tenants, and property owners</li>
+        <li>Property Buying Assistance</li>
+        <li>Property Selling Services</li>
+        <li>Property Marketing & Advertising</li>
+        <li>Real Estate Investment Advice</li>
+        <li>Property Valuation & Market Analysis</li>
+        <li>Commercial Property Sales</li>
+        <li>Residential Property Sales</li>
+        <li>Business Advertising</li>
+        <li>Real Estate Consultation</li>
       </ul>
       <p>
         Where we represent one party to a transaction (for example, the
@@ -72,8 +75,8 @@ export default function TermsPage() {
       </p>
       <p>
         Identity documents, title deeds, and financial records submitted for
-        verification or KYC purposes are used only for those purposes and
-        are not published publicly.
+        verification purposes are used only for those purposes and are not
+        published publicly.
       </p>
 
       <h2>6. Price and Availability Disclaimer</h2>
@@ -97,21 +100,25 @@ export default function TermsPage() {
         purchase.
       </p>
 
-      <h2>8. Know Your Customer (KYC) and Anti-Money Laundering (AML)</h2>
+      <h2>8. Identity Verification and Fraud Prevention</h2>
       <p>
-        As part of our brokerage process, Rubavu Buy and Sell Ltd collects
-        identity documents and proof-of-funds information from buyers before
-        finalizing a transaction. This includes:
+        For certain property transactions, and only where necessary or
+        where required by applicable Rwandan laws, Rubavu Buy and Sell Ltd
+        may request identity documents and proof-of-funds information from
+        buyers before finalizing a transaction. This is not a standard
+        requirement for every client or every inquiry, and applies only
+        where the specific transaction warrants it. Where requested, this
+        may include:
       </p>
       <ul>
         <li>Government-issued identification (national ID or passport)</li>
         <li>Proof of funds or source-of-funds documentation for the transaction amount</li>
       </ul>
-      <p>We reserve the right to:</p>
+      <p>Our aim in requesting this information is to prevent fraud and protect the integrity of property transactions. We reserve the right to:</p>
       <ul>
-        <li>Request additional KYC documentation where the transaction value, payment method, or circumstances warrant it</li>
+        <li>Request additional verification where the transaction value, payment method, or circumstances warrant it</li>
         <li>Decline or pause a transaction where funds cannot be adequately verified</li>
-        <li>Report suspected fraud or money-laundering activity to the relevant Rwandan authorities, without prior notice to the user, where required by law</li>
+        <li>Report suspected fraudulent activity to the relevant Rwandan authorities, without prior notice to the user, where required by law</li>
       </ul>
       <p>
         Users must not use our Services to facilitate unlawful financial
@@ -153,13 +160,7 @@ export default function TermsPage() {
       <p>We may update these Terms from time to time. Updates take effect once published on this page.</p>
 
       <h2>14. Contact</h2>
-      <p>info@rubavubuysell.com | +250 782 424 382</p>
-
-      <p className="text-sm text-gray-500 mt-12 border-t pt-4">
-        This document is a template and does not constitute legal advice. It
-        should be reviewed by a licensed Rwandan attorney before being relied
-        on for live brokerage transactions.
-      </p>
+      <p>info@rubavubuyandsell.com | +250 782 424 382</p>
 
       <p className="text-sm">
         <Link to="/privacy" className="text-teal-600 underline hover:text-teal-700">
