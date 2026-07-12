@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { BlogPost } from '../../../lib/types';
-import SEOHead from './Seohead';
+import SEOHead from './SEOHead';
 
 function BlogListPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -92,7 +92,7 @@ function BlogListPage() {
                 >
                   <div className="w-full h-48 bg-gradient-to-br from-teal-500 to-[#0D1F3C] flex items-center justify-center">
                     {post.cover_image_url ? (
-                      <img src={post.cover_image_url} alt={post.title} className="h-full w-full object-cover" />
+                      <img src={post.cover_image_url} alt={post.title} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                     ) : (
                       <div className="text-white text-center">
                         <div className="text-4xl font-bold opacity-50">{post.category?.[0] || 'B'}</div>

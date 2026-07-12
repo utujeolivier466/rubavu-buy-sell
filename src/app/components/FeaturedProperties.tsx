@@ -216,6 +216,8 @@ export function FeaturedProperties() {
                   <img
                     src={property.image}
                     alt={property.title}
+                    loading="lazy"
+                    decoding="async"
                     className={`w-full h-full object-cover hover:scale-105 transition-transform duration-300 ${isUnavailable ? 'grayscale-[40%]' : ''}`}
                   />
                   <div className={`absolute top-2 sm:top-3 right-2 sm:right-3 text-xs px-2 sm:px-3 py-1 rounded-full ${badge.className}`}>

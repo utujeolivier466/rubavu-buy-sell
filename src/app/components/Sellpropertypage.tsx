@@ -87,6 +87,7 @@ function SellPropertyPage() {
   const [email, setEmail] = useState('');
   const [phoneError, setPhoneError] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [website, setWebsite] = useState(''); // honeypot — real users never see or fill this
   const [files, setFiles] = useState<File[]>([]);
   const [latestListings, setLatestListings] = useState<Listing[]>(fallbackListings);
   const [listingError, setListingError] = useState<string>('');
@@ -218,6 +219,13 @@ function SellPropertyPage() {
     e.preventDefault();
     if (!isValid) return;
 
+    // Honeypot tripped — a bot filled a field real users never see.
+    // Pretend success so it doesn't learn to avoid this trick.
+    if (website.trim() !== '') {
+      setStatus('success');
+      return;
+    }
+
     setStatus('submitting');
     setError(null);
 
@@ -324,6 +332,20 @@ function SellPropertyPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6 mt-6">
+                {/* Honeypot field — visually hidden, unreachable by tab, ignored by real users */}
+                <div style={{ position: 'absolute', left: '-9999px' }} aria-hidden="true">
+                  <label htmlFor="website">Website</label>
+                  <input
+                    type="text"
+                    id="website"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                  />
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Type of request *</label>

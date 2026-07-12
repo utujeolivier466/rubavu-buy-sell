@@ -62,7 +62,6 @@ export function Header() {
           <nav className="hidden lg:flex items-center gap-6 flex-1 justify-center">
             <Link to="/" className={navButtonClass('/')} onClick={() => goToPage('/')}>Home</Link>
             <Link to="/properties" className={navButtonClass('/properties')} onClick={() => goToPage('/properties')}>Properties</Link>
-            <button onClick={() => scrollToSection('lakefront')} className="text-gray-700 hover:text-teal-600 transition-colors">Lake Kivu Waterfront</button>
             <Link to="/about" className={navButtonClass('/about')} onClick={() => goToPage('/about')}>About Us</Link>
             <Link to="/blog" className={navButtonClass('/blog')} onClick={() => goToPage('/blog')}>Blog</Link>
             <Link to="/contact" className={navButtonClass('/contact')} onClick={() => goToPage('/contact')}>Contact</Link>
@@ -102,8 +101,6 @@ export function Header() {
           <nav className="lg:hidden mt-4 pb-4 border-t border-gray-200 pt-4 flex flex-col gap-3">
             <Link to="/" className={`${navButtonClass('/')} py-2 text-sm text-left`} onClick={() => goToPage('/')}>Home</Link>
             <Link to="/properties" className={`${navButtonClass('/properties')} py-2 text-sm text-left`} onClick={() => goToPage('/properties')}>Properties</Link>
-            <button onClick={() => scrollToSection('lakefront')} className="text-gray-700 hover:text-teal-600 py-2 text-sm text-left">Lake Kivu Waterfront</button>
-            <button onClick={() => scrollToSection('resources')} className="text-gray-700 hover:text-teal-600 py-2 text-sm text-left">Resources</button>
             <Link to="/about" className={`${navButtonClass('/about')} py-2 text-sm text-left`} onClick={() => goToPage('/about')}>About Us</Link>
             <Link to="/blog" className={`${navButtonClass('/blog')} py-2 text-sm text-left`} onClick={() => goToPage('/blog')}>Blog</Link>
             <Link to="/contact" className={`${navButtonClass('/contact')} py-2 text-sm text-left`} onClick={() => goToPage('/contact')}>Contact</Link>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { Property } from '../../../lib/types';
-import SEOHead from './Seohead';
+import SEOHead from './SEOHead';
 
 function Propertiespage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -174,6 +174,8 @@ function Propertiespage() {
                         <img
                           src={property.cover_image_url || (property.image_urls && property.image_urls[0]) || ''}
                           alt={property.title}
+                          loading="lazy"
+                          decoding="async"
                           className="h-full w-full object-cover"
                         />
                       </div>
@@ -213,6 +215,8 @@ function Propertiespage() {
                   <img
                     src={property.cover_image_url || (property.image_urls && property.image_urls[0]) || ''}
                     alt={property.title}
+                    loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-cover"
                   />
                   {property.is_hot_deal && (

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { BlogPost } from '../../../lib/types';
-import SEOHead from './Seohead';
+import SEOHead from './SEOHead';
 
 function BlogPostPage() {
   const { slug } = useParams();
