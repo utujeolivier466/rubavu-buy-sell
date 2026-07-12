@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { PropertySubmission, SubmissionStatus } from '../../../lib/types';
 
-
 interface SubmissionRow extends PropertySubmission {
   properties?: { slug: string; title: string } | null; // populated once converted
 }
@@ -26,13 +25,13 @@ function AdminSubmissions() {
   }, []);
 
   async function fetchSubmissions() {
+    setLoading(true);
+
     if (!supabase) {
-      console.error('Supabase client is not initialized.');
       setLoading(false);
       return;
     }
 
-    setLoading(true);
     // Joins the live property (if this submission was already pushed live)
     // so we can show a working "View Listing" link on reload, not just
     // right after conversion.
@@ -51,7 +50,6 @@ function AdminSubmissions() {
 
   async function updateStatus(id: string, status: SubmissionStatus) {
     if (!supabase) {
-      console.error('Supabase client is not initialized.');
       return;
     }
 
@@ -64,12 +62,12 @@ function AdminSubmissions() {
   }
 
   async function handlePushLive(submission: SubmissionRow) {
+    if (submission.status === 'converted') return;
+
     if (!supabase) {
-      console.error('Supabase client is not initialized.');
+      alert('The database connection is not available right now.');
       return;
     }
-
-    if (submission.status === 'converted') return;
 
     if (!window.confirm(`Push this property live? It will immediately appear on the public site.`)) {
       return;
@@ -83,9 +81,11 @@ function AdminSubmissions() {
       .from('properties')
       .insert({
         title,
-        description: null,
+        description: submission.description || null,
         property_type: submission.property_type,
-        listing_type: 'Sale',
+        listing_type: submission.listing_type || 'Sale',
+        bedrooms: submission.bedrooms ?? null,
+        bathrooms: submission.bathrooms ?? null,
         status: 'Available',
         price: submission.price,
         currency: submission.currency,
@@ -197,9 +197,14 @@ function AdminSubmissions() {
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm text-gray-700 mb-3">
                   <p><span className="text-gray-400">Location:</span> {submission.location_text}</p>
                   <p><span className="text-gray-400">Price:</span> {submission.currency} {Number(submission.price).toLocaleString()}</p>
-                  <p><span className="text-gray-400">Type:</span> {submission.property_type}</p>
+                  <p><span className="text-gray-400">Type:</span> {submission.property_type} · {submission.listing_type || 'Sale'}</p>
+                  <p><span className="text-gray-400">Beds/Baths:</span> {submission.bedrooms ?? '—'} / {submission.bathrooms ?? '—'}</p>
+                  <p><span className="text-gray-400">Email:</span> {submission.email || '—'}</p>
                   <p><span className="text-gray-400">UPI:</span> {submission.upi || '—'}</p>
                 </div>
+                {submission.description && (
+                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">{submission.description}</p>
+                )}
 
                 <div className="flex flex-wrap items-center gap-4 text-xs">
                   <span className="text-gray-400">{new Date(submission.created_at).toLocaleDateString()}</span>

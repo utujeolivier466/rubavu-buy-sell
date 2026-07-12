@@ -288,6 +288,9 @@ function PropertyDetailPage() {
                 <img
                   src={images[activeImage]}
                   alt={property.title}
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
                   className={`h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02] ${isUnavailable ? 'grayscale-[30%]' : ''}`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
@@ -338,7 +341,13 @@ function PropertyDetailPage() {
                   activeImage === i ? 'border-yellow-500' : 'border-transparent'
                 }`}
               >
-                <img src={img} alt={`${property.title} ${i + 1}`} className="h-full w-full object-cover" />
+                <img
+                  src={img}
+                  alt={`${property.title} ${i + 1}`}
+                  loading={activeImage === i ? 'eager' : 'lazy'}
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
               </button>
             ))}
           </div>

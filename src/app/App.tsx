@@ -6,16 +6,20 @@ import { HeroSection } from './components/HeroSection';
 import { FeaturedProperties } from './components/FeaturedProperties';
 import { WhyInvest } from './components/WhyInvest';
 import { PropertySpecialties } from './components/PropertySpecialties';
+// Testimonials temporarily disabled — placeholder/fake reviews only.
+// Re-enable once real client testimonials are collected.
+// import { Testimonials } from './components/Testimonials';
 import { CTABanner } from './components/CTABanner';
 import { Footer } from './components/Footer';
 import SEOHead from './components/Seohead';
 import Propertiespage from './components/Propertiespage';
 import PropertyDetailPage from './components/PropertyDetailPage';
 import Contactpage from './components/Contactpage';
-import SellPropertyPage from './components/Sellpropertypage.tsx';
+import SellPropertyPage from './components/Sellpropertypage';
 import { AuthProvider } from './context/Authcontext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Adminlogin from './components/Adminlogin';
+import AdminResetPassword from './components/Adminresetpassword';
 import Adminlayout from './components/Adminlayout';
 import AdminProperties from './components/Adminproperties';
 import Adminpropertyform from './components/Adminpropertyform';
@@ -26,12 +30,12 @@ import PrivacyPage from './components/Privacypage';
 import BlogListPage from './components/Bloglistpage';
 import BlogPostPage from './components/Blogpostpage';
 import AboutPage from './components/Aboutpage';
+import NotFoundPage from './components/Notfoundpage';
+import ErrorBoundary from './components/Errorboundary';
 import AdminBlog from './components/Adminblog';
 import AdminBlogForm from './components/Adminblogform';
 import AdminAgents from './components/Adminagents';
 import AdminAgentForm from './components/Adminagentform';
-import NotFoundPage from './components/Notfoundpage';
-import ErrorBoundary from './components/Errorboundary';
 
 function HomePage() {
   const location = useLocation();
@@ -57,7 +61,8 @@ function HomePage() {
       <HeroSection />
       <FeaturedProperties />
       <WhyInvest />
-      <PropertySpecialties />      
+      <PropertySpecialties />
+      {/* <Testimonials /> — disabled until real reviews exist */}
       <CTABanner />
     </>
   );
@@ -78,13 +83,12 @@ function PublicLayout() {
         <Route path="/blog" element={<BlogListPage />} />
         <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="/about" element={<AboutPage />} />
-         <Route path="*" element={<NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
     </div>
   );
 }
-
 
 function App() {
   return (
@@ -94,7 +98,8 @@ function App() {
         <Routes>
           {/* Admin login has no public header/footer */}
           <Route path="/admin/login" element={<Adminlogin />} />
- 
+        <Route path="/admin/reset-password" element={<AdminResetPassword />} />
+
           {/* Protected admin dashboard */}
           <Route
             path="/admin"
@@ -116,7 +121,7 @@ function App() {
             <Route path="agents/new" element={<AdminAgentForm />} />
             <Route path="agents/:id/edit" element={<AdminAgentForm />} />
           </Route>
- 
+
           {/* Public site */}
           <Route path="/*" element={<PublicLayout />} />
         </Routes>
@@ -125,5 +130,5 @@ function App() {
     </ErrorBoundary>
   );
 }
- 
+
 export default App;

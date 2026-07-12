@@ -58,10 +58,15 @@ export interface PropertySubmission {
   id: string;
   full_name: string;
   phone: string;
+  email?: string | null;
   location_text: string;
   price: number;
   currency: string;
   property_type: 'Apartment' | 'Commercial' | 'House' | 'Land';
+  listing_type?: 'Sale' | 'Rent';
+  bedrooms?: number | null;
+  bathrooms?: number | null;
+  description?: string | null;
   upi?: string | null;
   photo_urls?: string[] | null;
   status: SubmissionStatus;

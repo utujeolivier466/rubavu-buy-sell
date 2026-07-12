@@ -12,6 +12,7 @@ function ContactPage() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [agreed, setAgreed] = useState(false);
+  const [website, setWebsite] = useState(''); // honeypot — real users never see or fill this
   const [status, setStatus] = useState<SubmitState>('idle');
 
   const isValid =
@@ -23,6 +24,13 @@ function ContactPage() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!isValid) return;
+
+    // Honeypot tripped — a bot filled a field real users never see.
+    // Pretend success so it doesn't learn to avoid this trick.
+    if (website.trim() !== '') {
+      setStatus('success');
+      return;
+    }
 
     if (!supabase) {
       setStatus('error');
@@ -80,6 +88,20 @@ function ContactPage() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Honeypot field — visually hidden, unreachable by tab, ignored by real users */}
+              <div style={{ position: 'absolute', left: '-9999px' }} aria-hidden="true">
+                <label htmlFor="website">Website</label>
+                <input
+                  type="text"
+                  id="website"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                />
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
@@ -173,7 +195,7 @@ function ContactPage() {
             <div className="space-y-3 text-sm text-gray-700">
               <p className="text-gray-600">Habib Center, 1st Floor, Rubavu – Gisenyi, Rwanda              </p>
               <p>📞 <a href="tel:+250782424382" className="hover:text-yellow-600">+250 782 424 382</a></p>
-              <p>✉️ <a href="mailto:info@rubavubuysell.com" className="hover:text-yellow-600">info@rubavubuyandsell.com</a></p>
+              <p>✉️ <a href="mailto:info@rubavubuyandsell.com" className="hover:text-yellow-600">info@rubavubuyandsell.com</a></p>
               <p className="text-gray-500">Office hours: Monday – Saturday, 8:00 AM – 6:00 PM EAT</p>
             </div>
           </div>
