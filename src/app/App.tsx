@@ -6,16 +6,14 @@ import { HeroSection } from './components/HeroSection';
 import { FeaturedProperties } from './components/FeaturedProperties';
 import { WhyInvest } from './components/WhyInvest';
 import { PropertySpecialties } from './components/PropertySpecialties';
-// Testimonials temporarily disabled — placeholder/fake reviews only.
-// Re-enable once real client testimonials are collected.
-// import { Testimonials } from './components/Testimonials';
+import { Testimonials } from './components/Testimonials';
 import { CTABanner } from './components/CTABanner';
 import { Footer } from './components/Footer';
 import SEOHead from './components/Seohead';
 import Propertiespage from './components/Propertiespage';
 import PropertyDetailPage from './components/PropertyDetailPage';
 import Contactpage from './components/Contactpage';
-import SellPropertyPage from './components/Sellpropertypage';
+import SellPropertyPage from './components/Sellpropertypage.tsx';
 import { AuthProvider } from './context/Authcontext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Adminlogin from './components/Adminlogin';
@@ -29,8 +27,9 @@ import TermsPage from './components/Termspage';
 import PrivacyPage from './components/Privacypage';
 import BlogListPage from './components/Bloglistpage';
 import BlogPostPage from './components/Blogpostpage';
-import AboutPage from './components/Aboutpage';
+import AboutPage from './components/AboutPage';
 import NotFoundPage from './components/Notfoundpage';
+import FAQPage from './components/FAQPage';
 import ErrorBoundary from './components/Errorboundary';
 import AdminBlog from './components/Adminblog';
 import AdminBlogForm from './components/Adminblogform';
@@ -62,7 +61,7 @@ function HomePage() {
       <FeaturedProperties />
       <WhyInvest />
       <PropertySpecialties />
-      {/* <Testimonials /> — disabled until real reviews exist */}
+      <Testimonials />
       <CTABanner />
     </>
   );
@@ -83,6 +82,7 @@ function PublicLayout() {
         <Route path="/blog" element={<BlogListPage />} />
         <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/faq" element={<FAQPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />

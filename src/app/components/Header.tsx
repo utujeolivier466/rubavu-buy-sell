@@ -50,6 +50,7 @@ export function Header() {
             <button onClick={() => goToPage('/sell-property')} className={navButtonClass('/sell-property')}>Sell Your Property</button>
             <button onClick={() => goToPage('/blog')} className={navButtonClass('/blog')}>Learning Center</button>
             <button onClick={() => goToPage('/about')} className={navButtonClass('/about')}>About Us</button>
+            <button onClick={() => goToPage('/faq')} className={navButtonClass('/faq')}>FAQ</button>
             <button onClick={() => goToPage('/contact')} className={navButtonClass('/contact')}>Contact Us</button>
           </nav>
 
@@ -84,6 +85,7 @@ export function Header() {
             <button onClick={() => goToPage('/sell-property')} className={`${navButtonClass('/sell-property')} py-2 text-sm text-left`}>Sell Your Property</button>
             <button onClick={() => goToPage('/blog')} className={`${navButtonClass('/blog')} py-2 text-sm text-left`}>Learning Center</button>
             <button onClick={() => goToPage('/about')} className={`${navButtonClass('/about')} py-2 text-sm text-left`}>About Us</button>
+            <button onClick={() => goToPage('/faq')} className={`${navButtonClass('/faq')} py-2 text-sm text-left`}>FAQ</button>
             <button onClick={() => goToPage('/contact')} className={`${navButtonClass('/contact')} py-2 text-sm text-left`}>Contact Us</button>
             <div className="flex items-center gap-2 pt-2 text-sm">
               <Phone className="w-4 h-4" />

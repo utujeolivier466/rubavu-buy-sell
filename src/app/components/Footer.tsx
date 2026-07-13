@@ -62,11 +62,9 @@ export function Footer() {
             <ul className="space-y-2 text-xs sm:text-sm mb-4 sm:mb-6">
               <li><a href="/about" className="hover:text-teal-400 transition-colors">About Us</a></li>
               <li><a href="/about#team" className="hover:text-teal-400 transition-colors">Our Team</a></li>
-              {/* Testimonials section is temporarily removed from the homepage
-                  (placeholder reviews only) — this link points to About for now.
-                  Update once real client testimonials are collected. */}
-              <li><a href="/about" className="hover:text-teal-400 transition-colors">Testimonials</a></li>
+              <li><a href="/#testimonials" className="hover:text-teal-400 transition-colors">Testimonials</a></li>
               <li><a href="/sell-property" className="hover:text-teal-400 transition-colors">Sell Your Property</a></li>
+              <li><a href="/faq" className="hover:text-teal-400 transition-colors">FAQs</a></li>
               <li><a href="/contact" className="hover:text-teal-400 transition-colors">Contact Us</a></li>
             </ul>
 
