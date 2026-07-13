@@ -29,7 +29,7 @@ import BlogListPage from './components/Bloglistpage';
 import BlogPostPage from './components/Blogpostpage';
 import AboutPage from './components/Aboutpage';
 import NotFoundPage from './components/Notfoundpage';
-import FAQPage from './components/FAQPage';
+import FAQPage from './components/Faqpage';
 import ErrorBoundary from './components/Errorboundary';
 import AdminBlog from './components/Adminblog';
 import AdminBlogForm from './components/Adminblogform';
