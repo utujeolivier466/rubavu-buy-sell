@@ -73,7 +73,7 @@ function AdminLogin() {
 
           {resetSent ? (
             <div>
-              <p className="text-sm text-green-700 bg-green-50 rounded-lg p-3 mb-4">
+              <p className="text-sm text-[#0D4F2A] bg-[#D56000]/10 rounded-lg p-3 mb-4">
                 If an account exists for that email, a reset link has been sent. Check your inbox (and spam folder).
               </p>
               <button

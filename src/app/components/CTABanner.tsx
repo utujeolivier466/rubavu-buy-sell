@@ -12,13 +12,13 @@ export function CTABanner() {
           alt="Lake Kivu"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-teal-900/90 to-teal-800/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0D4F2A]/90 to-[#D56000]/90"></div>
       </div>
 
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
         <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
-          Ready to Secure Your Lake Kivu Property?
+          Have Questions About a Property? Let's Talk.
         </h2>
         <p className="text-base sm:text-lg lg:text-xl text-gray-200 mb-6 sm:mb-8">
           Talk to our team today and get personalized investment advice tailored to your goals
@@ -30,7 +30,7 @@ export function CTABanner() {
             href={whatsappUrl}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-green-500 hover:bg-green-600 text-white text-base sm:text-lg rounded-lg transition-colors shadow-lg"
+            className="flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-[#D56000] hover:bg-[#D56000] text-white text-base sm:text-lg rounded-lg transition-colors shadow-lg"
           >
             <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
             <span>Chat via WhatsApp Now</span>

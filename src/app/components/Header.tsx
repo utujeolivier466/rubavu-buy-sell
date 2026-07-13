@@ -19,7 +19,7 @@ export function Header() {
   };
 
   const navButtonClass = (path: string) =>
-    `text-sm font-medium transition-colors ${isActiveRoute(path) ? 'text-teal-600 border-b-2 border-teal-600' : 'text-gray-700 hover:text-teal-600'}`;
+    `text-sm font-medium transition-colors ${isActiveRoute(path) ? 'text-[#0D4F2A] border-b-2 border-teal-600' : 'text-gray-700 hover:text-[#0D4F2A]'}`;
 
   // For real, separate pages — always navigate.
   const goToPage = (path: string) => {
@@ -60,7 +60,7 @@ export function Header() {
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-3 lg:px-4 py-2 rounded-lg transition-colors text-sm"
+              className="flex items-center gap-2 bg-[#D56000] hover:bg-[#D56000] text-white px-3 lg:px-4 py-2 rounded-lg transition-colors text-sm"
             >
               <MessageCircle className="w-4 h-4" />
               <span className="hidden lg:inline">Chat via WhatsApp</span>
@@ -95,7 +95,7 @@ export function Header() {
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg w-full text-sm"
+              className="flex items-center justify-center gap-2 bg-[#D56000] text-white px-4 py-2 rounded-lg w-full text-sm"
             >
               <MessageCircle className="w-4 h-4" />
               <span>Chat via WhatsApp</span>
@@ -109,7 +109,7 @@ export function Header() {
         href={whatsappUrl}
         target="_blank"
         rel="noreferrer"
-        className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg z-50 hover:bg-green-600 transition-colors"
+        className="fixed bottom-6 right-6 bg-[#D56000] text-white p-4 rounded-full shadow-lg z-50 hover:bg-[#D56000] transition-colors"
         aria-label="Chat via WhatsApp"
       >
         <MessageCircle className="w-6 h-6" />

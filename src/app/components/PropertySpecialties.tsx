@@ -54,10 +54,10 @@ export function PropertySpecialties() {
             return (
               <div
                 key={specialty.id}
-                className="group bg-white rounded-xl p-4 sm:p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-teal-300 cursor-pointer"
+                className="group bg-white rounded-xl p-4 sm:p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[#D56000]/40 cursor-pointer"
               >
                 <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-teal-100 text-teal-600 rounded-lg flex items-center justify-center group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                  <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-[#D56000]/10 text-[#0D4F2A] rounded-lg flex items-center justify-center group-hover:bg-[#0D4F2A] group-hover:text-white transition-colors">
                     <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
                   <div className="flex-1">
@@ -67,7 +67,7 @@ export function PropertySpecialties() {
                     <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3">
                       {specialty.description}
                     </p>
-                    <div className="flex items-center gap-2 text-teal-600 group-hover:text-teal-700 transition-colors">
+                    <div className="flex items-center gap-2 text-[#0D4F2A] group-hover:text-[#0A3B21] transition-colors">
                       <span className="text-xs sm:text-sm font-medium">Browse</span>
                       <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
                     </div>

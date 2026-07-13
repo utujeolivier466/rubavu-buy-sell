@@ -99,7 +99,7 @@ function AdminBlog() {
                     <button
                       onClick={() => togglePublished(post.id, !post.published)}
                       className={`text-xs font-medium px-2.5 py-1 rounded-full transition-colors ${
-                        post.published ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                        post.published ? 'bg-[#D56000]/10 text-[#0D4F2A]' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                       }`}
                     >
                       {post.published ? 'Published' : 'Draft — click to publish'}
@@ -111,7 +111,7 @@ function AdminBlog() {
                   <td className="px-4 py-3 text-right whitespace-nowrap">
                     <Link
                       to={`/admin/blog/${post.id}/edit`}
-                      className="text-teal-600 hover:text-teal-700 font-medium text-xs mr-4"
+                      className="text-[#0D4F2A] hover:text-[#0A3B21] font-medium text-xs mr-4"
                     >
                       Edit
                     </Link>

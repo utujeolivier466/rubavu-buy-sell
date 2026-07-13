@@ -50,7 +50,7 @@ function BlogListPage() {
       />
 
       {/* Hero Section */}
-      <section className="relative py-16 sm:py-24 bg-gradient-to-br from-[#0D1F3C] via-[#0D1F3C] to-teal-900 overflow-hidden">
+      <section className="relative py-16 sm:py-24 bg-gradient-to-br from-[#0D4F2A] via-[#0D4F2A] to-[#0D4F2A] overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,white,transparent_60%)]" />
         <div className="relative max-w-4xl mx-auto px-4 text-center">
           <p className="text-amber-400 font-semibold tracking-wide uppercase text-sm mb-3">
@@ -88,9 +88,9 @@ function BlogListPage() {
                 <Link
                   key={post.id}
                   to={`/blog/${post.slug || post.id}`}
-                  className="group bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 hover:border-teal-300"
+                  className="group bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#D56000]/40"
                 >
-                  <div className="w-full h-48 bg-gradient-to-br from-teal-500 to-[#0D1F3C] flex items-center justify-center">
+                  <div className="w-full h-48 bg-gradient-to-br from-[#D56000] to-[#D56000] flex items-center justify-center">
                     {post.cover_image_url ? (
                       <img src={post.cover_image_url} alt={post.title} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                     ) : (
@@ -110,7 +110,7 @@ function BlogListPage() {
                       </span>
                     </div>
 
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-teal-600 transition-colors line-clamp-2">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-[#0D4F2A] transition-colors line-clamp-2">
                       {post.title}
                     </h3>
 
@@ -118,7 +118,7 @@ function BlogListPage() {
                       {post.excerpt || 'Read the full article for insights and guidance.'}
                     </p>
 
-                    <div className="flex items-center text-teal-600 font-medium text-sm group-hover:gap-2 transition-all">
+                    <div className="flex items-center text-[#0D4F2A] font-medium text-sm group-hover:gap-2 transition-all">
                       Read More
                       <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
                     </div>
@@ -141,7 +141,7 @@ function BlogListPage() {
           </p>
           <Link
             to="/contact"
-            className="inline-flex items-center rounded-full bg-[#0D1F3C] px-6 py-3 text-sm font-semibold text-white transition hover:bg-teal-700"
+            className="inline-flex items-center rounded-full bg-[#0D1F3C] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0A3B21]"
           >
             Contact Us
           </Link>

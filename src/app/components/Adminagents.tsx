@@ -85,7 +85,7 @@ function AdminAgents() {
                 <p className="font-semibold text-gray-900 truncate">{agent.name}</p>
                 <p className="text-xs text-gray-500 truncate">{agent.position}</p>
                 <div className="flex gap-3 mt-2">
-                  <Link to={`/admin/agents/${agent.id}/edit`} className="text-teal-600 hover:text-teal-700 font-medium text-xs">
+                  <Link to={`/admin/agents/${agent.id}/edit`} className="text-[#0D4F2A] hover:text-[#0A3B21] font-medium text-xs">
                     Edit
                   </Link>
                   <button

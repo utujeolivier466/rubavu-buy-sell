@@ -10,7 +10,7 @@ interface SubmissionRow extends PropertySubmission {
 const STATUS_STYLES: Record<SubmissionStatus, string> = {
   pending: 'bg-blue-100 text-blue-700',
   reviewed: 'bg-yellow-100 text-yellow-700',
-  converted: 'bg-green-100 text-green-700',
+  converted: 'bg-[#D56000]/10 text-[#0D4F2A]',
   rejected: 'bg-gray-100 text-gray-500',
 };
 
@@ -212,7 +212,7 @@ function AdminSubmissions() {
                     href={`https://wa.me/${submission.phone.replace(/\D/g, '')}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-green-600 hover:text-green-700 font-medium"
+                    className="text-[#D56000] hover:text-[#A84A00] font-medium"
                   >
                     Message on WhatsApp
                   </a>
@@ -221,7 +221,7 @@ function AdminSubmissions() {
                     <Link
                       to={`/properties/${submission.properties.slug}`}
                       target="_blank"
-                      className="text-teal-600 hover:text-teal-700 font-medium"
+                      className="text-[#0D4F2A] hover:text-[#0A3B21] font-medium"
                     >
                       View Live Listing →
                     </Link>
@@ -229,7 +229,7 @@ function AdminSubmissions() {
                     <button
                       onClick={() => handlePushLive(submission)}
                       disabled={processingId === submission.id}
-                      className="bg-teal-600 hover:bg-teal-700 disabled:bg-gray-300 text-white px-3 py-1.5 rounded-lg font-medium text-xs transition-colors"
+                      className="bg-[#0D4F2A] hover:bg-[#0A3B21] disabled:bg-gray-300 text-white px-3 py-1.5 rounded-lg font-medium text-xs transition-colors"
                     >
                       {processingId === submission.id ? 'Pushing live…' : 'Push Live'}
                     </button>

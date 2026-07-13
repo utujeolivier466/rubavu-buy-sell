@@ -24,20 +24,20 @@ export function Footer() {
             </p>
             <div className="space-y-2 text-xs sm:text-sm">
               <div className="flex items-start gap-2">
-                <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mt-1 flex-shrink-0 text-teal-400" />
+                <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mt-1 flex-shrink-0 text-[#D56000]" />
                 <span>Habib Center, 1st Floor, Gisenyi, Rubavu, Rwanda</span>
               </div>
               <div className="flex items-center gap-2">
-                <Phone className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 text-teal-400" />
-                <a href="tel:+250782424382" className="hover:text-teal-400 transition-colors">+250 782 424 382</a>
+                <Phone className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 text-[#D56000]" />
+                <a href="tel:+250782424382" className="hover:text-[#D56000] transition-colors">+250 782 424 382</a>
               </div>
               <div className="flex items-center gap-2">
-                <Mail className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 text-teal-400" />
-                <a href="mailto:info@rubavubuyandsell.com" className="hover:text-teal-400 transition-colors">info@rubavubuyandsell.com</a>
+                <Mail className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 text-[#D56000]" />
+                <a href="mailto:info@rubavubuyandsell.com" className="hover:text-[#D56000] transition-colors">info@rubavubuyandsell.com</a>
               </div>
               <div className="flex items-center gap-2">
-                <Globe className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 text-teal-400" />
-                <a href="https://www.rubavubuyandsell.com" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400 transition-colors">
+                <Globe className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 text-[#D56000]" />
+                <a href="https://www.rubavubuyandsell.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#D56000] transition-colors">
                   www.rubavubuyandsell.com
                 </a>
               </div>
@@ -48,11 +48,11 @@ export function Footer() {
           <div>
             <h3 className="text-white font-bold mb-3 sm:mb-4 text-sm sm:text-base">Services</h3>
             <ul className="space-y-2 text-xs sm:text-sm">
-              <li><a href="/properties" className="hover:text-teal-400 transition-colors">Buy Property</a></li>
-              <li><a href="/sell-property" className="hover:text-teal-400 transition-colors">Sell Your Property</a></li>
-              <li><a href="/properties" className="hover:text-teal-400 transition-colors">Property Listings</a></li>
-              <li><a href="/contact" className="hover:text-teal-400 transition-colors">Property Valuation</a></li>
-              <li><a href="/contact" className="hover:text-teal-400 transition-colors">Investment Advisory</a></li>
+              <li><a href="/properties" className="hover:text-[#D56000] transition-colors">Buy Property</a></li>
+              <li><a href="/sell-property" className="hover:text-[#D56000] transition-colors">Sell Your Property</a></li>
+              <li><a href="/properties" className="hover:text-[#D56000] transition-colors">Property Listings</a></li>
+              <li><a href="/contact" className="hover:text-[#D56000] transition-colors">Property Valuation</a></li>
+              <li><a href="/contact" className="hover:text-[#D56000] transition-colors">Investment Advisory</a></li>
             </ul>
           </div>
 
@@ -60,12 +60,12 @@ export function Footer() {
           <div>
             <h3 className="text-white font-bold mb-3 sm:mb-4 text-sm sm:text-base">Company</h3>
             <ul className="space-y-2 text-xs sm:text-sm mb-4 sm:mb-6">
-              <li><a href="/about" className="hover:text-teal-400 transition-colors">About Us</a></li>
-              <li><a href="/about#team" className="hover:text-teal-400 transition-colors">Our Team</a></li>
-              <li><a href="/#testimonials" className="hover:text-teal-400 transition-colors">Testimonials</a></li>
-              <li><a href="/sell-property" className="hover:text-teal-400 transition-colors">Sell Your Property</a></li>
-              <li><a href="/faq" className="hover:text-teal-400 transition-colors">FAQs</a></li>
-              <li><a href="/contact" className="hover:text-teal-400 transition-colors">Contact Us</a></li>
+              <li><a href="/about" className="hover:text-[#D56000] transition-colors">About Us</a></li>
+              <li><a href="/about#team" className="hover:text-[#D56000] transition-colors">Our Team</a></li>
+              <li><a href="/#testimonials" className="hover:text-[#D56000] transition-colors">Testimonials</a></li>
+              <li><a href="/sell-property" className="hover:text-[#D56000] transition-colors">Sell Your Property</a></li>
+              <li><a href="/faq" className="hover:text-[#D56000] transition-colors">FAQs</a></li>
+              <li><a href="/contact" className="hover:text-[#D56000] transition-colors">Contact Us</a></li>
             </ul>
 
             {/* Social Media */}
@@ -77,7 +77,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
-                  className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 hover:bg-teal-600 rounded-full flex items-center justify-center transition-colors"
+                  className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 hover:bg-[#0D4F2A] rounded-full flex items-center justify-center transition-colors"
                 >
                   <Facebook className="w-4 h-4 sm:w-5 sm:h-5" />
                 </a>
@@ -86,7 +86,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
-                  className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 hover:bg-teal-600 rounded-full flex items-center justify-center transition-colors"
+                  className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 hover:bg-[#0D4F2A] rounded-full flex items-center justify-center transition-colors"
                 >
                   <Instagram className="w-4 h-4 sm:w-5 sm:h-5" />
                 </a>
@@ -95,7 +95,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="TikTok"
-                  className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 hover:bg-teal-600 rounded-full flex items-center justify-center transition-colors"
+                  className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 hover:bg-[#0D4F2A] rounded-full flex items-center justify-center transition-colors"
                 >
                   <TikTokIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                 </a>
@@ -104,7 +104,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="YouTube"
-                  className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 hover:bg-teal-600 rounded-full flex items-center justify-center transition-colors"
+                  className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 hover:bg-[#0D4F2A] rounded-full flex items-center justify-center transition-colors"
                 >
                   <Youtube className="w-4 h-4 sm:w-5 sm:h-5" />
                 </a>
@@ -116,8 +116,8 @@ export function Footer() {
           <div>
             <h3 className="text-white font-bold mb-3 sm:mb-4 text-sm sm:text-base">Legal</h3>
             <ul className="space-y-2 text-xs sm:text-sm">
-              <li><a href="/privacy" className="hover:text-teal-400 transition-colors">Privacy Policy</a></li>
-              <li><a href="/terms" className="hover:text-teal-400 transition-colors">Terms & Conditions</a></li>
+              <li><a href="/privacy" className="hover:text-[#D56000] transition-colors">Privacy Policy</a></li>
+              <li><a href="/terms" className="hover:text-[#D56000] transition-colors">Terms & Conditions</a></li>
             </ul>
           </div>
         </div>

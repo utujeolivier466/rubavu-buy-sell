@@ -163,7 +163,7 @@ export default function TermsPage() {
       <p>info@rubavubuyandsell.com | +250 782 424 382</p>
 
       <p className="text-sm">
-        <Link to="/privacy" className="text-teal-600 underline hover:text-teal-700">
+        <Link to="/privacy" className="text-[#0D4F2A] underline hover:text-[#0A3B21]">
           View our Privacy Policy
         </Link>
       </p>

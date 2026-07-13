@@ -68,7 +68,7 @@ function AboutPage() {
       />
 
       {/* Hero */}
-      <section className="relative py-16 sm:py-24 bg-gradient-to-br from-[#0D1F3C] via-[#0D1F3C] to-teal-900 overflow-hidden">
+      <section className="relative py-16 sm:py-24 bg-gradient-to-br from-[#0D4F2A] via-[#0D4F2A] to-[#0D4F2A] overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,white,transparent_60%)]" />
         <div className="relative max-w-4xl mx-auto px-4 text-center">
           <p className="text-amber-400 font-semibold tracking-wide uppercase text-sm mb-3">
@@ -90,8 +90,8 @@ function AboutPage() {
       <section className="py-14 sm:py-20 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 gap-6">
           <TiltCard className="bg-white rounded-2xl shadow-lg p-8">
-            <div className="w-12 h-12 rounded-full bg-teal-50 flex items-center justify-center mb-4">
-              <TrendingUp className="w-6 h-6 text-teal-600" />
+            <div className="w-12 h-12 rounded-full bg-[#0D4F2A]/10 flex items-center justify-center mb-4">
+              <TrendingUp className="w-6 h-6 text-[#0D4F2A]" />
             </div>
             <h2 className="text-xl font-bold text-gray-900 mb-2">Our Mission</h2>
             <p className="text-gray-600 leading-relaxed">
@@ -141,7 +141,7 @@ function AboutPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {SERVICES.map((service) => (
               <div key={service} className="flex items-center gap-3 bg-white rounded-lg p-4 shadow-sm">
-                <CheckCircle2 className="w-5 h-5 text-teal-600 shrink-0" />
+                <CheckCircle2 className="w-5 h-5 text-[#0D4F2A] shrink-0" />
                 <span className="text-gray-700 text-sm font-medium">{service}</span>
               </div>
             ))}
@@ -173,7 +173,7 @@ function AboutPage() {
           <div className="flex flex-wrap justify-center gap-6">
             {/* CEO — featured card */}
             <TiltCard className="bg-white rounded-2xl shadow-xl p-8 text-center w-full sm:w-80">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#0D1F3C] to-teal-700 flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#0D4F2A] to-[#0D4F2A] flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
                 BE
               </div>
               <h3 className="font-bold text-gray-900 text-lg">Biziyaremye Emmanuel</h3>
@@ -197,7 +197,7 @@ function AboutPage() {
                     className="w-24 h-24 rounded-full object-cover mx-auto mb-4"
                   />
                 ) : (
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-teal-600 to-[#0D1F3C] flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#0D4F2A] to-[#D56000] flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
                     {agent.name.split(' ').map((n) => n[0]).slice(0, 2).join('')}
                   </div>
                 )}
@@ -206,7 +206,7 @@ function AboutPage() {
                 {agent.phone && (
                   <a
                     href={`tel:${agent.phone}`}
-                    className="text-xs text-teal-600 hover:text-teal-700 font-medium block mb-3"
+                    className="text-xs text-[#0D4F2A] hover:text-[#0A3B21] font-medium block mb-3"
                   >
                     {agent.phone}
                   </a>
@@ -226,7 +226,7 @@ function AboutPage() {
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">Get In Touch</h2>
 
           <div className="flex flex-col sm:flex-row justify-center gap-6 text-gray-700 mb-8">
-            <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 hover:text-teal-600">
+            <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 hover:text-[#0D4F2A]">
               <Phone className="w-4 h-4" /> +250 782 424 382
             </a>
             <span className="flex items-center justify-center gap-2">
@@ -235,19 +235,19 @@ function AboutPage() {
           </div>
 
           <div className="flex justify-center gap-4">
-            <a href="https://www.facebook.com/p/Rubavu-buy-and-sell-Ltd-100054451151237/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-11 h-11 rounded-full bg-[#0D1F3C] text-white flex items-center justify-center hover:bg-teal-700 transition-colors">
+            <a href="https://www.facebook.com/p/Rubavu-buy-and-sell-Ltd-100054451151237/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-11 h-11 rounded-full bg-[#0D1F3C] text-white flex items-center justify-center hover:bg-[#0A3B21] transition-colors">
               <Facebook className="w-5 h-5" />
             </a>
-            <a href="https://www.instagram.com/rubavu_real_estate" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-11 h-11 rounded-full bg-[#0D1F3C] text-white flex items-center justify-center hover:bg-teal-700 transition-colors">
+            <a href="https://www.instagram.com/rubavu_real_estate" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-11 h-11 rounded-full bg-[#0D1F3C] text-white flex items-center justify-center hover:bg-[#0A3B21] transition-colors">
               <Instagram className="w-5 h-5" />
             </a>
-            <a href="https://www.tiktok.com/@rubavu_real_estate" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="w-11 h-11 rounded-full bg-[#0D1F3C] text-white flex items-center justify-center hover:bg-teal-700 transition-colors">
+            <a href="https://www.tiktok.com/@rubavu_real_estate" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="w-11 h-11 rounded-full bg-[#0D1F3C] text-white flex items-center justify-center hover:bg-[#0A3B21] transition-colors">
               <TikTokIcon className="w-5 h-5" />
             </a>
-            <a href="https://youtube.com/@Rubavurealestate" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="w-11 h-11 rounded-full bg-[#0D1F3C] text-white flex items-center justify-center hover:bg-teal-700 transition-colors">
+            <a href="https://youtube.com/@Rubavurealestate" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="w-11 h-11 rounded-full bg-[#0D1F3C] text-white flex items-center justify-center hover:bg-[#0A3B21] transition-colors">
               <Youtube className="w-5 h-5" />
             </a>
-            <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-11 h-11 rounded-full bg-green-600 text-white flex items-center justify-center hover:bg-green-700 transition-colors">
+            <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-11 h-11 rounded-full bg-[#D56000] text-white flex items-center justify-center hover:bg-[#A84A00] transition-colors">
               <MessageCircle className="w-5 h-5" />
             </a>
           </div>

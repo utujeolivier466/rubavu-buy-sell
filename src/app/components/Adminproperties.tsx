@@ -4,7 +4,7 @@ import { supabase } from '../../../lib/libsupabaseClient';
 import type { Property } from '../../../lib/types';
 
 const STATUS_STYLES: Record<string, string> = {
-  Available: 'bg-green-100 text-green-700',
+  Available: 'bg-[#D56000]/10 text-[#0D4F2A]',
   Sold: 'bg-gray-200 text-gray-600',
   Rented: 'bg-blue-100 text-blue-700',
   Pending: 'bg-yellow-100 text-yellow-700',
@@ -144,7 +144,7 @@ function AdminProperties() {
                   <td className="px-4 py-3 text-right whitespace-nowrap">
                     <Link
                       to={`/admin/properties/${property.id}/edit`}
-                      className="text-teal-600 hover:text-teal-700 font-medium text-xs mr-4"
+                      className="text-[#0D4F2A] hover:text-[#0A3B21] font-medium text-xs mr-4"
                     >
                       Edit
                     </Link>

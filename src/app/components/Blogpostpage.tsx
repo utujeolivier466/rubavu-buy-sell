@@ -82,7 +82,7 @@ function BlogPostPage() {
             </div>
           ) : error || !post ? (
             <>
-              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-teal-600">
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#0D4F2A]">
                 Blog
               </p>
               <h1 className="mb-4 text-3xl font-bold text-gray-900">
@@ -94,7 +94,7 @@ function BlogPostPage() {
             </>
           ) : (
             <>
-              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-teal-600">
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#0D4F2A]">
                 {post.category}
               </p>
               <h1 className="mb-4 text-3xl font-bold text-gray-900">{post.title}</h1>
@@ -111,7 +111,7 @@ function BlogPostPage() {
           )}
           <Link
             to="/blog"
-            className="mt-8 inline-flex items-center rounded-full bg-[#0D1F3C] px-5 py-3 text-sm font-semibold text-white transition hover:bg-teal-700"
+            className="mt-8 inline-flex items-center rounded-full bg-[#0D1F3C] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0A3B21]"
           >
             Back to blog
           </Link>
