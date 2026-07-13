@@ -18,7 +18,7 @@ export function WhyInvest() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
           {/* Tourism Boom */}
           <div className="text-center p-6 sm:p-8 bg-gradient-to-br from-teal-50 to-white rounded-xl border border-teal-100">
-            <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-teal-600 text-white rounded-full mb-3 sm:mb-4">
+            <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-[#0D4F2A] text-white rounded-full mb-3 sm:mb-4">
               <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8" />
             </div>
             <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Tourism Boom</h3>
@@ -49,7 +49,7 @@ export function WhyInvest() {
               <div className="text-xl sm:text-2xl font-bold text-gray-900">500M RWF</div>
               <div className="my-2 border-t border-gray-300"></div>
               <div className="text-xs sm:text-sm text-gray-600 mb-1">Could be next year</div>
-              <div className="text-xl sm:text-2xl font-bold text-green-600">625M+ RWF</div>
+              <div className="text-xl sm:text-2xl font-bold text-[#D56000]">625M+ RWF</div>
             </div>
             <p className="text-xs sm:text-sm text-gray-600">
               That's 125M+ in potential equity gain
@@ -59,7 +59,7 @@ export function WhyInvest() {
 
         {/* CTA Button */}
         <div className="text-center">
-          <button className="px-6 sm:px-8 py-3 sm:py-4 bg-teal-600 hover:bg-teal-700 text-white text-base sm:text-lg rounded-lg transition-colors shadow-lg">
+          <button className="px-6 sm:px-8 py-3 sm:py-4 bg-[#0D4F2A] hover:bg-[#0A3B21] text-white text-base sm:text-lg rounded-lg transition-colors shadow-lg">
             Calculate Your Potential Gain
           </button>
         </div>

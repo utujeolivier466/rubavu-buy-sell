@@ -43,7 +43,7 @@ class ErrorBoundary extends Component<Props, State> {
                 href="https://wa.me/250782424382"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border-2 border-teal-600 text-teal-600 hover:bg-teal-50 px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors"
+                className="border-2 border-teal-600 text-[#0D4F2A] hover:bg-[#0D4F2A]/10 px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors"
               >
                 Contact Us on WhatsApp
               </a>

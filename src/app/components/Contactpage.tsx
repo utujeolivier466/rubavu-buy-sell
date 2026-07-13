@@ -157,16 +157,16 @@ function ContactPage() {
                   type="checkbox"
                   checked={agreed}
                   onChange={(e) => setAgreed(e.target.checked)}
-                  className="mt-1 h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                  className="mt-1 h-4 w-4 rounded border-gray-300 text-[#D56000] focus:ring-green-500"
                   required
                 />
                 <span className="text-gray-600">
                   I have read and agree to the{' '}
-                  <Link to="/terms" className="text-teal-600 underline hover:text-teal-700">
+                  <Link to="/terms" className="text-[#0D4F2A] underline hover:text-[#0A3B21]">
                     Terms and Conditions
                   </Link>{' '}
                   and{' '}
-                  <Link to="/privacy" className="text-teal-600 underline hover:text-teal-700">
+                  <Link to="/privacy" className="text-[#0D4F2A] underline hover:text-[#0A3B21]">
                     Privacy Policy
                   </Link>
                   .
@@ -178,7 +178,7 @@ function ContactPage() {
                 disabled={!isValid || status === 'submitting'}
                 className={`w-full py-3 rounded-lg font-semibold transition-colors ${
                   isValid
-                    ? 'bg-green-600 text-white hover:bg-green-700'
+                    ? 'bg-[#D56000] text-white hover:bg-[#A84A00]'
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 }`}
               >

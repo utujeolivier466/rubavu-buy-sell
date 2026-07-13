@@ -61,7 +61,7 @@ function PropertySearch() {
               key={t}
               onClick={() => setTab(t)}
               className={`px-3 sm:px-4 py-2 rounded-lg font-medium capitalize text-sm sm:text-base transition-colors ${
-                tab === t ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                tab === t ? 'bg-[#0D4F2A] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               For {t}
@@ -76,13 +76,13 @@ function PropertySearch() {
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder="Enter an address, town, street"
-            className="border border-gray-300 rounded-lg p-2.5 sm:p-3 w-full text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            className="border border-gray-300 rounded-lg p-2.5 sm:p-3 w-full text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#0D4F2A]"
           />
 
           <select
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            className="border border-gray-300 rounded-lg p-2.5 sm:p-3 w-full text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            className="border border-gray-300 rounded-lg p-2.5 sm:p-3 w-full text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#0D4F2A]"
           >
             <option>All Cities</option>
             <option>Gisenyi</option>
@@ -98,7 +98,7 @@ function PropertySearch() {
                 onClick={() => setBedrooms(b)}
                 className={`px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition-colors ${
                   bedrooms === b
-                    ? 'bg-yellow-500 text-white'
+                    ? 'bg-[#0D4F2A] text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -118,19 +118,19 @@ function PropertySearch() {
               value={minPrice}
               onChange={(e) => setMinPrice(e.target.value)}
               placeholder="Min Price"
-              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#0D4F2A]"
             />
             <input
               value={maxPrice}
               onChange={(e) => setMaxPrice(e.target.value)}
               placeholder="Max Price"
-              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#0D4F2A]"
             />
 
             <select
               value={bathrooms}
               onChange={(e) => setBathrooms(e.target.value)}
-              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#0D4F2A]"
             >
               <option>Any Bathrooms</option>
               <option>1</option>
@@ -141,7 +141,7 @@ function PropertySearch() {
             <select
               value={propertyType}
               onChange={(e) => setPropertyType(e.target.value)}
-              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#0D4F2A]"
             >
               <option>All Types</option>
               <option>Apartment</option>
@@ -152,7 +152,7 @@ function PropertySearch() {
             <select
               value={zoning}
               onChange={(e) => setZoning(e.target.value)}
-              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#0D4F2A]"
             >
               <option>Any Zoning</option>
               <option>Residential</option>
@@ -198,13 +198,13 @@ function PropertySearch() {
               value={minSize}
               onChange={(e) => setMinSize(e.target.value)}
               placeholder="Min Size (sqm)"
-              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#0D4F2A]"
             />
 
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="border border-gray-300 rounded-lg p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#0D4F2A]"
             >
               <option value="newest">Newest First</option>
               <option value="price_asc">Price Low to High</option>
@@ -230,7 +230,7 @@ function PropertySearch() {
                   onClick={() => setPropertyType(f)}
                   className={`px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-colors ${
                     propertyType === f
-                      ? 'bg-yellow-500 text-white'
+                      ? 'bg-[#0D4F2A] text-white'
                       : 'bg-gray-100 hover:bg-gray-200'
                   }`}
                 >
@@ -242,7 +242,7 @@ function PropertySearch() {
 
           <button
             onClick={handleSearch}
-            className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-colors w-full sm:w-auto"
+            className="bg-[#0D4F2A] hover:bg-[#0A3B21] text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-colors w-full sm:w-auto"
           >
             Find Properties
           </button>
@@ -262,8 +262,8 @@ export function HeroSection() {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1580835018727-6a6971c2223d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwbGFrZSUyMHNjZW5pYyUyMHZpZXclMjBtb3VudGFpbnN8ZW58MXx8fHwxNzc3NDU3NjY0fDA&ixlib=rb-4.1.0&q=80&w=1080"
-          alt="Lake Kivu sunset"
+          src="/heroimage.jpeg"
+          alt="Rubavu real estate hero"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/50"></div>
@@ -272,28 +272,23 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-10 w-full max-w-6xl mx-auto px-3 sm:px-6 text-center py-6 sm:py-12 lg:py-16">
         {/* Main Headline */}
-        <h1 className="text-xl sm:text-3xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-3 lg:mb-4">
-          Own a Piece of <span className="text-amber-400">Lake Kivu Paradise</span>
+      <h1 className="text-xl sm:text-3xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-3 lg:mb-4">
+          Rubavu's Licensed <span className="text-[#D56000]">Real Estate Marketplace</span>
           <br className="hidden sm:block" />
-          <span className="sm:hidden"> </span>Before Prices Rise
+          <span className="sm:hidden"> </span>Buy Sell or Rent with Confidence
         </h1>
 
-        {/* Sub-headline */}
-        <p className="text-xs sm:text-base lg:text-lg text-gray-200 mb-4 sm:mb-6 lg:mb-8 max-w-3xl mx-auto leading-relaxed">
-          Waiting 12 months could cost you <span className="font-bold text-amber-300">RWF 50M – 150M+</span> in lost equity.
-          <br className="hidden sm:block" />
-          <span className="sm:hidden"> </span>Tourism is booming. Infrastructure is ready. The time is now.
-        </p>
+      
 
         <PropertySearch />
 
 
         {/* CTAs */}
         <div className="flex flex-col gap-2 sm:flex-row sm:gap-3 lg:gap-4 justify-center mb-4 sm:mb-6 lg:mb-8">
-          <button onClick={() => navigate('/properties')} className="px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 lg:py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors text-xs sm:text-sm lg:text-base font-medium w-full sm:w-auto">
+          <button onClick={() => navigate('/properties')} className="px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 lg:py-3 bg-[#0D4F2A] hover:bg-[#0A3B21] text-white rounded-lg transition-colors text-xs sm:text-sm lg:text-base font-medium w-full sm:w-auto">
             Browse All Properties
           </button>
-          <button className="px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 lg:py-3 bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 rounded-lg transition-colors text-xs sm:text-sm lg:text-base font-medium w-full sm:w-auto">
+          <button className="px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 lg:py-3 bg-[#0D4F2A] border-2 border-[#0D4F2A] text-white hover:bg-[#0A3B21] hover:border-[#0A3B21] rounded-lg transition-colors text-xs sm:text-sm lg:text-base font-medium w-full sm:w-auto">
             Download Free Investment Guide
           </button>
         </div>

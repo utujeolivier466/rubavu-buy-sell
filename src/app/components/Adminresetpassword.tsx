@@ -79,7 +79,7 @@ function AdminResetPassword() {
         <p className="text-sm text-gray-500 mb-6">Rubavu Buy and Sell Ltd</p>
 
         {success ? (
-          <p className="text-sm text-green-700 bg-green-50 rounded-lg p-3">
+          <p className="text-sm text-[#0D4F2A] bg-[#D56000]/10 rounded-lg p-3">
             Password updated. Redirecting you to the dashboard…
           </p>
         ) : (

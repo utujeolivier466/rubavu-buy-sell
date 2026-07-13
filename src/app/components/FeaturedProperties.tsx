@@ -232,14 +232,14 @@ export function FeaturedProperties() {
 
                   <div className="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4 text-xs sm:text-sm text-gray-600">
                     <div className="flex items-center gap-2">
-                      <Maximize2 className="w-3 h-3 sm:w-4 sm:h-4 text-teal-600 flex-shrink-0" />
+                      <Maximize2 className="w-3 h-3 sm:w-4 sm:h-4 text-[#0D4F2A] flex-shrink-0" />
                       <span>{property.size}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-teal-600 flex-shrink-0" />
+                      <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-[#0D4F2A] flex-shrink-0" />
                       <span>{property.location}</span>
                     </div>
-                    <div className="text-xs bg-teal-50 text-teal-700 px-2 py-1 rounded inline-block">
+                    <div className="text-xs bg-[#0D4F2A]/10 text-[#0D4F2A] px-2 py-1 rounded inline-block">
                       {property.zoning}
                     </div>
                   </div>
@@ -247,7 +247,7 @@ export function FeaturedProperties() {
                   <div className="mb-3">
                     <div className="text-xl sm:text-2xl font-bold text-gray-900">{property.price}</div>
                     {!isUnavailable && (
-                      <div className="text-xs text-green-600 font-medium">
+                      <div className="text-xs text-[#D56000] font-medium">
                         Projected 1-Year Gain: +{property.projectedGain}
                       </div>
                     )}
@@ -256,14 +256,14 @@ export function FeaturedProperties() {
                   <div className="flex gap-2">
                     <Link
                       to={`/properties/${property.slug}`}
-                      className="flex-1 px-3 sm:px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors text-xs sm:text-sm text-center"
+                      className="flex-1 px-3 sm:px-4 py-2 bg-[#0D4F2A] hover:bg-[#0A3B21] text-white rounded-lg transition-colors text-xs sm:text-sm text-center"
                     >
                       View Details
                     </Link>
                     {!isUnavailable && (
                       <button
                         onClick={() => handleQuickWhatsApp(property)}
-                        className="px-3 sm:px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
+                        className="px-3 sm:px-4 py-2 bg-[#D56000] hover:bg-[#D56000] text-white rounded-lg transition-colors"
                       >
                         <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>

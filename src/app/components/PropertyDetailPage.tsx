@@ -561,7 +561,7 @@ function PropertyDetailPage() {
                 <p className="text-sm text-gray-500 mb-4">Browse similar available properties instead.</p>
                 <Link
                   to="/properties"
-                  className="inline-block bg-teal-600 hover:bg-teal-700 text-white px-4 py-2.5 rounded-lg font-semibold text-sm"
+                  className="inline-block bg-[#0D4F2A] hover:bg-[#0A3B21] text-white px-4 py-2.5 rounded-lg font-semibold text-sm"
                 >
                   View Available Properties
                 </Link>
@@ -570,13 +570,13 @@ function PropertyDetailPage() {
               <>
                 <button
                   onClick={handleWhatsAppInquiry}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-semibold text-sm"
+                  className="w-full bg-[#D56000] hover:bg-[#A84A00] text-white px-4 py-3 rounded-lg font-semibold text-sm"
                 >
                   Chat via WhatsApp
                 </button>
                 <button
                   onClick={handleBookSiteVisit}
-                  className="w-full bg-teal-600 hover:bg-teal-700 text-white px-4 py-3 rounded-lg font-semibold text-sm"
+                  className="w-full bg-[#0D4F2A] hover:bg-[#0A3B21] text-white px-4 py-3 rounded-lg font-semibold text-sm"
                 >
                   Book a Site Visit
                 </button>

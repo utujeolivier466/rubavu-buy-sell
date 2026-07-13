@@ -304,7 +304,7 @@ function SellPropertyPage() {
           <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-6">
               <div>
-                <p className="text-xs uppercase tracking-[0.24em] text-teal-700 font-semibold mb-2">Property submission</p>
+                <p className="text-xs uppercase tracking-[0.24em] text-[#0D4F2A] font-semibold mb-2">Property submission</p>
                 <h2 className="text-xl font-semibold text-gray-900">More details, less friction</h2>
               </div>
               <div className="text-right">
@@ -552,7 +552,7 @@ function SellPropertyPage() {
 
         <aside className="space-y-6">
           <div className="rounded-3xl border border-gray-200 bg-slate-50 p-6 shadow-sm">
-            <p className="text-xs uppercase tracking-[0.24em] text-teal-700 font-semibold mb-4">Latest Listings</p>
+            <p className="text-xs uppercase tracking-[0.24em] text-[#0D4F2A] font-semibold mb-4">Latest Listings</p>
             <h3 className="text-xl font-semibold text-gray-900 mb-3">See what buyers are browsing</h3>
             <p className="text-sm text-gray-600 mb-5">
               These recent listings show the active market in Rubavu and keep your visit connected to the wider site.
@@ -581,7 +581,7 @@ function SellPropertyPage() {
                         {' · '}
                         {listing.currency} {listing.price.toLocaleString()}
                       </p>
-                      <p className="text-xs text-teal-700 mt-1">
+                      <p className="text-xs text-[#0D4F2A] mt-1">
                         {listing.bedrooms ? `${listing.bedrooms} bd` : '—'} · {listing.bathrooms ? `${listing.bathrooms} ba` : '—'}
                       </p>
                     </div>
@@ -601,15 +601,15 @@ function SellPropertyPage() {
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Why list here</h3>
             <ul className="space-y-3 text-sm text-gray-600">
               <li className="flex gap-3">
-                <span className="mt-1 h-2.5 w-2.5 rounded-full bg-teal-600" />
+                <span className="mt-1 h-2.5 w-2.5 rounded-full bg-[#0D4F2A]" />
                 Fast local exposure to buyers searching for Rubavu properties.
               </li>
               <li className="flex gap-3">
-                <span className="mt-1 h-2.5 w-2.5 rounded-full bg-teal-600" />
+                <span className="mt-1 h-2.5 w-2.5 rounded-full bg-[#0D4F2A]" />
                 Easy listing creation with no upfront commissions or complex paperwork.
               </li>
               <li className="flex gap-3">
-                <span className="mt-1 h-2.5 w-2.5 rounded-full bg-teal-600" />
+                <span className="mt-1 h-2.5 w-2.5 rounded-full bg-[#0D4F2A]" />
                 Contact details are last, so you can complete the listing before committing.
               </li>
             </ul>

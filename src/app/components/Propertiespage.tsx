@@ -197,7 +197,7 @@ function Propertiespage() {
                 href="https://wa.me/250782424382"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-lg font-medium"
+                className="inline-block bg-[#D56000] hover:bg-[#A84A00] text-white px-5 py-2.5 rounded-lg font-medium"
               >
                 Ask us on WhatsApp
               </a>
@@ -231,7 +231,7 @@ function Propertiespage() {
                     {property.size_sqm ? `${property.size_sqm} SQM` : ''}
                   </p>
                   <p className="text-xs text-gray-500 mb-2">{property.location_text}</p>
-                  <span className="inline-block bg-teal-50 text-teal-700 text-xs font-medium px-2 py-0.5 rounded mb-2">
+                  <span className="inline-block bg-[#0D4F2A]/10 text-[#0D4F2A] text-xs font-medium px-2 py-0.5 rounded mb-2">
                     {property.property_type}
                   </span>
                   <p className="font-bold text-gray-900">

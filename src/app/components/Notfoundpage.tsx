@@ -19,7 +19,7 @@ function NotFoundPage() {
           </Link>
           <Link
             to="/properties"
-            className="flex items-center justify-center gap-2 border-2 border-teal-600 text-teal-600 hover:bg-teal-50 px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors"
+            className="flex items-center justify-center gap-2 border-2 border-teal-600 text-[#0D4F2A] hover:bg-[#0D4F2A]/10 px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors"
           >
             <Search className="w-4 h-4" /> Browse Properties
           </Link>

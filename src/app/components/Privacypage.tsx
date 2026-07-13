@@ -115,7 +115,7 @@ export default function PrivacyPage() {
       Habib Center, 1st Floor, Rubavu – Gisenyi, Rwanda</p>
 
       <p className="text-sm">
-        <Link to="/terms" className="text-teal-600 underline hover:text-teal-700">
+        <Link to="/terms" className="text-[#0D4F2A] underline hover:text-[#0A3B21]">
           View our Terms and Conditions
         </Link>
       </p>
