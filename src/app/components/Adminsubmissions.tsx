@@ -9,7 +9,7 @@ interface SubmissionRow extends PropertySubmission {
 
 const STATUS_STYLES: Record<SubmissionStatus, string> = {
   pending: 'bg-blue-100 text-blue-700',
-  reviewed: 'bg-yellow-100 text-yellow-700',
+  reviewed: 'bg-[#D56000]/10 text-[#D56000]',
   converted: 'bg-[#D56000]/10 text-[#0D4F2A]',
   rejected: 'bg-gray-100 text-gray-500',
 };
@@ -140,7 +140,7 @@ function AdminSubmissions() {
               key={f}
               onClick={() => setFilter(f)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${
-                filter === f ? 'bg-yellow-500 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+                filter === f ? 'bg-[#D56000] text-white' : 'bg-white border border-gray-200 text-gray-200 hover:bg-gray-50'
               }`}
             >
               {f}
@@ -185,7 +185,7 @@ function AdminSubmissions() {
                     value={submission.status}
                     onChange={(e) => updateStatus(submission.id, e.target.value as SubmissionStatus)}
                     disabled={submission.status === 'converted'}
-                    className={`text-xs font-medium rounded-full px-2.5 py-1 border-0 focus:outline-none focus:ring-2 focus:ring-yellow-500 disabled:opacity-70 ${STATUS_STYLES[submission.status]}`}
+                    className={`text-xs font-medium rounded-full px-2.5 py-1 border-0 focus:outline-none focus:ring-2 focus:ring-[#D56000] disabled:opacity-70 ${STATUS_STYLES[submission.status]}`}
                   >
                     <option value="pending">Pending</option>
                     <option value="reviewed">Reviewed</option>
@@ -221,7 +221,7 @@ function AdminSubmissions() {
                     <Link
                       to={`/properties/${submission.properties.slug}`}
                       target="_blank"
-                      className="text-[#0D4F2A] hover:text-[#0A3B21] font-medium"
+                      className="text-[#D56000] hover:text-[#A84A00] font-medium"
                     >
                       View Live Listing →
                     </Link>
@@ -229,7 +229,7 @@ function AdminSubmissions() {
                     <button
                       onClick={() => handlePushLive(submission)}
                       disabled={processingId === submission.id}
-                      className="bg-[#0D4F2A] hover:bg-[#0A3B21] disabled:bg-gray-300 text-white px-3 py-1.5 rounded-lg font-medium text-xs transition-colors"
+                      className="bg-[#D56000] hover:bg-[#A84A00] disabled:bg-gray-300 text-white px-3 py-1.5 rounded-lg font-medium text-xs transition-colors"
                     >
                       {processingId === submission.id ? 'Pushing live…' : 'Push Live'}
                     </button>

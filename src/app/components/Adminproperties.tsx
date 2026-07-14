@@ -7,7 +7,7 @@ const STATUS_STYLES: Record<string, string> = {
   Available: 'bg-[#D56000]/10 text-[#0D4F2A]',
   Sold: 'bg-gray-200 text-gray-600',
   Rented: 'bg-blue-100 text-blue-700',
-  Pending: 'bg-yellow-100 text-yellow-700',
+  Pending: 'bg-[#D56000]/10 text-[#D56000]',
 };
 
 function AdminProperties() {
@@ -69,7 +69,7 @@ function AdminProperties() {
         <h1 className="text-2xl font-bold text-gray-900">Properties</h1>
         <Link
           to="/admin/properties/new"
-          className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors"
+          className="bg-[#D56000] hover:bg-[#A84A00] text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors"
         >
           + Add Property
         </Link>
@@ -84,7 +84,7 @@ function AdminProperties() {
       ) : properties.length === 0 ? (
         <div className="text-center py-16 bg-white border border-gray-200 rounded-lg">
           <p className="text-gray-500 mb-4">No properties yet.</p>
-          <Link to="/admin/properties/new" className="text-yellow-600 hover:text-yellow-700 font-medium">
+          <Link to="/admin/properties/new" className="text-[#D56000] hover:text-[#A84A00] font-medium">
             Add your first property →
           </Link>
         </div>
@@ -123,7 +123,7 @@ function AdminProperties() {
                     <select
                       value={property.status}
                       onChange={(e) => updateField(property.id, 'status', e.target.value)}
-                      className={`text-xs font-medium rounded-full px-2.5 py-1 border-0 focus:outline-none focus:ring-2 focus:ring-yellow-500 ${STATUS_STYLES[property.status]}`}
+                      className={`text-xs font-medium rounded-full px-2.5 py-1 border-0 focus:outline-none focus:ring-2 focus:ring-[#D56000] ${STATUS_STYLES[property.status]}`}
                     >
                       <option value="Available">Available</option>
                       <option value="Pending">Pending</option>
@@ -135,7 +135,7 @@ function AdminProperties() {
                     <button
                       onClick={() => updateField(property.id, 'is_featured', !property.is_featured)}
                       className={`text-xs font-medium px-2.5 py-1 rounded-full transition-colors ${
-                        property.is_featured ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
+                        property.is_featured ? 'bg-[#D56000]/10 text-[#D56000]' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
                       }`}
                     >
                       {property.is_featured ? '★ Featured' : '☆ Feature it'}
@@ -144,7 +144,7 @@ function AdminProperties() {
                   <td className="px-4 py-3 text-right whitespace-nowrap">
                     <Link
                       to={`/admin/properties/${property.id}/edit`}
-                      className="text-[#0D4F2A] hover:text-[#0A3B21] font-medium text-xs mr-4"
+                      className="text-[#D56000] hover:text-[#A84A00] font-medium text-xs mr-4"
                     >
                       Edit
                     </Link>

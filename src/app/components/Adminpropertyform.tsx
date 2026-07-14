@@ -536,7 +536,7 @@ function AdminPropertyForm() {
           <button
             type="submit"
             disabled={saving}
-            className="bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-300 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-colors"
+            className="bg-[#D56000] hover:bg-[#A84A00] disabled:bg-gray-300 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-colors"
           >
             {saving ? 'Saving…' : isEdit ? 'Save Changes' : 'Add Property'}
           </button>
