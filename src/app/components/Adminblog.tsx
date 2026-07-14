@@ -57,7 +57,7 @@ function AdminBlog() {
         <h1 className="text-2xl font-bold text-gray-900">Blog / Learning Center</h1>
         <Link
           to="/admin/blog/new"
-          className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors"
+          className="bg-[#D56000] hover:bg-[#A84A00] text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors"
         >
           + New Post
         </Link>
@@ -72,7 +72,7 @@ function AdminBlog() {
       ) : posts.length === 0 ? (
         <div className="text-center py-16 bg-white border border-gray-200 rounded-lg">
           <p className="text-gray-500 mb-4">No articles yet.</p>
-          <Link to="/admin/blog/new" className="text-yellow-600 hover:text-yellow-700 font-medium">
+          <Link to="/admin/blog/new" className="text-[#D56000] hover:text-[#A84A00] font-medium">
             Write your first post →
           </Link>
         </div>
@@ -99,7 +99,7 @@ function AdminBlog() {
                     <button
                       onClick={() => togglePublished(post.id, !post.published)}
                       className={`text-xs font-medium px-2.5 py-1 rounded-full transition-colors ${
-                        post.published ? 'bg-[#D56000]/10 text-[#0D4F2A]' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                        post.published ? 'bg-[#D56000]/10 text-[#D56000]' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                       }`}
                     >
                       {post.published ? 'Published' : 'Draft — click to publish'}
@@ -111,7 +111,7 @@ function AdminBlog() {
                   <td className="px-4 py-3 text-right whitespace-nowrap">
                     <Link
                       to={`/admin/blog/${post.id}/edit`}
-                      className="text-[#0D4F2A] hover:text-[#0A3B21] font-medium text-xs mr-4"
+                      className="text-[#D56000] hover:text-[#A84A00] font-medium text-xs mr-4"
                     >
                       Edit
                     </Link>

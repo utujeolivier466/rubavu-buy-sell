@@ -89,7 +89,7 @@ export interface BlogPost {
   updated_at: string;
 }
 
-export type InquirySource = 'whatsapp' | 'site_visit' | 'contact_form';
+export type InquirySource = 'whatsapp' | 'site_visit' | 'contact_form' | 'roi_calculator';
 export type InquiryStatus = 'new' | 'contacted' | 'closed';
 
 export interface Inquiry {

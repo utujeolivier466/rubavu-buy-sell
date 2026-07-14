@@ -8,7 +8,7 @@ interface InquiryRow extends Inquiry {
 
 const STATUS_STYLES: Record<InquiryStatus, string> = {
   new: 'bg-blue-100 text-blue-700',
-  contacted: 'bg-yellow-100 text-yellow-700',
+  contacted: 'bg-[#D56000]/10 text-[#D56000]',
   closed: 'bg-gray-100 text-gray-600',
 };
 
@@ -68,7 +68,7 @@ function AdminInquiries() {
               key={f}
               onClick={() => setFilter(f)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${
-                filter === f ? 'bg-yellow-500 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+                filter === f ? 'bg-[#D56000] text-white' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
               }`}
             >
               {f}
@@ -123,7 +123,7 @@ function AdminInquiries() {
                     <select
                       value={inquiry.status}
                       onChange={(e) => updateStatus(inquiry.id, e.target.value as InquiryStatus)}
-                      className={`text-xs font-medium rounded-full px-2.5 py-1 border-0 focus:outline-none focus:ring-2 focus:ring-yellow-500 ${STATUS_STYLES[inquiry.status]}`}
+                      className={`text-xs font-medium rounded-full px-2.5 py-1 border-0 focus:outline-none focus:ring-2 focus:ring-[#D56000] ${STATUS_STYLES[inquiry.status]}`}
                     >
                       <option value="new">New</option>
                       <option value="contacted">Contacted</option>

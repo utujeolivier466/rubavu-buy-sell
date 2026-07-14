@@ -78,7 +78,7 @@ function AdminLogin() {
               </p>
               <button
                 onClick={() => { setMode('login'); setResetSent(false); setResetEmail(''); }}
-                className="text-sm text-yellow-600 hover:text-yellow-700 font-medium"
+                className="text-sm text-[#D56000] hover:text-[#A84A00] font-medium"
               >
                 ← Back to login
               </button>
@@ -92,7 +92,7 @@ function AdminLogin() {
                   value={resetEmail}
                   onChange={(e) => setResetEmail(e.target.value)}
                   required
-                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#D56000]"
                 />
               </div>
 
@@ -101,7 +101,7 @@ function AdminLogin() {
               <button
                 type="submit"
                 disabled={resetSubmitting}
-                className="w-full bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-300 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors"
+                className="w-full bg-[#D56000] hover:bg-[#A84A00] disabled:bg-gray-300 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors"
               >
                 {resetSubmitting ? 'Sending…' : 'Send Reset Link'}
               </button>

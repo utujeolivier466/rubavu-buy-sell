@@ -51,7 +51,7 @@ function AdminAgents() {
         </div>
         <Link
           to="/admin/agents/new"
-          className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors"
+          className="bg-[#D56000] hover:bg-[#A84A00] text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors"
         >
           + Add Agent
         </Link>
@@ -66,7 +66,7 @@ function AdminAgents() {
       ) : agents.length === 0 ? (
         <div className="text-center py-16 bg-white border border-gray-200 rounded-lg">
           <p className="text-gray-500 mb-4">No agents added yet. The About page currently shows only the CEO.</p>
-          <Link to="/admin/agents/new" className="text-yellow-600 hover:text-yellow-700 font-medium">
+          <Link to="/admin/agents/new" className="text-[#D56000] hover:text-[#A84A00] font-medium">
             Add your first agent →
           </Link>
         </div>

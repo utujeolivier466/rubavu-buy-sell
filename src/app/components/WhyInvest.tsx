@@ -1,6 +1,10 @@
+import { useState } from 'react';
 import { TrendingUp, Building2, Calculator } from 'lucide-react';
+import ROICalculatorModal from './ROICalculatorModal';
 
 export function WhyInvest() {
+  const [showCalculator, setShowCalculator] = useState(false);
+
   return (
     <section id="investment" className="py-12 sm:py-16 lg:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -52,18 +56,26 @@ export function WhyInvest() {
               <div className="text-xl sm:text-2xl font-bold text-[#D56000]">625M+ RWF</div>
             </div>
             <p className="text-xs sm:text-sm text-gray-600">
-              That's 125M+ in potential equity gain
+              That's 125M+ in potential equity gain*
             </p>
           </div>
         </div>
+        <p className="text-xs text-gray-400 text-center -mt-6 mb-8 sm:mb-12">
+          *Illustrative example only, not a guarantee of future value. Use the calculator below for your own estimate.
+        </p>
 
         {/* CTA Button */}
         <div className="text-center">
-          <button className="px-6 sm:px-8 py-3 sm:py-4 bg-[#0D4F2A] hover:bg-[#0A3B21] text-white text-base sm:text-lg rounded-lg transition-colors shadow-lg">
+          <button
+            onClick={() => setShowCalculator(true)}
+            className="px-6 sm:px-8 py-3 sm:py-4 bg-[#0D4F2A] hover:bg-[#0A3B21] text-white text-base sm:text-lg rounded-lg transition-colors shadow-lg"
+          >
             Calculate Your Potential Gain
           </button>
         </div>
       </div>
+
+      {showCalculator && <ROICalculatorModal onClose={() => setShowCalculator(false)} />}
     </section>
   );
 }

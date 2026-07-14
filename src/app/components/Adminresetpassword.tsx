@@ -112,7 +112,7 @@ function AdminResetPassword() {
             <button
               type="submit"
               disabled={saving}
-              className="w-full bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-300 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors"
+              className="w-full bg-[#D56000] hover:bg-[#A84A00] disabled:bg-gray-300 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors"
             >
               {saving ? 'Updating…' : 'Update Password'}
             </button>
