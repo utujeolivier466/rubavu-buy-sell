@@ -109,7 +109,7 @@ export function Header() {
         href={whatsappUrl}
         target="_blank"
         rel="noreferrer"
-        className="fixed bottom-6 right-6 bg-[#D56000] text-white p-4 rounded-full shadow-lg z-50 hover:bg-[#D56000] transition-colors"
+        className="fixed bottom-6 right-6 bg-[#0D4F2A] text-white p-4 rounded-full shadow-lg z-50 hover:bg-[#0A3B21] transition-colors"
         aria-label="Chat via WhatsApp"
       >
         <MessageCircle className="w-6 h-6" />
