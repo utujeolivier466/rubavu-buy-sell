@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { TrendingUp, Building2, Calculator } from 'lucide-react';
-import ROICalculatorModal from './ROICalculatorModal';
+import ROICalculatorModal from './Roicalculatormodal';
 
 export function WhyInvest() {
   const [showCalculator, setShowCalculator] = useState(false);
