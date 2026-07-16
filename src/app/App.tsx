@@ -9,13 +9,16 @@ import { PropertySpecialties } from './components/PropertySpecialties';
 import { Testimonials } from './components/Testimonials';
 import { CTABanner } from './components/CTABanner';
 import { Footer } from './components/Footer';
+
+// CASE MATCHED IMPORTS (using running file system cases)
 import SEOHead from './components/Seohead';
 import Propertiespage from './components/Propertiespage';
 import PropertyDetailPage from './components/PropertyDetailPage';
 import Contactpage from './components/Contactpage';
-import SellPropertyPage from './components/Sellpropertypage';
+import SellPropertyPage from './components/Sellpropertypage'; // Removed explicit .tsx extension (standard practice)
 import { AuthProvider } from './context/Authcontext';
 import ProtectedRoute from './components/ProtectedRoute';
+import OwnerRoute from './components/Ownerroute'; // New import
 import Adminlogin from './components/Adminlogin';
 import AdminResetPassword from './components/Adminresetpassword';
 import Adminlayout from './components/Adminlayout';
@@ -35,6 +38,7 @@ import AdminBlog from './components/Adminblog';
 import AdminBlogForm from './components/Adminblogform';
 import AdminAgents from './components/Adminagents';
 import AdminAgentForm from './components/Adminagentform';
+import AdminUsers from './components/Adminusers'; // New import (Ensure this file is created/uploaded as "AdminUsers")
 
 function HomePage() {
   const location = useLocation();
@@ -93,40 +97,43 @@ function PublicLayout() {
 function App() {
   return (
     <ErrorBoundary>
-    <HelmetProvider>
-      <AuthProvider>
-        <Routes>
-          {/* Admin login has no public header/footer */}
-          <Route path="/admin/login" element={<Adminlogin />} />
-        <Route path="/admin/reset-password" element={<AdminResetPassword />} />
+      <HelmetProvider>
+        <AuthProvider>
+          <Routes>
+            {/* Admin login has no public header/footer */}
+            <Route path="/admin/login" element={<Adminlogin />} />
+            <Route path="/admin/reset-password" element={<AdminResetPassword />} />
 
-          {/* Protected admin dashboard */}
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <Adminlayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="properties" element={<AdminProperties />} />
-            <Route path="properties/new" element={<Adminpropertyform />} />
-            <Route path="properties/:id/edit" element={<Adminpropertyform />} />
-            <Route path="inquiries" element={<Admininquiries />} />
-            <Route path="submissions" element={<AdminSubmissions />} />
-            <Route path="blog" element={<AdminBlog />} />
-            <Route path="blog/new" element={<AdminBlogForm />} />
-            <Route path="blog/:id/edit" element={<AdminBlogForm />} />
-            <Route path="agents" element={<AdminAgents />} />
-            <Route path="agents/new" element={<AdminAgentForm />} />
-            <Route path="agents/:id/edit" element={<AdminAgentForm />} />
-          </Route>
+            {/* Protected admin dashboard */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <Adminlayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="properties" element={<AdminProperties />} />
+              <Route path="properties/new" element={<Adminpropertyform />} />
+              <Route path="properties/:id/edit" element={<Adminpropertyform />} />
+              <Route path="inquiries" element={<Admininquiries />} />
+              <Route path="submissions" element={<AdminSubmissions />} />
+              <Route path="blog" element={<AdminBlog />} />
+              <Route path="blog/new" element={<AdminBlogForm />} />
+              <Route path="blog/:id/edit" element={<AdminBlogForm />} />
+              <Route path="agents" element={<AdminAgents />} />
+              <Route path="agents/new" element={<AdminAgentForm />} />
+              <Route path="agents/:id/edit" element={<AdminAgentForm />} />
+              
+              {/* New Owner Protected Route */}
+              <Route path="users" element={<OwnerRoute><AdminUsers /></OwnerRoute>} />
+            </Route>
 
-          {/* Public site */}
-          <Route path="/*" element={<PublicLayout />} />
-        </Routes>
-      </AuthProvider>
-    </HelmetProvider>
+            {/* Public site */}
+            <Route path="/*" element={<PublicLayout />} />
+          </Routes>
+        </AuthProvider>
+      </HelmetProvider>
     </ErrorBoundary>
   );
 }

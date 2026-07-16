@@ -2,8 +2,12 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import type { Session } from '@supabase/supabase-js';
 import { supabase } from '../../../lib/libsupabaseClient';
 
+type Role = 'owner' | 'staff' | null;
+
 interface AuthContextValue {
   session: Session | null;
+  role: Role;
+  isOwner: boolean;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
@@ -13,19 +17,50 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
+  const [role, setRole] = useState<Role>(null);
   const [loading, setLoading] = useState(true);
 
+  async function fetchRole(userId: string) {
+    if (!supabase) return;
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      console.error('Failed to fetch role (defaulting to staff):', error);
+      setRole('staff');
+      return;
+    }
+    setRole((data?.role as Role) || 'staff');
+  }
+
   useEffect(() => {
-    supabase?.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
+    let isMounted = true;
+
+    supabase?.auth.getSession().then(async ({ data }: { data: { session: Session | null } }) => {
+      if (!isMounted) return;
       setSession(data.session);
-      setLoading(false);
+      if (data.session?.user) {
+        await fetchRole(data.session.user.id);
+      }
+      if (isMounted) setLoading(false);
     });
 
-    const { data: listener } = supabase?.auth.onAuthStateChange((_event: string, newSession: Session | null) => {
-      setSession(newSession);
-    }) || {};
+    const { data: listener } = supabase?.auth.onAuthStateChange(
+      async (_event: string, newSession: Session | null) => {
+        setSession(newSession);
+        if (newSession?.user) {
+          await fetchRole(newSession.user.id);
+        } else {
+          setRole(null);
+        }
+      }
+    ) || {};
 
     return () => {
+      isMounted = false;
       if (listener?.subscription) {
         listener.subscription.unsubscribe();
       }
@@ -44,7 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ session, loading, signIn, signOut }}>
+    <AuthContext.Provider value={{ session, role, isOwner: role === 'owner', loading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -4,7 +4,7 @@ import { Menu, X } from 'lucide-react';
 import { useAuth } from '../context/Authcontext';
 
 function AdminLayout() {
-  const { signOut, session } = useAuth();
+  const { signOut, session, isOwner, role } = useAuth();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -15,7 +15,7 @@ function AdminLayout() {
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     `block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-      isActive ? 'bg-yellow-500 text-white' : 'text-gray-700 hover:bg-gray-100'
+      isActive ? 'bg-[var(--color-brand-orange)] text-white' : 'text-gray-700 hover:bg-gray-100'
     }`;
 
   const navLinks = (
@@ -35,6 +35,11 @@ function AdminLayout() {
       <NavLink to="/admin/agents" className={navLinkClass} onClick={() => setSidebarOpen(false)}>
         Team / Agents
       </NavLink>
+      {isOwner && (
+        <NavLink to="/admin/users" className={navLinkClass} onClick={() => setSidebarOpen(false)}>
+          Manage Users
+        </NavLink>
+      )}
     </>
   );
 
@@ -45,6 +50,13 @@ function AdminLayout() {
         <div>
           <p className="font-bold text-gray-900 text-sm">Rubavu Admin</p>
           <p className="text-xs text-gray-400 truncate max-w-[200px]">{session?.user?.email}</p>
+            {role && (
+            <span className={`inline-block mt-1 text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+              isOwner ? 'bg-[var(--color-brand-forest)] text-white' : 'bg-gray-100 text-gray-600'
+            }`}>
+              {isOwner ? 'Owner' : 'Staff'}
+            </span>
+          )}
         </div>
         <button
           onClick={() => setSidebarOpen(true)}
@@ -92,6 +104,13 @@ function AdminLayout() {
           <div className="p-5 border-b border-gray-200">
             <p className="font-bold text-gray-900 text-sm">Rubavu Admin</p>
             <p className="text-xs text-gray-400 mt-0.5 truncate">{session?.user?.email}</p>
+            {role && (
+              <span className={`inline-block mt-1.5 text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                isOwner ? 'bg-[var(--color-brand-forest)] text-white' : 'bg-gray-100 text-gray-600'
+              }`}>
+                {isOwner ? 'Owner' : 'Staff'}
+              </span>
+            )}
           </div>
 
           <nav className="flex-1 p-3 space-y-1">{navLinks}</nav>
