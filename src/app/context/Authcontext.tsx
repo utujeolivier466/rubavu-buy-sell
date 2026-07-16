@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import type { Session } from '@supabase/supabase-js';
 import { supabase } from '../../../lib/libsupabaseClient';
 
+const ROLE_FUNCTION_URL = `${import.meta.env.VITE_SUPABASE_URL || import.meta.env.NEXT_PUBLIC_SUPABASE_URL || ''}/functions/v1/get-admin-role`;
+
 type Role = 'owner' | 'staff' | null;
 
 interface AuthContextValue {
@@ -13,6 +15,16 @@ interface AuthContextValue {
   signOut: () => Promise<void>;
 }
 
+function normalizeRole(value: unknown): Role {
+  if (typeof value === 'string') {
+    const normalized = value.toLowerCase();
+    if (normalized === 'owner' || normalized === 'staff') {
+      return normalized as Role;
+    }
+  }
+  return null;
+}
+
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -20,20 +32,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [role, setRole] = useState<Role>(null);
   const [loading, setLoading] = useState(true);
 
-  async function fetchRole(userId: string) {
+  async function fetchRole(session?: Session | null) {
     if (!supabase) return;
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', userId)
-      .single();
 
-    if (error) {
-      console.error('Failed to fetch role (defaulting to staff):', error);
-      setRole('staff');
+    const metadataRole = normalizeRole(session?.user?.user_metadata?.role ?? session?.user?.app_metadata?.role);
+    if (metadataRole) {
+      setRole(metadataRole);
       return;
     }
-    setRole((data?.role as Role) || 'staff');
+
+    if (!session?.access_token) {
+      setRole(null);
+      return;
+    }
+
+    try {
+      const response = await fetch(ROLE_FUNCTION_URL, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Role lookup failed: ${response.status}`);
+      }
+
+      const payload = await response.json();
+      setRole(normalizeRole(payload?.role));
+    } catch (error) {
+      console.error('Failed to fetch role from edge function:', error);
+      setRole(null);
+    }
   }
 
   useEffect(() => {
@@ -42,17 +73,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase?.auth.getSession().then(async ({ data }: { data: { session: Session | null } }) => {
       if (!isMounted) return;
       setSession(data.session);
-      if (data.session?.user) {
-        await fetchRole(data.session.user.id);
-      }
+      await fetchRole(data.session);
       if (isMounted) setLoading(false);
     });
 
     const { data: listener } = supabase?.auth.onAuthStateChange(
       async (_event: string, newSession: Session | null) => {
         setSession(newSession);
-        if (newSession?.user) {
-          await fetchRole(newSession.user.id);
+        if (newSession) {
+          await fetchRole(newSession);
         } else {
           setRole(null);
         }

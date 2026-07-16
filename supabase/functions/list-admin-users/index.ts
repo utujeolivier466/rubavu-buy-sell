@@ -19,6 +19,14 @@ function json(body: unknown, status = 200) {
   });
 }
 
+function normalizeRole(value: unknown): string | null {
+  if (typeof value === 'string') {
+    const normalized = value.toLowerCase();
+    if (normalized === 'owner' || normalized === 'staff') return normalized;
+  }
+  return null;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
@@ -34,13 +42,19 @@ serve(async (req) => {
       return json({ error: 'Invalid session' }, 401);
     }
 
+    const metadataRole = normalizeRole(userData.user?.user_metadata?.role ?? userData.user?.app_metadata?.role);
     const { data: profile, error: profileError } = await adminClient
       .from('profiles')
       .select('role')
       .eq('id', userData.user.id)
-      .single();
+      .maybeSingle();
 
-    if (profileError || profile?.role !== 'owner') {
+    const profileRole = normalizeRole(profile?.role);
+    if (profileError) {
+      console.warn('Could not load profile role for list-admin-users:', profileError);
+    }
+
+    if (metadataRole !== 'owner' && profileRole !== 'owner') {
       return json({ error: 'Only owners can view the user list' }, 403);
     }
 

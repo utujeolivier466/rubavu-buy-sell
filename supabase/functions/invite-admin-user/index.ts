@@ -20,6 +20,14 @@ function json(body: unknown, status = 200) {
   });
 }
 
+function normalizeRole(value: unknown): string | null {
+  if (typeof value === 'string') {
+    const normalized = value.toLowerCase();
+    if (normalized === 'owner' || normalized === 'staff') return normalized;
+  }
+  return null;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
@@ -36,14 +44,20 @@ serve(async (req) => {
       return json({ error: 'Invalid session' }, 401);
     }
 
-    // Verify caller is an owner — this is the real authorization check
+    // Verify caller is an owner — prefer auth metadata, then fall back to profiles
+    const metadataRole = normalizeRole(userData.user?.user_metadata?.role ?? userData.user?.app_metadata?.role);
     const { data: profile, error: profileError } = await adminClient
       .from('profiles')
       .select('role')
       .eq('id', userData.user.id)
-      .single();
+      .maybeSingle();
 
-    if (profileError || profile?.role !== 'owner') {
+    const profileRole = normalizeRole(profile?.role);
+    if (profileError) {
+      console.warn('Could not load profile role for invite-admin-user:', profileError);
+    }
+
+    if (metadataRole !== 'owner' && profileRole !== 'owner') {
       return json({ error: 'Only owners can invite new admin users' }, 403);
     }
 
