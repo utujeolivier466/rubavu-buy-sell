@@ -13,7 +13,7 @@ interface AdminUser {
 const SUPABASE_URL = (import.meta as any).env.VITE_SUPABASE_URL;
 
 function AdminUsers() {
-  const { session } = useAuth();
+  const { session, isOwner } = useAuth();
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -107,6 +107,7 @@ function AdminUsers() {
       <p className="text-sm text-gray-500 mb-6">Invite staff, assign roles, and manage admin access. Owner-only.</p>
 
       {/* Invite form */}
+      {isOwner && (
       <form onSubmit={handleInvite} className="bg-white border border-gray-200 rounded-lg p-5 mb-6 flex flex-col sm:flex-row gap-3">
         <input
           type="email"
@@ -124,6 +125,7 @@ function AdminUsers() {
           {inviting ? 'Sending…' : '+ Invite Staff Member'}
         </button>
       </form>
+      )}
       {inviteMessage && (
         <p className={`text-sm mb-4 ${inviteMessage.startsWith('Error') ? 'text-red-600' : 'text-[var(--color-brand-forest)]'}`}>
           {inviteMessage}
@@ -171,20 +173,24 @@ function AdminUsers() {
                     <td className="px-4 py-3 text-right whitespace-nowrap">
                       {!isSelf && (
                         <>
-                          <button
-                            onClick={() => handleToggleRole(user)}
-                            disabled={processingId === user.id}
-                            className="text-[var(--color-brand-forest)] hover:text-[var(--color-brand-forest)] font-medium text-xs mr-4 disabled:opacity-50"
-                          >
-                            {user.role === 'owner' ? 'Demote to Staff' : 'Promote to Owner'}
-                          </button>
-                          <button
-                            onClick={() => handleRemove(user)}
-                            disabled={processingId === user.id}
-                            className="text-red-500 hover:text-red-600 font-medium text-xs disabled:opacity-50"
-                          >
-                            Remove
-                          </button>
+                          {isOwner && (
+                            <button
+                              onClick={() => handleToggleRole(user)}
+                              disabled={processingId === user.id}
+                              className="text-[var(--color-brand-forest)] hover:text-[var(--color-brand-forest)] font-medium text-xs mr-4 disabled:opacity-50"
+                            >
+                              {user.role === 'owner' ? 'Demote to Staff' : 'Promote to Owner'}
+                            </button>
+                          )}
+                          {isOwner && (
+                            <button
+                              onClick={() => handleRemove(user)}
+                              disabled={processingId === user.id}
+                              className="text-red-500 hover:text-red-600 font-medium text-xs disabled:opacity-50"
+                            >
+                              Remove
+                            </button>
+                          )}
                         </>
                       )}
                     </td>
