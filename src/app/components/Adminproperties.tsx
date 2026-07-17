@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
+import { useAuth } from '../context/Authcontext';
 import type { Property } from '../../../lib/types';
 
 const STATUS_STYLES: Record<string, string> = {
@@ -11,6 +12,7 @@ const STATUS_STYLES: Record<string, string> = {
 };
 
 function AdminProperties() {
+  const { isOwner } = useAuth();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -148,13 +150,15 @@ function AdminProperties() {
                     >
                       Edit
                     </Link>
-                    <button
-                      onClick={() => handleDelete(property.id, property.title)}
-                      disabled={deletingId === property.id}
-                      className="text-red-500 hover:text-red-600 font-medium text-xs disabled:opacity-50"
-                    >
-                      {deletingId === property.id ? 'Deleting…' : 'Delete'}
-                    </button>
+                    {isOwner && (
+                      <button
+                        onClick={() => handleDelete(property.id, property.title)}
+                        disabled={deletingId === property.id}
+                        className="text-red-500 hover:text-red-600 font-medium text-xs disabled:opacity-50"
+                      >
+                        {deletingId === property.id ? 'Deleting…' : 'Delete'}
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
+import { useAuth } from '../context/Authcontext';
 import type { BlogPost } from '../../../lib/types';
 
 function AdminBlog() {
+  const { isOwner } = useAuth();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -115,13 +117,15 @@ function AdminBlog() {
                     >
                       Edit
                     </Link>
-                    <button
-                      onClick={() => handleDelete(post.id, post.title)}
-                      disabled={deletingId === post.id}
-                      className="text-red-500 hover:text-red-600 font-medium text-xs disabled:opacity-50"
-                    >
-                      {deletingId === post.id ? 'Deleting…' : 'Delete'}
-                    </button>
+                    {isOwner && (
+                      <button
+                        onClick={() => handleDelete(post.id, post.title)}
+                        disabled={deletingId === post.id}
+                        className="text-red-500 hover:text-red-600 font-medium text-xs disabled:opacity-50"
+                      >
+                        {deletingId === post.id ? 'Deleting…' : 'Delete'}
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

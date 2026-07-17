@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
+import { useAuth } from '../context/Authcontext';
 import type { Agent } from '../../../lib/types';
 
 function AdminAgents() {
+  const { isOwner } = useAuth();
   const [agents, setAgents] = useState<Agent[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -88,13 +90,15 @@ function AdminAgents() {
                   <Link to={`/admin/agents/${agent.id}/edit`} className="text-[#0D4F2A] hover:text-[#0A3B21] font-medium text-xs">
                     Edit
                   </Link>
-                  <button
-                    onClick={() => handleDelete(agent.id, agent.name)}
-                    disabled={deletingId === agent.id}
-                    className="text-red-500 hover:text-red-600 font-medium text-xs disabled:opacity-50"
-                  >
-                    {deletingId === agent.id ? 'Removing…' : 'Remove'}
-                  </button>
+                  {isOwner && (
+                    <button
+                      onClick={() => handleDelete(agent.id, agent.name)}
+                      disabled={deletingId === agent.id}
+                      className="text-red-500 hover:text-red-600 font-medium text-xs disabled:opacity-50"
+                    >
+                      {deletingId === agent.id ? 'Removing…' : 'Remove'}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
