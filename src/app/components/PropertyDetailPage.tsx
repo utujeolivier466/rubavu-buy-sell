@@ -2,6 +2,7 @@ import { useState, useEffect, type TouchEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { Property } from '../../../lib/types';
+import SEOHead from './Seohead';
 
 const WHATSAPP_NUMBER = '250782424382';
 
@@ -226,6 +227,9 @@ function PropertyDetailPage() {
     );
   }
 
+  // Per-property SEO / Open Graph meta
+  const seoImagePath = `/api/og/property/${property.slug}`;
+
   const featureList = [
     property.has_pool && 'Pool',
     property.has_parking && 'Parking',
@@ -256,6 +260,13 @@ function PropertyDetailPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
+      <SEOHead
+        title={property.title}
+        description={(property.description || property.location_text || '').slice(0, 160)}
+        image={seoImagePath}
+        url={`/properties/${property.slug}`}
+        type="article"
+      />
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-4 flex flex-wrap items-center gap-1">
         <Link to="/" className="hover:text-gray-700">Home</Link>

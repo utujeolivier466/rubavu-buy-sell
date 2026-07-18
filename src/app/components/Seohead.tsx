@@ -9,12 +9,13 @@ interface SEOHeadProps {
 }
 
 const SITE_NAME = 'Rubavu Buy and Sell Ltd';
-const DEFAULT_IMAGE = '/og-image.png'; // lives in /public — see index.html fix
-const SITE_URL = 'https://rubavubuyandsell.com'; // update once the real domain is live
+const DEFAULT_IMAGE = '/og-image.png';
+const SITE_URL = 'https://rubavu-buy-sell.vercel.app';
 
 function SEOHead({ title, description, image, url, type = 'website' }: SEOHeadProps) {
   const fullTitle = `${title} | ${SITE_NAME}`;
-  const ogImage = image || DEFAULT_IMAGE;
+  const resolvedImage = image ? image : DEFAULT_IMAGE;
+  const ogImage = resolvedImage.startsWith('http') ? resolvedImage : `${SITE_URL}${resolvedImage}`;
   const canonicalUrl = url ? `${SITE_URL}${url}` : SITE_URL;
 
   return (

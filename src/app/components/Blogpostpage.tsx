@@ -70,6 +70,7 @@ function BlogPostPage() {
         title={post?.title || 'Blog Post'}
         description={post?.excerpt || 'Read the latest updates and insights from Rubavu Buy and Sell Ltd.'}
         url={slug ? `/blog/${slug}` : '/blog'}
+        image={post?.cover_image_url}
       />
       <section className="min-h-[60vh] bg-gray-50 px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl rounded-3xl bg-white p-8 shadow-sm">
