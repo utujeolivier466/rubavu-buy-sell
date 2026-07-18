@@ -5,13 +5,14 @@ export const config = {
 }
 
 const SITE_NAME = 'Rubavu Buy and Sell'
-const SITE_DOMAIN = process.env.NEXT_PUBLIC_VERCEL_URL
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-  : (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://rubavu-buy-sell.vercel.app')
+const env = (globalThis as any).process?.env || {}
+const SITE_DOMAIN = env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${env.NEXT_PUBLIC_VERCEL_URL}`
+  : (env.VERCEL_URL ? `https://${env.VERCEL_URL}` : 'https://rubavu-buy-sell.vercel.app')
 
 async function fetchProperty(slug: string) {
-  const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL
-  const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const SUPABASE_URL = env.VITE_SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL
+  const SERVICE_KEY = env.SUPABASE_SERVICE_ROLE_KEY || env.VITE_SUPABASE_ANON_KEY || env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   if (!SUPABASE_URL || !SERVICE_KEY) return null
 
   const url = `${SUPABASE_URL}/rest/v1/properties?select=title,slug,cover_image_url,image_urls,location_text,price,currency&slug=eq.${encodeURIComponent(slug)}`
