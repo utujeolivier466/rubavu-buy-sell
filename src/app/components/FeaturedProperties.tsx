@@ -179,10 +179,10 @@ export function FeaturedProperties() {
   }
 
   function getBadge(status: string) {
-    if (status === 'Sold') return { label: 'Sold', className: 'bg-gray-700 text-white' };
-    if (status === 'Rented') return { label: 'Rented', className: 'bg-blue-600 text-white' };
-    if (status === 'Pending') return { label: 'Pending', className: 'bg-yellow-500 text-white' };
-    return { label: 'Hot Deal', className: 'bg-amber-500 text-white' };
+    if (status === 'Sold') return { label: 'Sold', className: 'bg-[#0D4F2A] text-white' };
+    if (status === 'Rented') return { label: 'Rented', className: 'bg-[#D56000] text-white' };
+    if (status === 'Pending') return { label: 'Pending', className: 'bg-[#0D4F2A]/10 text-[#0D4F2A] border border-[#0D4F2A]/20' };
+    return { label: 'Hot Deal', className: 'bg-[#D56000] text-white' };
   }
 
   return (

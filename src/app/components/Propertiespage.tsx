@@ -220,7 +220,7 @@ function Propertiespage() {
                     className="h-full w-full object-cover"
                   />
                   {property.is_hot_deal && (
-                    <span className="absolute top-3 right-3 bg-orange-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                    <span className="absolute top-3 right-3 bg-[#D56000] text-white text-xs font-semibold px-2.5 py-1 rounded-full">
                       Hot Deal
                     </span>
                   )}
