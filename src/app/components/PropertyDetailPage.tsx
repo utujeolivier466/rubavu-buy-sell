@@ -2,6 +2,7 @@ import { useState, useEffect, type TouchEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { Property } from '../../../lib/types';
+import SEOHead from './Seohead';
 
 const WHATSAPP_NUMBER = '250782424382';
 
@@ -242,13 +243,13 @@ function PropertyDetailPage() {
 
   const statusBadge =
     property.status === 'Sold'
-      ? { label: 'Sold', className: 'bg-gray-700 text-white' }
+      ? { label: 'Sold', className: 'bg-[#0D4F2A] text-white' }
       : property.status === 'Rented'
-      ? { label: 'Rented', className: 'bg-blue-600 text-white' }
+      ? { label: 'Rented', className: 'bg-[#D56000] text-white' }
       : property.status === 'Pending'
-      ? { label: 'Pending', className: 'bg-yellow-500 text-white' }
+      ? { label: 'Pending', className: 'bg-[#0D4F2A]/10 text-[#0D4F2A] border border-[#0D4F2A]/20' }
       : property.is_hot_deal
-      ? { label: 'Hot Deal', className: 'bg-orange-500 text-white' }
+      ? { label: 'Hot Deal', className: 'bg-[#D56000] text-white' }
       : null;
 
   // Display ID fallback — replace with a real display_id column when you add one
@@ -256,6 +257,12 @@ function PropertyDetailPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
+      <SEOHead
+        title={property.title}
+        description={(property.description || property.location_text || '').slice(0, 160)}
+        url={`/properties/${property.slug}`}
+        type="article"
+      />
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-4 flex flex-wrap items-center gap-1">
         <Link to="/" className="hover:text-gray-700">Home</Link>

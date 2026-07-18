@@ -5,10 +5,10 @@ import { useAuth } from '../context/Authcontext';
 import type { Property } from '../../../lib/types';
 
 const STATUS_STYLES: Record<string, string> = {
-  Available: 'bg-[#D56000]/10 text-[#0D4F2A]',
-  Sold: 'bg-gray-200 text-gray-600',
-  Rented: 'bg-blue-100 text-blue-700',
-  Pending: 'bg-[#D56000]/10 text-[#D56000]',
+  Available: 'bg-[#D56000]/10 text-[#0D4F2A] border border-[#D56000]/20',
+  Sold: 'bg-[#0D4F2A] text-white',
+  Rented: 'bg-[#D56000] text-white',
+  Pending: 'bg-[#0D4F2A]/10 text-[#0D4F2A] border border-[#0D4F2A]/20',
 };
 
 function AdminProperties() {
