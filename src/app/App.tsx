@@ -5,7 +5,7 @@ import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { FeaturedProperties } from './components/FeaturedProperties';
 import { WhyInvest } from './components/WhyInvest';
-import { PropertySpecialties } from './components/PropertySpecialties';
+//import { PropertySpecialties } from './components/PropertySpecialties';
 import { Testimonials } from './components/Testimonials';
 import { CTABanner } from './components/CTABanner';
 import { Footer } from './components/Footer';
@@ -63,8 +63,7 @@ function HomePage() {
       />
       <HeroSection />
       <FeaturedProperties />
-      <WhyInvest />
-      <PropertySpecialties />
+      <WhyInvest />    
       <Testimonials />
       <CTABanner />
     </>

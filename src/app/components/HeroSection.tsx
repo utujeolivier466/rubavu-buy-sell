@@ -273,7 +273,7 @@ export function HeroSection() {
       <div className="relative z-10 w-full max-w-6xl mx-auto px-3 sm:px-6 text-center py-6 sm:py-12 lg:py-16">
         {/* Main Headline */}
       <h1 className="text-xl sm:text-3xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-3 lg:mb-4">
-          Your Trusted <span className="text-[#D56000]">Real Estate Partner</span>
+           <span className="text-[#D56000]"> Your Trusted Real Estate Partner</span>
           <br className="hidden sm:block" />
           <span className="sm:hidden"> </span>Helping Clients Buy, Sell, and Invest in Quality Properties Across Rubavu and Beyond
         </h1>
