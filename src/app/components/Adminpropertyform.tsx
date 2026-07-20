@@ -477,15 +477,6 @@ function AdminPropertyForm() {
             />
             Featured on homepage
           </label>
-          <label className="flex items-center gap-1.5 text-sm cursor-pointer">
-            <input
-              type="checkbox"
-              checked={form.is_hot_deal}
-              onChange={(e) => updateField('is_hot_deal', e.target.checked)}
-              className="w-4 h-4"
-            />
-            Mark as "Hot Deal"
-          </label>
         </div>
 
         {/* Images */}

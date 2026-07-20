@@ -173,9 +173,11 @@ function AboutPage() {
           <div className="flex flex-wrap justify-center gap-6">
             {/* CEO — featured card */}
             <TiltCard className="bg-white rounded-2xl shadow-xl p-8 text-center w-full sm:w-80">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#0D4F2A] to-[#0D4F2A] flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
-                BE
-              </div>
+              <img
+                src="/ceo.jpeg"
+                alt="Biziyaremye Emmanuel"
+                className="w-24 h-24 rounded-full object-cover mx-auto mb-4"
+              />
               <h3 className="font-bold text-gray-900 text-lg">Biziyaremye Emmanuel</h3>
               <p className="text-amber-600 text-sm font-medium mb-3">Founder & Chief Executive Officer</p>
               <p className="text-gray-600 text-sm leading-relaxed">
