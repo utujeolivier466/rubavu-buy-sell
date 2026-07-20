@@ -134,7 +134,7 @@ function AdminLogin() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#D56000]"
             />
           </div>
           <div>
@@ -144,7 +144,7 @@ function AdminLogin() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#D56000]"
             />
           </div>
 
@@ -153,7 +153,7 @@ function AdminLogin() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-300 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors"
+            className="w-full bg-[#D56000] hover:bg-[#A84A00] disabled:bg-gray-300 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors"
           >
             {submitting ? 'Signing in…' : 'Sign In'}
           </button>

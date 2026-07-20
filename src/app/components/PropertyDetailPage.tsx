@@ -248,9 +248,9 @@ function PropertyDetailPage() {
       ? { label: 'Rented', className: 'bg-[#D56000] text-white' }
       : property.status === 'Pending'
       ? { label: 'Pending', className: 'bg-[#0D4F2A]/10 text-[#0D4F2A] border border-[#0D4F2A]/20' }
-      : property.is_hot_deal
-      ? { label: 'Hot Deal', className: 'bg-[#D56000] text-white' }
-      : null;
+      : property.listing_type === 'Rent'
+      ? { label: 'For Rent', className: 'bg-[#D56000] text-white' }
+      : { label: 'For Sale', className: 'bg-[#D56000] text-white' };
 
   // Display ID fallback — replace with a real display_id column when you add one
   const displayId = (property as any).display_id || `RB-${property.id.toString().slice(0, 8).toUpperCase()}`;
@@ -447,7 +447,7 @@ function PropertyDetailPage() {
               <p className="text-gray-500 mt-1">{property.location_text}</p>
             </div>
             {statusBadge && (
-              <span className={`text-xs font-semibold px-3 py-1 rounded-full ${statusBadge.className}`}>
+              <span className={`text-sm font-semibold px-4 py-2 rounded-none shadow-sm ${statusBadge.className}`}>
                 {statusBadge.label}
               </span>
             )}

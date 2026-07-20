@@ -178,11 +178,12 @@ export function FeaturedProperties() {
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
   }
 
-  function getBadge(status: string) {
-    if (status === 'Sold') return { label: 'Sold', className: 'bg-[#0D4F2A] text-white' };
-    if (status === 'Rented') return { label: 'Rented', className: 'bg-[#D56000] text-white' };
-    if (status === 'Pending') return { label: 'Pending', className: 'bg-[#0D4F2A]/10 text-[#0D4F2A] border border-[#0D4F2A]/20' };
-    return { label: 'Hot Deal', className: 'bg-[#D56000] text-white' };
+  function getBadge(property: { status?: string; listing_type?: string }) {
+    if (property.status === 'Sold') return { label: 'Sold', className: 'bg-[#0D4F2A] text-white' };
+    if (property.status === 'Rented') return { label: 'Rented', className: 'bg-[#D56000] text-white' };
+    if (property.status === 'Pending') return { label: 'Pending', className: 'bg-[#0D4F2A]/10 text-[#0D4F2A] border border-[#0D4F2A]/20' };
+    const label = property.listing_type === 'Rent' ? 'For Rent' : 'For Sale';
+    return { label, className: 'bg-[#D56000] text-white' };
   }
 
   return (
@@ -208,7 +209,7 @@ export function FeaturedProperties() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {properties.map((property) => {
             const isUnavailable = property.status === 'Sold' || property.status === 'Rented';
-            const badge = getBadge(property.status);
+            const badge = getBadge(property);
 
             return (
               <div key={property.id} className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
@@ -220,7 +221,7 @@ export function FeaturedProperties() {
                     decoding="async"
                     className={`w-full h-full object-cover hover:scale-105 transition-transform duration-300 ${isUnavailable ? 'grayscale-[40%]' : ''}`}
                   />
-                  <div className={`absolute top-2 sm:top-3 right-2 sm:right-3 text-xs px-2 sm:px-3 py-1 rounded-full ${badge.className}`}>
+                  <div className={`absolute top-3 right-3 text-sm font-semibold px-3 py-1.5 rounded-none uppercase tracking-wide shadow-md ${badge.className}`}>
                     {badge.label}
                   </div>
                 </div>

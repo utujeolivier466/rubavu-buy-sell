@@ -7,7 +7,7 @@ import type { Property } from '../../../lib/types';
 const STATUS_STYLES: Record<string, string> = {
   Available: 'bg-[#D56000]/10 text-[#0D4F2A] border border-[#D56000]/20',
   Sold: 'bg-[#0D4F2A] text-white',
-  Rented: 'bg-[#D56000] text-white',
+  Rented: 'bg-[#0D4F2A] text-white',
   Pending: 'bg-[#0D4F2A]/10 text-[#0D4F2A] border border-[#0D4F2A]/20',
 };
 
@@ -125,7 +125,7 @@ function AdminProperties() {
                     <select
                       value={property.status}
                       onChange={(e) => updateField(property.id, 'status', e.target.value)}
-                      className={`text-xs font-medium rounded-full px-2.5 py-1 border-0 focus:outline-none focus:ring-2 focus:ring-[#D56000] ${STATUS_STYLES[property.status]}`}
+                      className={`text-sm font-semibold rounded-none px-3 py-1.5 border-0 focus:outline-none focus:ring-2 focus:ring-[#D56000] ${STATUS_STYLES[property.status]}`}
                     >
                       <option value="Available">Available</option>
                       <option value="Pending">Pending</option>

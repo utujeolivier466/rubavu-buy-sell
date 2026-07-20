@@ -219,11 +219,6 @@ function Propertiespage() {
                     decoding="async"
                     className="h-full w-full object-cover"
                   />
-                  {property.is_hot_deal && (
-                    <span className="absolute top-3 right-3 bg-[#D56000] text-white text-xs font-semibold px-2.5 py-1 rounded-full">
-                      Hot Deal
-                    </span>
-                  )}
                 </div>
                 <div className="p-4">
                   <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2">{property.title}</h3>

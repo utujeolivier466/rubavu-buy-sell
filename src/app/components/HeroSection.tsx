@@ -64,7 +64,7 @@ function PropertySearch() {
                 tab === t ? 'bg-[#0D4F2A] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              For {t}
+              {t === 'sale' ? 'For Sale' : 'For Rent'}
             </button>
           ))}
         </div>
@@ -285,10 +285,10 @@ export function HeroSection() {
 
         {/* CTAs */}
         <div className="flex flex-col gap-2 sm:flex-row sm:gap-3 lg:gap-4 justify-center mb-4 sm:mb-6 lg:mb-8">
-          <button onClick={() => navigate('/properties')} className="px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 lg:py-3 bg-[#0D4F2A] hover:bg-[#0A3B21] text-white rounded-lg transition-colors text-xs sm:text-sm lg:text-base font-medium w-full sm:w-auto">
+          <button onClick={() => navigate('/properties')} className="px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 lg:py-3 bg-[#D56000] hover:bg-[#A84A00] text-white rounded-lg transition-colors text-xs sm:text-sm lg:text-base font-medium w-full sm:w-auto">
             Browse All Properties
           </button>
-          <button className="px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 lg:py-3 bg-[#0D4F2A] border-2 border-[#0D4F2A] text-white hover:bg-[#0A3B21] hover:border-[#0A3B21] rounded-lg transition-colors text-xs sm:text-sm lg:text-base font-medium w-full sm:w-auto">
+          <button className="px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 lg:py-3 bg-[#D56000] border-2 border-[#D56000] text-white hover:bg-[#A84A00] hover:border-[#A84A00] rounded-lg transition-colors text-xs sm:text-sm lg:text-base font-medium w-full sm:w-auto">
             Download Free Investment Guide
           </button>
         </div>
