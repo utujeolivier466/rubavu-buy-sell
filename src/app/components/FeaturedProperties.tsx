@@ -121,6 +121,7 @@ export function FeaturedProperties() {
           .from('properties')
           .select('*')
           .eq('is_featured', true)
+          .in('status', ['Available', 'Pending'])
           .order('created_at', { ascending: false });
 
         if (!isMounted) return;
@@ -207,8 +208,10 @@ export function FeaturedProperties() {
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-          {properties.map((property) => {
-            const isUnavailable = property.status === 'Sold' || property.status === 'Rented';
+          {properties
+            .filter((property) => property.status !== 'Sold' && property.status !== 'Rented')
+            .map((property) => {
+            const isUnavailable = false;
             const badge = getBadge(property);
 
             return (

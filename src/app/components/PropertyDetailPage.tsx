@@ -446,11 +446,6 @@ function PropertyDetailPage() {
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{property.title}</h1>
               <p className="text-gray-500 mt-1">{property.location_text}</p>
             </div>
-            {statusBadge && (
-              <span className={`text-sm font-semibold px-4 py-2 rounded-none shadow-sm ${statusBadge.className}`}>
-                {statusBadge.label}
-              </span>
-            )}
           </div>
 
           {/* Price + Share row */}

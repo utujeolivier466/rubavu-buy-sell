@@ -4,21 +4,21 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { FeaturedProperties } from './components/FeaturedProperties';
+import { RecentlySoldTeaser } from './components/RecentlySoldTeaser';
 import { WhyInvest } from './components/WhyInvest';
-//import { PropertySpecialties } from './components/PropertySpecialties';
 import { Testimonials } from './components/Testimonials';
 import { CTABanner } from './components/CTABanner';
 import { Footer } from './components/Footer';
 
-// CASE MATCHED IMPORTS (using running file system cases)
+// FIXED CASE-MATCHED IMPORTS
 import SEOHead from './components/Seohead';
 import Propertiespage from './components/Propertiespage';
 import PropertyDetailPage from './components/PropertyDetailPage';
 import Contactpage from './components/Contactpage';
-import SellPropertyPage from './components/Sellpropertypage'; // Removed explicit .tsx extension (standard practice)
+import SellPropertyPage from './components/Sellpropertypage'; 
 import { AuthProvider } from './context/Authcontext';
 import ProtectedRoute from './components/ProtectedRoute';
-import OwnerRoute from './components/Ownerroute'; // New import
+import OwnerRoute from './components/Ownerroute'; 
 import Adminlogin from './components/Adminlogin';
 import AdminResetPassword from './components/Adminresetpassword';
 import Adminlayout from './components/Adminlayout';
@@ -38,7 +38,8 @@ import AdminBlog from './components/Adminblog';
 import AdminBlogForm from './components/Adminblogform';
 import AdminAgents from './components/Adminagents';
 import AdminAgentForm from './components/Adminagentform';
-import AdminUsers from './components/Adminusers'; // New import (Ensure this file is created/uploaded as "AdminUsers")
+import AdminUsers from './components/Adminusers'; 
+import RecentlySoldPage from './components/Recentlysoldpage';
 
 function HomePage() {
   const location = useLocation();
@@ -63,7 +64,8 @@ function HomePage() {
       />
       <HeroSection />
       <FeaturedProperties />
-      <WhyInvest />    
+      <RecentlySoldTeaser />
+      <WhyInvest />
       <Testimonials />
       <CTABanner />
     </>
@@ -72,7 +74,7 @@ function HomePage() {
 
 function PublicLayout() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#ffffff]">
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -86,6 +88,7 @@ function PublicLayout() {
         <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/faq" element={<FAQPage />} />
+        <Route path="/recently-sold" element={<RecentlySoldPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
@@ -99,11 +102,11 @@ function App() {
       <HelmetProvider>
         <AuthProvider>
           <Routes>
-            {/* Admin login has no public header/footer */}
+            {/* Admin login routes without general layout frames */}
             <Route path="/admin/login" element={<Adminlogin />} />
             <Route path="/admin/reset-password" element={<AdminResetPassword />} />
 
-            {/* Protected admin dashboard */}
+            {/* Protected dashboard system */}
             <Route
               path="/admin"
               element={
@@ -123,12 +126,10 @@ function App() {
               <Route path="agents" element={<AdminAgents />} />
               <Route path="agents/new" element={<AdminAgentForm />} />
               <Route path="agents/:id/edit" element={<AdminAgentForm />} />
-              
-              {/* New Owner Protected Route */}
               <Route path="users" element={<OwnerRoute><AdminUsers /></OwnerRoute>} />
             </Route>
 
-            {/* Public site */}
+            {/* Public consumer entryway */}
             <Route path="/*" element={<PublicLayout />} />
           </Routes>
         </AuthProvider>
