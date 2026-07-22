@@ -4,7 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { FeaturedProperties } from './components/FeaturedProperties';
-import { RecentlySoldTeaser } from './components/RecentlySoldTeaser';
+import { RecentlySoldTeaser } from './components/Recentlysoldteaser';
 import { WhyInvest } from './components/WhyInvest';
 import { Testimonials } from './components/Testimonials';
 import { CTABanner } from './components/CTABanner';
