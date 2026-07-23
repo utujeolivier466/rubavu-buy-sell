@@ -60,7 +60,7 @@ export function Header() {
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 bg-[#D56000] hover:bg-[#D56000] text-white px-3 lg:px-4 py-2 rounded-lg transition-colors text-sm"
+              className="flex items-center gap-2 bg-[#0D4F2A] hover:bg-[#0A3B21] text-white px-3 lg:px-4 py-2 rounded-lg transition-colors text-sm"
             >
               <MessageCircle className="w-4 h-4" />
               <span className="hidden lg:inline">Chat via WhatsApp</span>
@@ -109,10 +109,12 @@ export function Header() {
         href={whatsappUrl}
         target="_blank"
         rel="noreferrer"
-        className="fixed bottom-6 right-6 bg-[#0D4F2A] text-white p-4 rounded-full shadow-lg z-50 hover:bg-[#0A3B21] transition-colors"
+        className="fixed bottom-6 right-6 z-50 hover:scale-105 transition-transform"
         aria-label="Chat via WhatsApp"
       >
-        <MessageCircle className="w-6 h-6" />
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] p-2 shadow-lg ring-2 ring-white">
+          <img src="/watsap.png" alt="WhatsApp" className="h-full w-full object-contain" />
+        </div>
       </a>
     </header>
   );

@@ -313,8 +313,8 @@ function SellPropertyPage() {
             </div>
             <Progress
               value={progressValue}
-              className="h-2 rounded-full bg-yellow-200"
-              indicatorClassName="bg-yellow-600"
+              className="h-2 rounded-full bg-[#FDE7D8]"
+              indicatorClassName="bg-[#D56000]"
             />
 
             {status === 'success' ? (
@@ -325,7 +325,7 @@ function SellPropertyPage() {
                 </p>
                 <button
                   onClick={() => setStatus('idle')}
-                  className="text-yellow-600 hover:text-yellow-700 font-medium"
+                  className="font-medium text-[#D56000] hover:text-[#A94A00]"
                 >
                   Submit another property
                 </button>
@@ -352,7 +352,7 @@ function SellPropertyPage() {
                     <select
                       value={requestType}
                       onChange={(e) => setRequestType(e.target.value as RequestType)}
-                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#D56000]"
                     >
                       <option value="Sale">Sell</option>
                       <option value="Rent">Rent</option>
@@ -363,7 +363,7 @@ function SellPropertyPage() {
                     <select
                       value={propertyType}
                       onChange={(e) => setPropertyType(e.target.value as PropertyType)}
-                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#D56000]"
                     >
                       <option value="House">House</option>
                       <option value="Apartment">Apartment</option>
@@ -379,7 +379,7 @@ function SellPropertyPage() {
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="e.g. Gisenyi, Rubavu"
-                    className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#D56000]"
                   />
                 </div>
 
@@ -389,7 +389,7 @@ function SellPropertyPage() {
                     <select
                       value={bedrooms}
                       onChange={(e) => setBedrooms(e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#D56000]"
                     >
                       {bedroomOptions.map((option) => (
                         <option key={option} value={option}>
@@ -403,7 +403,7 @@ function SellPropertyPage() {
                     <select
                       value={bathrooms}
                       onChange={(e) => setBathrooms(e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#D56000]"
                     >
                       {bathroomOptions.map((option) => (
                         <option key={option} value={option}>
@@ -422,7 +422,7 @@ function SellPropertyPage() {
                     onChange={(e) => setPrice(e.target.value)}
                     placeholder="e.g. 28000000"
                     min={0}
-                    className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#D56000]"
                   />
                 </div>
 
@@ -432,7 +432,7 @@ function SellPropertyPage() {
                     value={upi}
                     onChange={(e) => setUpi(e.target.value)}
                     placeholder="Unique Parcel Identifier, if available"
-                    className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#D56000]"
                   />
                 </div>
 
@@ -443,7 +443,7 @@ function SellPropertyPage() {
                     onChange={(e) => setDescription(e.target.value)}
                     rows={5}
                     placeholder="Add features, condition, plot boundaries, nearby landmarks, or other details buyers should know."
-                    className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#D56000]"
                   />
                 </div>
 
@@ -506,7 +506,7 @@ function SellPropertyPage() {
                       <input
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
-                        className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                        className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#D56000]"
                       />
                     </div>
                     <div>
@@ -518,7 +518,7 @@ function SellPropertyPage() {
                         placeholder="+250 7xx xxx xxx"
                         inputMode="tel"
                         autoComplete="tel"
-                        className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                        className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#D56000]"
                       />
                       {phoneError ? <p className="mt-2 text-sm text-red-600">{phoneError}</p> : null}
                     </div>
@@ -530,7 +530,7 @@ function SellPropertyPage() {
                       value={email}
                       onChange={handleEmailChange}
                       placeholder="you@example.com"
-                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#D56000]"
                     />
                     {emailError ? <p className="mt-2 text-sm text-red-600">{emailError}</p> : null}
                   </div>
@@ -541,7 +541,7 @@ function SellPropertyPage() {
                 <button
                   type="submit"
                   disabled={!isValid || status === 'submitting'}
-                  className="w-full bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-6 py-3 rounded-full font-semibold text-sm transition-colors"
+                  className="w-full bg-[#D56000] hover:bg-[#A94A00] disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-6 py-3 rounded-full font-semibold text-sm transition-colors"
                 >
                   {status === 'submitting' ? 'Submitting…' : 'Submit Property'}
                 </button>
@@ -591,7 +591,7 @@ function SellPropertyPage() {
             )}
             <Link
               to="/properties"
-              className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-yellow-500  px-4 py-3 text-sm font-semibold text-white transition hover:bg-yellow-600"
+              className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-[#0D4F2A] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0A3B21]"
             >
               Browse all listings
             </Link>
