@@ -1,7 +1,4 @@
 
-  # Create Wireframe
-
-  This is a code bundle for Create Wireframe. The original project is available at https://www.figma.com/design/LxnZIx55bf2PM3oAXHd47c/Create-Wireframe.
 
   ## Running the code
 
