@@ -30,12 +30,12 @@ export function CTABanner() {
             href={whatsappUrl}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-[#D56000] hover:bg-[#D56000] text-white text-base sm:text-lg rounded-lg transition-colors shadow-lg"
+            className="flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4  bg-[#0D4F2A] hover:bg-[#0A3B21] text-white text-base sm:text-lg rounded-lg transition-colors shadow-lg"
           >
-            <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
+            <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" /> 
             <span>Chat via WhatsApp Now</span>
           </a>
-          <button className="flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-white hover:bg-gray-100 text-gray-900 text-base sm:text-lg rounded-lg transition-colors shadow-lg">
+          <button className="flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-[#D56000] hover:bg-[#A84A00] text-white text-base sm:text-lg rounded-lg transition-colors shadow-lg">
             <Video className="w-5 h-5 sm:w-6 sm:h-6" />
             <span>Book a Site Visit</span>
           </button>
