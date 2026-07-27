@@ -167,7 +167,7 @@ export function FeaturedProperties() {
         property_id: property.id,
         source: 'whatsapp',
         message: `Quick inquiry from homepage: ${property.title}`,
-      }).then(({ error }) => {
+      }).then(({ error }: { error: any }) => {
         if (error) console.error('Inquiry log failed (non-blocking):', error);
       });
     }

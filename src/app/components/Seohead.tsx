@@ -9,7 +9,7 @@ interface SEOHeadProps {
 }
 
 const SITE_NAME = 'Rubavu Buy and Sell Ltd';
-const DEFAULT_IMAGE = '/og-image.png';
+const DEFAULT_IMAGE = '/heroimage.jpeg';
 const SITE_URL = 'https://rubavu-buy-sell.vercel.app';
 
 function SEOHead({ title, description, image, url, type = 'website' }: SEOHeadProps) {
@@ -29,6 +29,7 @@ function SEOHead({ title, description, image, url, type = 'website' }: SEOHeadPr
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={ogImage} />
+      <meta property="og:image:alt" content={fullTitle} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:site_name" content={SITE_NAME} />
 
@@ -37,6 +38,7 @@ function SEOHead({ title, description, image, url, type = 'website' }: SEOHeadPr
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
+      <meta name="twitter:image:alt" content={fullTitle} />
     </Helmet>
   );
 }
