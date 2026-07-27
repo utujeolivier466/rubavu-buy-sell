@@ -618,7 +618,7 @@ function PropertyDetailPage() {
             {related.map((p) => (
               <Link
                 key={p.id}
-                to={`/property/${p.slug}`}
+                to={`/properties/${p.slug}`}
                 className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
               >
                 <div className="h-40 bg-gray-100">
