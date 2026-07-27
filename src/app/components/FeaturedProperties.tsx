@@ -257,14 +257,14 @@ export function FeaturedProperties() {
                   <div className="flex gap-2">
                     <Link
                       to={`/properties/${property.slug}`}
-                      className="flex-1 px-3 sm:px-4 py-2 bg-[#0D4F2A] hover:bg-[#0A3B21] text-white rounded-lg transition-colors text-xs sm:text-sm text-center"
+                      className="flex-1 px-3 sm:px-4 py-2 bg-[#D56000] hover:bg-[#A84A00] text-white rounded-lg transition-colors text-xs sm:text-sm text-center"
                     >
                       View Details
                     </Link>
                     {!isUnavailable && (
                       <button
                         onClick={() => handleQuickWhatsApp(property)}
-                        className="px-3 sm:px-4 py-2 bg-[#D56000] hover:bg-[#D56000] text-white rounded-lg transition-colors"
+                        className="px-3 sm:px-4 py-2 bg-[#0D4F2A] hover:bg-[#0A3B21] text-white rounded-lg transition-colors"
                       >
                         <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
