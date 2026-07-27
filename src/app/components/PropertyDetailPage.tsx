@@ -467,16 +467,16 @@ function PropertyDetailPage() {
               <button
                 onClick={() => handleShare('whatsapp')}
                 title="Share on WhatsApp"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50"
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 overflow-hidden"
               >
-                <IconShare />
+                <img src="/watsap.png" alt="WhatsApp" className="h-5 w-5 object-contain" />
               </button>
               <button
                 onClick={() => handleShare('facebook')}
                 title="Share on Facebook"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50"
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 overflow-hidden"
               >
-                <IconShare />
+                <img src="/facebook.png" alt="Facebook" className="h-5 w-5 object-contain" />
               </button>
               <button
                 onClick={() => handleShare('copy')}
