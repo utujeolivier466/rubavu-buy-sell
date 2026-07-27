@@ -13,13 +13,13 @@ function NotFoundPage() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             to="/"
-            className="flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors"
+            className="flex items-center justify-center gap-2 bg-[#0D4F2A] hover:bg-[#0A3B21] text-white px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors"
           >
             <Home className="w-4 h-4" /> Back to Home
           </Link>
           <Link
             to="/properties"
-            className="flex items-center justify-center gap-2 border-2 border-teal-600 text-[#0D4F2A] hover:bg-[#0D4F2A]/10 px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors"
+            className="flex items-center justify-center gap-2 border-2  text-white bg-[#D56000] px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors"
           >
             <Search className="w-4 h-4" /> Browse Properties
           </Link>
