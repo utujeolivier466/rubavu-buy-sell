@@ -233,6 +233,9 @@ function PropertyDetailPage() {
     property.has_garden && 'Garden',
   ].filter((v): v is string => Boolean(v));
 
+  const seoImage = images[0] || property.cover_image_url || undefined;
+  const seoDescription = (property.description || property.location_text || '').slice(0, 160);
+
   const utilityList = [
     property.has_electricity && 'Electricity',
     property.has_water && 'Water',
@@ -259,7 +262,8 @@ function PropertyDetailPage() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <SEOHead
         title={property.title}
-        description={(property.description || property.location_text || '').slice(0, 160)}
+        description={seoDescription}
+        image={seoImage}
         url={`/properties/${property.slug}`}
         type="article"
       />
