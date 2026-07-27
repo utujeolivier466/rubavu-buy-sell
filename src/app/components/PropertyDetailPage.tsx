@@ -4,8 +4,10 @@ import { supabase } from '../../../lib/libsupabaseClient';
 import type { Property } from '../../../lib/types';
 import SEOHead from './Seohead';
 
-type InquirySource = 'site_visit';
-type SharePlatform = 'copy' | 'facebook';
+const WHATSAPP_NUMBER = '250782424382';
+
+type InquirySource = 'whatsapp' | 'site_visit';
+type SharePlatform = 'copy' | 'whatsapp' | 'facebook';
 
 // --- Small inline icons (no new dependency required) ---
 function IconId() { return <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h7"/></svg>; }
@@ -119,6 +121,15 @@ function PropertyDetailPage() {
     });
   }
 
+  function handleWhatsAppInquiry() {
+    if (!property) return;
+    logInquiry('whatsapp');
+    const message = encodeURIComponent(
+      `Hi, I'm interested in "${property.title}" (${property.location_text}) listed at ${property.currency} ${Number(property.price).toLocaleString()}. Is it still available?`
+    );
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+  }
+
   function handleBookSiteVisit() {
     if (!property) return;
     logInquiry('site_visit');
@@ -136,6 +147,10 @@ function PropertyDetailPage() {
       navigator.clipboard.writeText(url);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+      return;
+    }
+    if (platform === 'whatsapp') {
+      window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
       return;
     }
     if (platform === 'facebook') {
@@ -557,6 +572,12 @@ function PropertyDetailPage() {
               </div>
             ) : (
               <>
+                <button
+                  onClick={handleWhatsAppInquiry}
+                  className="w-full bg-[#0D4F2A] hover:bg-[#0A3B21] text-white px-4 py-3 rounded-lg font-semibold text-sm"
+                >
+                  Chat via WhatsApp
+                </button>
                 <button
                   onClick={handleBookSiteVisit}
                   className="w-full bg-[#D56000] hover:bg-[#A84A00] text-white px-4 py-3 rounded-lg font-semibold text-sm"
