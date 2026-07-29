@@ -85,10 +85,11 @@ function PropertySearch() {
             className="border border-gray-300 rounded-lg p-2.5 sm:p-3 w-full text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#0D4F2A]"
           >
             <option>All Cities</option>
-            <option>Gisenyi</option>
-            <option>Rugerero</option>
-            <option>Buhaza</option>
-            <option>Kanembwe</option>
+            <option>Rubavu</option>
+            <option>Musanze</option>
+            <option>Karongi</option>
+            <option>Nyabihu</option>
+            <option>Rutsiro</option>
           </select>
 
           <div className="flex gap-1 sm:gap-2 items-center overflow-x-auto pb-2 sm:pb-0">
@@ -147,6 +148,8 @@ function PropertySearch() {
               <option>Apartment</option>
               <option>House</option>
               <option>Land</option>
+              <option>Lakefront</option>
+              <option>Comercial</option>
             </select>
 
             <select
