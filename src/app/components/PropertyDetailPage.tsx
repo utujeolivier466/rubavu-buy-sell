@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { Property } from '../../../lib/types';
 import SEOHead from './Seohead';
+import { SoldStamp } from './Soldstamp';
 
 const WHATSAPP_NUMBER = '250782424382';
 
@@ -242,18 +243,19 @@ function PropertyDetailPage() {
     property.has_internet && 'Internet',
   ].filter((v): v is string => Boolean(v));
 
-  const isUnavailable = property.status === 'Sold' || property.status === 'Rented';
+const isUnavailable = property.status === 'Sold' || property.status === 'Rented';
+  const isSold = property.status === 'Sold';
 
-  const statusBadge =
-    property.status === 'Sold'
-      ? { label: 'Sold', className: 'bg-[#0D4F2A] text-white' }
-      : property.status === 'Rented'
-      ? { label: 'Rented', className: 'bg-[#D56000] text-white' }
-      : property.status === 'Pending'
-      ? { label: 'Pending', className: 'bg-[#0D4F2A]/10 text-[#0D4F2A] border border-[#0D4F2A]/20' }
-      : property.listing_type === 'Rent'
-      ? { label: 'For Rent', className: 'bg-[#D56000] text-white' }
-      : { label: 'For Sale', className: 'bg-[#D56000] text-white' };
+  // Sold is shown as an overlay stamp on the gallery photo, not a title-row badge.
+  const statusBadge = isSold
+    ? null
+    : property.status === 'Rented'
+    ? { label: 'Rented', className: 'bg-[#D56000] text-white' }
+    : property.status === 'Pending'
+    ? { label: 'Pending', className: 'bg-[#0D4F2A]/10 text-[#0D4F2A] border border-[#0D4F2A]/20' }
+    : property.listing_type === 'Rent'
+    ? { label: 'For Rent', className: 'bg-[#D56000] text-white' }
+    : { label: 'For Sale', className: 'bg-[#D56000] text-white' };
 
   // Display ID fallback — replace with a real display_id column when you add one
   const displayId = (property as any).display_id || `RB-${property.id.toString().slice(0, 8).toUpperCase()}`;
@@ -305,6 +307,11 @@ function PropertyDetailPage() {
                   className={`h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02] ${isUnavailable ? 'grayscale-[30%]' : ''}`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+                {isSold && (
+                  <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                    <SoldStamp />
+                  </div>
+                )}
                 {images.length > 1 && (
                   <>
                     <button
