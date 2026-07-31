@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle, MapPin, Maximize2 } from 'lucide-react';
 import { supabase } from '../../../lib/libsupabaseClient';
+import { SoldStamp } from './Soldstamp';
 
 const WHATSAPP_NUMBER = '250782424382';
 
@@ -207,8 +208,9 @@ export function FeaturedProperties() {
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-          {properties.map((property) => {
+{properties.map((property) => {
             const isUnavailable = property.status === 'Sold' || property.status === 'Rented';
+            const isSold = property.status === 'Sold';
             const badge = getBadge(property);
 
             return (
@@ -221,9 +223,15 @@ export function FeaturedProperties() {
                     decoding="async"
                     className={`w-full h-full object-cover hover:scale-105 transition-transform duration-300 ${isUnavailable ? 'grayscale-[40%]' : ''}`}
                   />
-                  <div className={`absolute top-3 right-3 text-sm font-semibold px-3 py-1.5 rounded-none uppercase tracking-wide shadow-md ${badge.className}`}>
-                    {badge.label}
-                  </div>
+                  {isSold ? (
+                    <div className="absolute inset-0 flex items-center justify-center z-10">
+                      <SoldStamp />
+                    </div>
+                  ) : (
+                    <div className={`absolute top-3 right-3 text-sm font-semibold px-3 py-1.5 rounded-none uppercase tracking-wide shadow-md ${badge.className}`}>
+                      {badge.label}
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-4 sm:p-5">
