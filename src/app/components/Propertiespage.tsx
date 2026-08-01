@@ -10,6 +10,7 @@ function Propertiespage() {
   const [suggested, setSuggested] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
 
   useEffect(() => {
     void fetchProperties();
@@ -42,6 +43,7 @@ function Propertiespage() {
     const sort = searchParams.get('sort');
     const features = searchParams.getAll('feature');
     const utilities = searchParams.getAll('utility');
+    const lakefront = searchParams.get('lakefront');
 
     if (listingType) query = query.eq('listing_type', listingType);
     if (city) query = query.eq('city', city);
@@ -51,6 +53,7 @@ function Propertiespage() {
     if (bathrooms) query = query.gte('bathrooms', Number(bathrooms));
     if (type) query = query.eq('property_type', type);
     if (minSize) query = query.gte('size_sqm', Number(minSize));
+    if (lakefront === 'true') query = query.eq('is_lakefront', true);
 
     if (q) {
       const sanitizedQuery = q

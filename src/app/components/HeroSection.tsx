@@ -6,6 +6,7 @@ type SortOption = 'newest' | 'price_asc' | 'price_desc';
 
 function PropertySearch() {
   const navigate = useNavigate();
+  const [isLakefront, setIsLakefront] = useState(false);
 
   const [tab, setTab] = useState<ListingTab>('sale');
   const [address, setAddress] = useState('');
@@ -44,6 +45,7 @@ function PropertySearch() {
     if (propertyType && propertyType !== 'All Types' && propertyType !== 'All') params.set('type', propertyType);
     if (zoning && zoning !== 'Any Zoning') params.set('zoning', zoning);
     if (minSize) params.set('min_size', minSize);
+    if (isLakefront) params.set('lakefront', 'true');
     if (sortBy !== 'newest') params.set('sort', sortBy);
     features.forEach((f) => params.append('feature', f.toLowerCase()));
     utilities.forEach((u) => params.append('utility', u.toLowerCase()));
@@ -227,20 +229,30 @@ function PropertySearch() {
             </button>
 
             <div className="flex gap-1.5 sm:gap-2 items-center overflow-x-auto pb-2 sm:pb-0">
-              {['All', 'Apartment', 'Commercial', 'House', 'Land'].map((f) => (
-                <button
-                  key={f}
-                  onClick={() => setPropertyType(f)}
-                  className={`px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-colors ${
-                    propertyType === f
-                      ? 'bg-[#0D4F2A] text-white'
-                      : 'bg-gray-100 hover:bg-gray-200'
-                  }`}
-                >
-                  {f}
-                </button>
-              ))}
-            </div>
+  {['All', 'Apartment', 'Commercial', 'House', 'Land'].map((f) => (
+    <button
+      key={f}
+      onClick={() => setPropertyType(f)}
+      className={`px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-colors ${
+        propertyType === f
+          ? 'bg-[#0D4F2A] text-white'
+          : 'bg-gray-100 hover:bg-gray-200'
+      }`}
+    >
+      {f}
+    </button>
+  ))}
+  <button
+    onClick={() => setIsLakefront((prev) => !prev)}
+    className={`px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-colors ${
+      isLakefront
+        ? 'bg-[#0D4F2A] text-white'
+        : 'bg-gray-100 hover:bg-gray-200'
+           }`}
+             >
+              Lakefront
+            </button>
+           </div>
           </div>
 
           <button
