@@ -62,12 +62,26 @@ const FAQS: FAQItem[] = [
 function FAQPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQS.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: typeof item.answer === 'string' ? item.answer : item.question,
+      },
+    })),
+  };
+
   return (
     <>
       <SEOHead
         title="Frequently Asked Questions"
         description="Answers to common questions about buying, selling, and renting property with Rubavu Buy and Sell Ltd in Rubavu District, Rwanda."
         url="/faq"
+        jsonLd={faqJsonLd}
       />
       <div className="max-w-3xl mx-auto px-4 py-10 sm:py-16">
         <div className="text-center mb-10">

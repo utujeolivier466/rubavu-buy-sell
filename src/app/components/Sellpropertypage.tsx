@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import { Progress } from './ui/progress';
+import SEOHead from './Seohead';
 
 // Set these to match your actual Supabase project
 const SUPABASE_URL = (import.meta as any).env.VITE_SUPABASE_URL;
@@ -292,6 +293,11 @@ function SellPropertyPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10 sm:py-16">
+      <SEOHead
+        title="Sell Your Property in Rubavu | List Your House, Land or Commercial Property"
+        description="List your house, land, apartment, or commercial property in Rubavu and Gisenyi. Reach serious buyers with a trusted local real estate team — no upfront commissions."
+        url="/sell-property"
+      />
       <div className="text-center mb-10">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">Sell Your Property</h1>
         <p className="text-gray-600 max-w-2xl mx-auto">

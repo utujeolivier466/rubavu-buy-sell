@@ -9,16 +9,16 @@ const rootDir = resolve(__dirname, '..');
 const distDir = resolve(rootDir, 'dist');
 const indexPath = resolve(distDir, 'index.html');
 
-const siteUrl = process.env.SITE_URL || 'https://rubavu-buy-sell.vercel.app';
+const siteUrl = process.env.SITE_URL || 'https://www.rubavubuyandsell.com';
 const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 function escapeHtml(value = '') {
   return String(value)
     .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
+    .replace(/</g, '<')
+    .replace(/>/g, '>')
+    .replace(/"/g, '"')
     .replace(/'/g, '&#39;');
 }
 
@@ -102,6 +102,31 @@ async function writeRoutePage(routePath, metadata, assetTags, generatedRoutes) {
   generatedRoutes.push(routePath);
 }
 
+async function writeSitemap(entries) {
+  const urls = entries
+    .map(({ loc, lastmod, changefreq, priority }) => {
+      return `  <url>
+    <loc>${escapeHtml(loc)}</loc>
+    ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+  </url>`;
+    })
+    .join('\n');
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>
+`;
+  await writeFile(resolve(distDir, 'sitemap.xml'), sitemap, 'utf8');
+  console.log(`Wrote sitemap.xml with ${entries.length} URLs.`);
+}
+
+function todayIso() {
+  return new Date().toISOString().slice(0, 10);
+}
+
 async function main() {
   try {
     const indexHtml = await readFile(indexPath, 'utf8');
@@ -166,6 +191,14 @@ async function main() {
         url: `${siteUrl}/sell-property`,
       },
       {
+        route: '/request-property',
+        title: 'Request a Property in Rubavu',
+        description: 'Tell us what you are looking for and our team will help find a matching property in Rubavu.',
+        image: '/heroimage.jpeg',
+        type: 'website',
+        url: `${siteUrl}/request-property`,
+      },
+      {
         route: '/faq',
         title: 'Frequently Asked Questions',
         description: 'Find answers about listings, buying, selling, investment advice, and the Rubavu property market.',
@@ -192,17 +225,23 @@ async function main() {
     ];
 
     for (const route of staticRoutes) {
-      if (route.route === '/') {
-        await writeRoutePage(route.route, route, assetTags, generatedRoutes);
-      } else {
-        await writeRoutePage(route.route, route, assetTags, generatedRoutes);
-      }
+      await writeRoutePage(route.route, route, assetTags, generatedRoutes);
     }
+
+    // Build sitemap entries
+    const sitemapEntries = staticRoutes.map((route) => ({
+      loc: `${siteUrl}${route.route === '/' ? '/' : route.route}`,
+      changefreq: ['/', '/properties', '/blog'].includes(route.route) ? 'daily' : 'monthly',
+      priority: route.route === '/' ? '1.0' : route.route === '/properties' ? '0.9' : '0.6',
+      lastmod: todayIso(),
+    }));
+
+    const sitemapDynamic = [];
 
     if (supabase) {
       const { data: propertyData, error: propertyError } = await supabase
         .from('properties')
-        .select('slug,title,description,cover_image_url,image_urls,location_text')
+        .select('slug,title,description,cover_image_url,image_urls,location_text,updated_at')
         .order('created_at', { ascending: false });
 
       if (propertyError) {
@@ -217,12 +256,19 @@ async function main() {
             url: `${siteUrl}/properties/${property.slug}`,
             type: 'article',
           }, assetTags, generatedRoutes);
+
+          sitemapDynamic.push({
+            loc: `${siteUrl}/properties/${property.slug}`,
+            changefreq: 'weekly',
+            priority: '0.8',
+            lastmod: property.updated_at ? property.updated_at.slice(0, 10) : todayIso(),
+          });
         }
       }
 
       const { data: blogData, error: blogError } = await supabase
         .from('blog_posts')
-        .select('slug,title,excerpt,cover_image_url')
+        .select('slug,title,excerpt,cover_image_url,updated_at')
         .eq('published', true)
         .order('published_at', { ascending: false });
 
@@ -238,9 +284,18 @@ async function main() {
             url: `${siteUrl}/blog/${post.slug}`,
             type: 'article',
           }, assetTags, generatedRoutes);
+
+          sitemapDynamic.push({
+            loc: `${siteUrl}/blog/${post.slug}`,
+            changefreq: 'monthly',
+            priority: '0.7',
+            lastmod: post.updated_at ? post.updated_at.slice(0, 10) : todayIso(),
+          });
         }
       }
     }
+
+    await writeSitemap([...sitemapEntries, ...sitemapDynamic]);
 
     console.log(`Generated ${generatedRoutes.length} social preview page(s).`);
   } catch (error) {
@@ -249,3 +304,4 @@ async function main() {
 }
 
 main();
+
