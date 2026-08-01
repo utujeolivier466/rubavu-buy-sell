@@ -116,8 +116,8 @@ function RequestPropertyPage() {
   return (
     <>
       <SEOHead
-        title="Request a Property"
-        description="Tell us what you're looking for and our team will help you find it — including off-market properties not yet listed."
+        title="Request a Property in Rubavu | Find Houses, Land & Waterfront"
+        description="Looking for a specific property in Rubavu? Tell us your requirements and our team will find matching houses, land, apartments, and waterfront properties — including off-market listings."
         url="/request-property"
       />
       <div className="max-w-7xl mx-auto px-4 py-10 sm:py-16">

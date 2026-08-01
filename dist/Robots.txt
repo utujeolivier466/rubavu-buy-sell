@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /admin/login
 
-Sitemap: https://rubavubuysell.com/sitemap.xml
+Sitemap: https://www.rubavubuyandsell.com/sitemap.xml
+

@@ -6,6 +6,7 @@ import { HeroSection } from './components/HeroSection';
 import { FeaturedProperties } from './components/FeaturedProperties';
 import { WhyInvest } from './components/WhyInvest';
 //import { PropertySpecialties } from './components/PropertySpecialties';
+//import { SeoContentSection } from './components/SeoContentSection';
 import { Testimonials } from './components/Testimonials';
 import { CTABanner } from './components/CTABanner';
 import { Footer } from './components/Footer';

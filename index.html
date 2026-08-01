@@ -6,24 +6,46 @@
     <title>Rubavu Buy and Sell | Your Trusted Real Estate Partner</title>
     <meta name="description" content="Buy, sell, and invest in Lake Kivu waterfront properties in Rubavu, Rwanda. Title-ready listings, verified agents, and personalized investment guidance." />
 
+    <!-- SEO / Canonical -->
+    <link rel="canonical" href="https://www.rubavubuyandsell.com/" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#0D4F2A" />
+    <meta name="geo.region" content="RW-02" />
+    <meta name="geo.placename" content="Rubavu" />
+    <meta name="geo.position" content="-1.6783;29.2642" />
+    <meta name="ICBM" content="-1.6783, 29.2642" />
+    <meta name="google-site-verification" content="" />
+
     <!-- Favicon and OG image now live in /public so they survive the production build -->
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+
+    <!-- Open Graph -->
     <meta property="og:title" content="Rubavu Buy and Sell | Your Trusted Real Estate Partner" />
     <meta property="og:description" content="Buy, sell, and invest in Lake Kivu waterfront properties in Rubavu, Rwanda. Title-ready listings, verified agents, and personalized investment guidance." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://rubavu-buy-sell.vercel.app/" />
-    <meta property="og:image" content="https://rubavu-buy-sell.vercel.app/heroimage.jpeg" />
+    <meta property="og:url" content="https://www.rubavubuyandsell.com/" />
+    <meta property="og:image" content="https://www.rubavubuyandsell.com/heroimage.jpeg" />
     <meta property="og:image:alt" content="Rubavu Buy and Sell property preview" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="Rubavu Buy and Sell" />
+    <meta property="og:locale" content="en_RW" />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Rubavu Buy and Sell | Your Trusted Real Estate Partner" />
     <meta name="twitter:description" content="Buy, sell, and invest in Lake Kivu waterfront properties in Rubavu, Rwanda. Title-ready listings, verified agents, and personalized investment guidance." />
-    <meta name="twitter:image" content="https://rubavu-buy-sell.vercel.app/heroimage.jpeg" />
+    <meta name="twitter:image" content="https://www.rubavubuyandsell.com/heroimage.jpeg" />
     <meta name="twitter:image:alt" content="Rubavu Buy and Sell property preview" />
 
-    
-    <!-- Get your Measurement ID at analytics.google.com, then add
-         VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX to your .env file -->
+    <!-- Performance -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Analytics (Vite env injection: set VITE_GA_MEASUREMENT_ID in Vercel env vars)
+         Script only does something when the env var is set. -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA_MEASUREMENT_ID%"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -32,6 +54,39 @@
       gtag('config', '%VITE_GA_MEASUREMENT_ID%');
     </script>
 
+    <!-- Structured Data: Real Estate Agent -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "RealEstateAgent",
+      "name": "Rubavu Buy and Sell Ltd",
+      "url": "https://www.rubavubuyandsell.com/",
+      "logo": "https://www.rubavubuyandsell.com/favicon.png",
+      "image": "https://www.rubavubuyandsell.com/heroimage.jpeg",
+      "description": "Real estate company in Rubavu District, Rwanda. Buy, sell, and invest in houses, land, apartments, and commercial properties around Lake Kivu and Gisenyi.",
+      "telephone": "+250782424382",
+      "email": "info@rubavubuyandsell.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Habib Center, 1st Floor",
+        "addressLocality": "Gisenyi",
+        "addressRegion": "Rubavu District, Western Province",
+        "addressCountry": "RW"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -1.6783,
+        "longitude": 29.2642
+      },
+      "areaServed": ["Rubavu", "Gisenyi", "Musanze", "Karongi", "Nyabihu", "Rutsiro"],
+      "sameAs": [
+        "https://www.facebook.com/p/Rubavu-buy-and-sell-Ltd-100054451151237/",
+        "https://www.instagram.com/rubavu_real_estate",
+        "https://www.tiktok.com/@rubavu_real_estate",
+        "https://youtube.com/@Rubavurealestate"
+      ]
+    }
+    </script>
   </head>
 
   <body>
@@ -39,3 +94,4 @@
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+

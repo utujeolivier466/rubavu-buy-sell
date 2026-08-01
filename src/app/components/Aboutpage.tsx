@@ -65,6 +65,35 @@ function AboutPage() {
         title="About Us"
         description="Rubavu Buy and Sell Ltd — a professional real estate company in Rubavu District, Rwanda, helping clients buy, sell, and invest with integrity and transparency."
         url="/about"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'RealEstateAgent',
+          name: 'Rubavu Buy and Sell Ltd',
+          url: 'https://www.rubavubuyandsell.com/',
+          logo: 'https://www.rubavubuyandsell.com/favicon.png',
+          image: 'https://www.rubavubuyandsell.com/heroimage.jpeg',
+          description: 'Real estate company in Rubavu District, Rwanda. Buy, sell, and invest in houses, land, apartments, and commercial properties around Lake Kivu and Gisenyi.',
+          telephone: '+250782424382',
+          email: 'info@rubavubuyandsell.com',
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: 'Habib Center, 1st Floor',
+            addressLocality: 'Gisenyi',
+            addressRegion: 'Rubavu District, Western Province',
+            addressCountry: 'RW',
+          },
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: -1.6783,
+            longitude: 29.2642,
+          },
+          sameAs: [
+            'https://www.facebook.com/p/Rubavu-buy-and-sell-Ltd-100054451151237/',
+            'https://www.instagram.com/rubavu_real_estate',
+            'https://www.tiktok.com/@rubavu_real_estate',
+            'https://youtube.com/@Rubavurealestate',
+          ],
+        }}
       />
 
       {/* Hero */}

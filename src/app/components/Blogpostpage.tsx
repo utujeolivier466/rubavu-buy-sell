@@ -64,13 +64,44 @@ function BlogPostPage() {
     };
   }, [slug]);
 
+  const articleJsonLd = post
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: post.title,
+        description: post.excerpt || '',
+        image: post.cover_image_url
+          ? post.cover_image_url.startsWith('http')
+            ? post.cover_image_url
+            : `https://www.rubavubuyandsell.com${post.cover_image_url}`
+          : 'https://www.rubavubuyandsell.com/heroimage.jpeg',
+        datePublished: post.published_at || post.created_at,
+        dateModified: post.updated_at || post.created_at,
+        author: {
+          '@type': 'Person',
+          name: post.author_name || 'Rubavu Buy and Sell',
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Rubavu Buy and Sell Ltd',
+          logo: {
+            '@type': 'ImageObject',
+            url: 'https://www.rubavubuyandsell.com/favicon.png',
+          },
+        },
+        mainEntityOfPage: `https://www.rubavubuyandsell.com/blog/${post.slug}`,
+      }
+    : undefined;
+
   return (
     <>
       <SEOHead
         title={post?.title || 'Blog Post'}
         description={post?.excerpt || 'Read the latest updates and insights from Rubavu Buy and Sell Ltd.'}
         url={slug ? `/blog/${slug}` : '/blog'}
-        image={post?.cover_image_url}
+        image={post?.cover_image_url ?? undefined}
+        type="article"
+        jsonLd={articleJsonLd}
       />
       <section className="min-h-[60vh] bg-gray-50 px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl rounded-3xl bg-white p-8 shadow-sm">

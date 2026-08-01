@@ -110,13 +110,28 @@ function Propertiespage() {
 
   const activeFilterCount = Array.from(searchParams.keys()).length;
 
+  const listingsJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Properties for Sale and Rent in Rubavu',
+    url: 'https://www.rubavubuyandsell.com/properties',
+    itemListElement: properties.slice(0, 10).map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `https://www.rubavubuyandsell.com/properties/${p.slug}`,
+      name: p.title,
+      image: p.cover_image_url || (p.image_urls && p.image_urls[0]) || undefined,
+    })),
+  };
+
   return (
     <>
       <SEOHead
-        title="Available Properties"
-        description="Browse available properties for sale and rent in Rubavu. Filter by city, price, bedrooms, amenities, and more."
+        title="Properties for Sale & Rent in Rubavu | Houses, Land & Waterfront"
+        description="Browse title-ready houses, land, apartments, and Lake Kivu waterfront properties for sale and rent in Rubavu, Gisenyi, Musanze, and across Rwanda."
         url="/properties"
         type="website"
+        jsonLd={listingsJsonLd}
       />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">

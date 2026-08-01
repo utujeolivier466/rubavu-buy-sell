@@ -37,7 +37,7 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <Globe className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 text-[#D56000]" />
-                <a href="https://www.rubavubuyandsell.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#D56000] transition-colors">
+                <a href="https://www.rubavubuyandsell.com" className="hover:text-[#D56000] transition-colors">
                   www.rubavubuyandsell.com
                 </a>
               </div>

@@ -260,6 +260,36 @@ const isUnavailable = property.status === 'Sold' || property.status === 'Rented'
   // Display ID fallback — replace with a real display_id column when you add one
   const displayId = (property as any).display_id || `RB-${property.id.toString().slice(0, 8).toUpperCase()}`;
 
+  const propertyJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateListing',
+    name: property.title,
+    description: property.description || property.location_text || '',
+    image: images.length > 0 ? images : undefined,
+    url: `https://www.rubavubuyandsell.com/properties/${property.slug}`,
+    datePosted: property.created_at,
+    offers: {
+      '@type': 'Offer',
+      price: Number(property.price),
+      priceCurrency: property.currency === 'RWF' ? 'RWF' : property.currency || 'RWF',
+      availability: property.status === 'Available' ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: property.location_text || property.city || 'Rubavu',
+      addressCountry: 'RW',
+    },
+    ...(property.latitude && property.longitude
+      ? {
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: property.latitude,
+            longitude: property.longitude,
+          },
+        }
+      : {}),
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <SEOHead
@@ -268,6 +298,7 @@ const isUnavailable = property.status === 'Sold' || property.status === 'Rented'
         image={seoImage}
         url={`/properties/${property.slug}`}
         type="article"
+        jsonLd={propertyJsonLd}
       />
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-4 flex flex-wrap items-center gap-1">
