@@ -16,6 +16,7 @@ export interface Property {
   property_type: 'Apartment' | 'Commercial' | 'House' | 'Land';
   listing_type: 'Sale' | 'Rent';
   status: 'Available' | 'Sold' | 'Rented' | 'Pending';
+  is_lakefront: boolean;
 
   price: number;
   currency: string;

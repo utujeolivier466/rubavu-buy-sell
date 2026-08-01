@@ -26,6 +26,7 @@ interface FormState {
   has_water: boolean;
   has_internet: boolean;
   youtube_url: string;
+  is_lakefront: boolean;
   is_featured: boolean;
   is_hot_deal: boolean;
   agent_id: string;
@@ -54,6 +55,7 @@ const EMPTY_FORM: FormState = {
   has_water: false,
   has_internet: false,
   youtube_url: '',
+  is_lakefront: false,
   is_featured: false,
   is_hot_deal: false,
   agent_id: '',
@@ -117,6 +119,7 @@ function AdminPropertyForm() {
       has_water: data.has_water || false,
       has_internet: data.has_internet || false,
       youtube_url: data.youtube_url || '',
+      is_lakefront: data.is_lakefront || false,
       is_featured: data.is_featured || false,
       is_hot_deal: data.is_hot_deal || false,
       agent_id: data.agent_id || '',
@@ -213,6 +216,7 @@ function AdminPropertyForm() {
       has_water: form.has_water,
       has_internet: form.has_internet,
       youtube_url: form.youtube_url.trim() || null,
+      is_lakefront: form.is_lakefront,
       is_featured: form.is_featured,
       is_hot_deal: form.is_hot_deal,
       agent_id: form.agent_id || null,
@@ -478,6 +482,15 @@ function AdminPropertyForm() {
             Featured on homepage
           </label>
         </div>
+        <label className="flex items-center gap-1.5 text-sm cursor-pointer">
+  <input
+    type="checkbox"
+    checked={form.is_lakefront}
+    onChange={(e) => updateField('is_lakefront', e.target.checked)}
+    className="w-4 h-4"
+  />
+  Lakefront Property
+</label>
 
         {/* Images */}
         <div>
