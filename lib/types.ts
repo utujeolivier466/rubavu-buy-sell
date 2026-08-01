@@ -89,6 +89,26 @@ export interface BlogPost {
   updated_at: string;
 }
 
+export type PropertyRequestStatus = 'new' | 'contacted' | 'matched' | 'closed';
+
+export interface PropertyRequest {
+  id: string;
+  request_type: 'Buy' | 'Rent';
+  property_type: 'Apartment' | 'Commercial' | 'House' | 'Land';
+  bedrooms?: number | null;
+  bathrooms?: number | null;
+  min_budget?: number | null;
+  max_budget?: number | null;
+  currency: string;
+  desired_location: string;
+  description?: string | null;
+  full_name: string;
+  phone: string;
+  email?: string | null;
+  status: PropertyRequestStatus;
+  created_at: string;
+}
+
 export type InquirySource = 'whatsapp' | 'site_visit' | 'contact_form' | 'roi_calculator';
 export type InquiryStatus = 'new' | 'contacted' | 'closed';
 

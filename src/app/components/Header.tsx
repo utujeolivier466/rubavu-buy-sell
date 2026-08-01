@@ -48,6 +48,7 @@ export function Header() {
             <button onClick={() => goToPage('/')} className={navButtonClass('/')}>Home</button>
             <button onClick={() => goToPage('/properties')} className={navButtonClass('/properties')}>Properties</button>
             <button onClick={() => goToPage('/sell-property')} className={navButtonClass('/sell-property')}>Sell Your Property</button>
+            <button onClick={() => goToPage('/request-property')} className={navButtonClass('/request-property')}>Request a Property</button>
             <button onClick={() => goToPage('/blog')} className={navButtonClass('/blog')}>Learning Center</button>
             <button onClick={() => goToPage('/about')} className={navButtonClass('/about')}>About Us</button>
             <button onClick={() => goToPage('/faq')} className={navButtonClass('/faq')}>FAQ</button>
@@ -83,6 +84,7 @@ export function Header() {
             <button onClick={() => goToPage('/')} className={`${navButtonClass('/')} py-2 text-sm text-left`}>Home</button>
             <button onClick={() => goToPage('/properties')} className={`${navButtonClass('/properties')} py-2 text-sm text-left`}>Properties</button>
             <button onClick={() => goToPage('/sell-property')} className={`${navButtonClass('/sell-property')} py-2 text-sm text-left`}>Sell Your Property</button>
+            <button onClick={() => goToPage('/request-property')} className={`${navButtonClass('/request-property')} py-2 text-sm text-left`}>Request a Property</button>
             <button onClick={() => goToPage('/blog')} className={`${navButtonClass('/blog')} py-2 text-sm text-left`}>Learning Center</button>
             <button onClick={() => goToPage('/about')} className={`${navButtonClass('/about')} py-2 text-sm text-left`}>About Us</button>
             <button onClick={() => goToPage('/faq')} className={`${navButtonClass('/faq')} py-2 text-sm text-left`}>FAQ</button>
@@ -95,7 +97,7 @@ export function Header() {
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-center gap-2 bg-[#D56000] text-white px-4 py-2 rounded-lg w-full text-sm"
+              className="flex items-center justify-center gap-2 bg-[#0D4F2A] text-white px-4 py-2 rounded-lg w-full text-sm"
             >
               <MessageCircle className="w-4 h-4" />
               <span>Chat via WhatsApp</span>

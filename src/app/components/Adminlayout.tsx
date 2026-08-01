@@ -32,6 +32,9 @@ function AdminLayout() {
       <NavLink to="/admin/blog" className={navLinkClass} onClick={() => setSidebarOpen(false)}>
         Blog
       </NavLink>
+      <NavLink to="/admin/property-requests" className={navLinkClass} onClick={() => setSidebarOpen(false)}>
+        Property Requests
+      </NavLink>
       <NavLink to="/admin/agents" className={navLinkClass} onClick={() => setSidebarOpen(false)}>
         Team / Agents
       </NavLink>

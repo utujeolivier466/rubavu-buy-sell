@@ -16,6 +16,8 @@ import Propertiespage from './components/Propertiespage';
 import PropertyDetailPage from './components/PropertyDetailPage';
 import Contactpage from './components/Contactpage';
 import SellPropertyPage from './components/Sellpropertypage'; // Removed explicit .tsx extension (standard practice)
+import RequestPropertyPage from './components/Requestpropertypage';
+import AdminPropertyRequests from './components/Adminpropertyrequests';
 import { AuthProvider } from './context/Authcontext';
 import ProtectedRoute from './components/ProtectedRoute';
 import OwnerRoute from './components/Ownerroute'; // New import
@@ -80,6 +82,7 @@ function PublicLayout() {
         <Route path="/properties/:slug" element={<PropertyDetailPage />} />
         <Route path="/contact" element={<Contactpage />} />
         <Route path="/sell-property" element={<SellPropertyPage />} />
+        <Route path="/request-property" element={<RequestPropertyPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/blog" element={<BlogListPage />} />
@@ -120,6 +123,7 @@ function App() {
               <Route path="blog" element={<AdminBlog />} />
               <Route path="blog/new" element={<AdminBlogForm />} />
               <Route path="blog/:id/edit" element={<AdminBlogForm />} />
+              <Route path="property-requests" element={<AdminPropertyRequests />} />
               <Route path="agents" element={<AdminAgents />} />
               <Route path="agents/new" element={<AdminAgentForm />} />
               <Route path="agents/:id/edit" element={<AdminAgentForm />} />

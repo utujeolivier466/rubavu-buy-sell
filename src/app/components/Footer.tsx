@@ -50,6 +50,7 @@ export function Footer() {
             <ul className="space-y-2 text-xs sm:text-sm">
               <li><a href="/properties" className="hover:text-[#D56000] transition-colors">Buy Property</a></li>
               <li><a href="/sell-property" className="hover:text-[#D56000] transition-colors">Sell Your Property</a></li>
+              <li><a href="/request-property" className="hover:text-[#D56000] transition-colors">Request a Property</a></li>
               <li><a href="/properties" className="hover:text-[#D56000] transition-colors">Property Listings</a></li>
               <li><a href="/contact" className="hover:text-[#D56000] transition-colors">Property Valuation</a></li>
               <li><a href="/contact" className="hover:text-[#D56000] transition-colors">Investment Advisory</a></li>
