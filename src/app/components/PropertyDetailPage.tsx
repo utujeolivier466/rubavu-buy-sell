@@ -339,7 +339,7 @@ const isUnavailable = property.status === 'Sold' || property.status === 'Rented'
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
                 {isSold && (
-                  <div className="absolute top-3 right-3 z-10 pointer-events-none">
+                  <div className="absolute top-1.5 right-1.5 z-10 pointer-events-none">
                     <SoldStamp size="small" />
                   </div>
                 )}
