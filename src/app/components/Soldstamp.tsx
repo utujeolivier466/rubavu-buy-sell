@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 /**
  * Photo overlay used to mark a property as Sold.
- * Tries /sold-icon.png first; if that 404s or fails to load,
+ * Uses the sold-icon1 asset when available; if it fails to load,
  * falls back to a rotated text ribbon so the state is never silently blank.
  */
 export function SoldStamp({ size = 'small' }: { size?: 'large' | 'small' }) {
@@ -21,7 +21,7 @@ export function SoldStamp({ size = 'small' }: { size?: 'large' | 'small' }) {
 
   return (
     <img
-      src="/sold-icon.png"
+      src="/sold-icon1.png"
       alt="Sold"
       onError={() => setImgError(true)}
       className={`${dims} object-contain opacity-90 select-none drop-shadow-md`}
