@@ -224,8 +224,8 @@ export function FeaturedProperties() {
                     className={`w-full h-full object-cover hover:scale-105 transition-transform duration-300 ${isUnavailable ? 'grayscale-[40%]' : ''}`}
                   />
                   {isSold ? (
-                    <div className="absolute inset-0 flex items-center justify-center z-10">
-                      <SoldStamp />
+                    <div className="absolute top-3 right-3 z-10 pointer-events-none">
+                      <SoldStamp size="small" />
                     </div>
                   ) : (
                     <div className={`absolute top-3 right-3 text-sm font-semibold px-3 py-1.5 rounded-none uppercase tracking-wide shadow-md ${badge.className}`}>

@@ -339,8 +339,8 @@ const isUnavailable = property.status === 'Sold' || property.status === 'Rented'
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
                 {isSold && (
-                  <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                    <SoldStamp />
+                  <div className="absolute top-3 right-3 z-10 pointer-events-none">
+                    <SoldStamp size="small" />
                   </div>
                 )}
                 {images.length > 1 && (

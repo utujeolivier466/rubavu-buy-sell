@@ -5,14 +5,14 @@ import { useState } from 'react';
  * Tries /sold-icon.png first; if that 404s or fails to load,
  * falls back to a rotated text ribbon so the state is never silently blank.
  */
-export function SoldStamp({ size = 'large' }: { size?: 'large' | 'small' }) {
+export function SoldStamp({ size = 'small' }: { size?: 'large' | 'small' }) {
   const [imgError, setImgError] = useState(false);
-  const dims = size === 'large' ? 'w-28 h-28 sm:w-36 sm:h-36' : 'w-20 h-20 sm:w-24 sm:h-24';
+  const dims = size === 'large' ? 'w-28 h-28 sm:w-36 sm:h-36' : 'w-16 h-16 sm:w-20 sm:h-20';
 
   if (imgError) {
     return (
       <div className="-rotate-12 select-none">
-        <span className="bg-red-700 text-white text-sm sm:text-base font-bold uppercase tracking-widest px-6 py-1.5 shadow-lg border-2 border-white/80">
+        <span className="bg-red-700 text-white text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] px-2.5 py-1 shadow-lg border-2 border-white/80 rounded-sm">
           Sold
         </span>
       </div>
@@ -24,7 +24,7 @@ export function SoldStamp({ size = 'large' }: { size?: 'large' | 'small' }) {
       src="/sold-icon.png"
       alt="Sold"
       onError={() => setImgError(true)}
-      className={`${dims} object-contain opacity-90 select-none`}
+      className={`${dims} object-contain opacity-90 select-none drop-shadow-md`}
       draggable={false}
     />
   );
