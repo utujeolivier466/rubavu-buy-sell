@@ -159,33 +159,127 @@ function AdminSubmissions() {
         <p className="text-gray-500 text-sm">No submissions in this view yet.</p>
       ) : (
         <div className="space-y-4">
-          {filtered.map((submission) => (
-            <div key={submission.id} className="bg-white border border-gray-200 rounded-lg p-5 flex flex-col sm:flex-row gap-4">
-              {/* Photos */}
-              <div className="flex gap-2 shrink-0 overflow-x-auto sm:w-40">
-                {submission.photo_urls?.length ? (
-                  submission.photo_urls.slice(0, 3).map((url) => (
-                    <img key={url} src={url} alt="" className="w-16 h-16 sm:w-full sm:h-16 object-cover rounded-lg shrink-0" />
-                  ))
-                ) : (
-                  <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-xs text-gray-400 shrink-0">
-                    No photos
-                  </div>
-                )}
-              </div>
+          <div className="hidden md:block">
+            {filtered.map((submission) => (
+              <div key={submission.id} className="bg-white border border-gray-200 rounded-lg p-5 flex flex-col sm:flex-row gap-4">
+                <div className="flex gap-2 shrink-0 overflow-x-auto sm:w-40">
+                  {submission.photo_urls?.length ? (
+                    submission.photo_urls.slice(0, 3).map((url) => (
+                      <img key={url} src={url} alt="" className="w-16 h-16 sm:w-full sm:h-16 object-cover rounded-lg shrink-0" />
+                    ))
+                  ) : (
+                    <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-xs text-gray-400 shrink-0">
+                      No photos
+                    </div>
+                  )}
+                </div>
 
-              {/* Details */}
-              <div className="flex-1">
-                <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
-                  <div>
-                    <p className="font-semibold text-gray-900">{submission.full_name}</p>
-                    <p className="text-sm text-gray-500">{submission.phone}</p>
+                <div className="flex-1">
+                  <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
+                    <div>
+                      <p className="font-semibold text-gray-900">{submission.full_name}</p>
+                      <p className="text-sm text-gray-500">{submission.phone}</p>
+                    </div>
+                    <select
+                      value={submission.status}
+                      onChange={(e) => updateStatus(submission.id, e.target.value as SubmissionStatus)}
+                      disabled={submission.status === 'converted'}
+                      className={`text-xs font-medium rounded-full px-2.5 py-1 border-0 focus:outline-none focus:ring-2 focus:ring-[#D56000] disabled:opacity-70 ${STATUS_STYLES[submission.status]}`}
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="reviewed">Reviewed</option>
+                      <option value="converted">Converted to Listing</option>
+                      <option value="rejected">Rejected</option>
+                    </select>
                   </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm text-gray-700 mb-3">
+                    <p><span className="text-gray-400">Location:</span> {submission.location_text}</p>
+                    <p><span className="text-gray-400">Price:</span> {submission.currency} {Number(submission.price).toLocaleString()}</p>
+                    <p><span className="text-gray-400">Type:</span> {submission.property_type} · {submission.listing_type || 'Sale'}</p>
+                    <p><span className="text-gray-400">Beds/Baths:</span> {submission.bedrooms ?? '—'} / {submission.bathrooms ?? '—'}</p>
+                    <p><span className="text-gray-400">Email:</span> {submission.email || '—'}</p>
+                    <p><span className="text-gray-400">UPI:</span> {submission.upi || '—'}</p>
+                  </div>
+                  {submission.description && (
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">{submission.description}</p>
+                  )}
+
+                  <div className="flex flex-wrap items-center gap-4 text-xs">
+                    <span className="text-gray-400">{new Date(submission.created_at).toLocaleDateString()}</span>
+                    <a
+                      href={`https://wa.me/${submission.phone.replace(/\D/g, '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#D56000] hover:text-[#A84A00] font-medium"
+                    >
+                      Message on WhatsApp
+                    </a>
+
+                    {submission.status === 'converted' && submission.properties ? (
+                      <Link
+                        to={`/properties/${submission.properties.slug}`}
+                        target="_blank"
+                        className="text-[#D56000] hover:text-[#A84A00] font-medium"
+                      >
+                        View Live Listing →
+                      </Link>
+                    ) : (
+                      <button
+                        onClick={() => handlePushLive(submission)}
+                        disabled={processingId === submission.id}
+                        className="bg-[#D56000] hover:bg-[#A84A00] disabled:bg-gray-300 text-white px-3 py-1.5 rounded-lg font-medium text-xs transition-colors"
+                      >
+                        {processingId === submission.id ? 'Pushing live…' : 'Push Live'}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="md:hidden space-y-3">
+            {filtered.map((submission) => (
+              <div key={submission.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                <div className="flex items-start gap-3">
+                  {submission.photo_urls?.length ? (
+                    <img src={submission.photo_urls[0]} alt="" className="w-16 h-16 rounded-lg object-cover bg-gray-100 shrink-0" />
+                  ) : (
+                    <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center text-[10px] text-gray-400 shrink-0">
+                      No photo
+                    </div>
+                  )}
+
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="font-semibold text-gray-900 truncate">{submission.full_name}</p>
+                        <p className="text-xs text-gray-500 truncate">{submission.location_text}</p>
+                      </div>
+                      <span className={`inline-flex items-center rounded-full px-2 py-1 text-[10px] font-medium ${STATUS_STYLES[submission.status]}`}>
+                        {submission.status}
+                      </span>
+                    </div>
+
+                    <div className="mt-2 text-xs text-gray-600 space-y-1">
+                      <p>{submission.phone}</p>
+                      <p>{submission.currency} {Number(submission.price).toLocaleString()}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {submission.description && (
+                  <p className="mt-3 text-sm text-gray-600 line-clamp-2">{submission.description}</p>
+                )}
+
+                <div className="mt-3">
+                  <label className="block text-[11px] font-medium text-gray-500 mb-1">Status</label>
                   <select
                     value={submission.status}
                     onChange={(e) => updateStatus(submission.id, e.target.value as SubmissionStatus)}
                     disabled={submission.status === 'converted'}
-                    className={`text-xs font-medium rounded-full px-2.5 py-1 border-0 focus:outline-none focus:ring-2 focus:ring-[#D56000] disabled:opacity-70 ${STATUS_STYLES[submission.status]}`}
+                    className={`w-full text-sm font-medium rounded-lg px-2.5 py-2 border focus:outline-none focus:ring-2 focus:ring-[#D56000] disabled:opacity-70 ${STATUS_STYLES[submission.status]}`}
                   >
                     <option value="pending">Pending</option>
                     <option value="reviewed">Reviewed</option>
@@ -194,50 +288,37 @@ function AdminSubmissions() {
                   </select>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm text-gray-700 mb-3">
-                  <p><span className="text-gray-400">Location:</span> {submission.location_text}</p>
-                  <p><span className="text-gray-400">Price:</span> {submission.currency} {Number(submission.price).toLocaleString()}</p>
-                  <p><span className="text-gray-400">Type:</span> {submission.property_type} · {submission.listing_type || 'Sale'}</p>
-                  <p><span className="text-gray-400">Beds/Baths:</span> {submission.bedrooms ?? '—'} / {submission.bathrooms ?? '—'}</p>
-                  <p><span className="text-gray-400">Email:</span> {submission.email || '—'}</p>
-                  <p><span className="text-gray-400">UPI:</span> {submission.upi || '—'}</p>
-                </div>
-                {submission.description && (
-                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">{submission.description}</p>
-                )}
-
-                <div className="flex flex-wrap items-center gap-4 text-xs">
-                  <span className="text-gray-400">{new Date(submission.created_at).toLocaleDateString()}</span>
+                <div className="mt-4 flex flex-wrap gap-2">
                   <a
                     href={`https://wa.me/${submission.phone.replace(/\D/g, '')}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#D56000] hover:text-[#A84A00] font-medium"
+                    className="flex-1 text-center text-[#D56000] hover:text-[#A84A00] font-medium text-sm py-2.5 rounded-lg border border-[#D56000]/20"
                   >
-                    Message on WhatsApp
+                    WhatsApp
                   </a>
 
                   {submission.status === 'converted' && submission.properties ? (
                     <Link
                       to={`/properties/${submission.properties.slug}`}
                       target="_blank"
-                      className="text-[#D56000] hover:text-[#A84A00] font-medium"
+                      className="flex-1 text-center bg-[#D56000] hover:bg-[#A84A00] text-white px-3 py-2.5 rounded-lg font-semibold text-sm"
                     >
-                      View Live Listing →
+                      View
                     </Link>
                   ) : (
                     <button
                       onClick={() => handlePushLive(submission)}
                       disabled={processingId === submission.id}
-                      className="bg-[#D56000] hover:bg-[#A84A00] disabled:bg-gray-300 text-white px-3 py-1.5 rounded-lg font-medium text-xs transition-colors"
+                      className="flex-1 text-center bg-[#D56000] hover:bg-[#A84A00] disabled:bg-gray-300 text-white px-3 py-2.5 rounded-lg font-semibold text-sm"
                     >
-                      {processingId === submission.id ? 'Pushing live…' : 'Push Live'}
+                      {processingId === submission.id ? 'Pushing…' : 'Push Live'}
                     </button>
                   )}
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
     </div>

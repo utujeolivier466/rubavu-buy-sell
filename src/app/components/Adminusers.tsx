@@ -142,64 +142,114 @@ function AdminUsers() {
       ) : error ? (
         <p className="text-sm text-red-600">{error}</p>
       ) : (
-        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr className="text-left text-gray-500">
-                <th className="px-4 py-3 font-medium">Email</th>
-                <th className="px-4 py-3 font-medium">Role</th>
-                <th className="px-4 py-3 font-medium">Last Sign In</th>
-                <th className="px-4 py-3 font-medium text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => {
-                const isSelf = user.id === session?.user.id;
-                return (
-                  <tr key={user.id} className="border-b border-gray-100 last:border-0">
-                    <td className="px-4 py-3 text-gray-900">
-                      {user.email} {isSelf && <span className="text-xs text-gray-400">(you)</span>}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
-                        user.role === 'owner' ? 'bg-[var(--color-brand-forest)] text-white' : 'bg-gray-100 text-gray-600'
-                      }`}>
-                        {user.role === 'owner' ? 'Owner' : 'Staff'}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-gray-500 text-xs">
-                      {user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString() : 'Never'}
-                    </td>
-                    <td className="px-4 py-3 text-right whitespace-nowrap">
-                      {!isSelf && (
-                        <>
-                          {isOwner && (
-                            <button
-                              onClick={() => handleToggleRole(user)}
-                              disabled={processingId === user.id}
-                              className="text-[var(--color-brand-forest)] hover:text-[var(--color-brand-forest)] font-medium text-xs mr-4 disabled:opacity-50"
-                            >
-                              {user.role === 'owner' ? 'Demote to Staff' : 'Promote to Owner'}
-                            </button>
-                          )}
-                          {isOwner && (
-                            <button
-                              onClick={() => handleRemove(user)}
-                              disabled={processingId === user.id}
-                              className="text-red-500 hover:text-red-600 font-medium text-xs disabled:opacity-50"
-                            >
-                              Remove
-                            </button>
-                          )}
-                        </>
+        <>
+          <div className="hidden md:block bg-white border border-gray-200 rounded-lg overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr className="text-left text-gray-500">
+                  <th className="px-4 py-3 font-medium">Email</th>
+                  <th className="px-4 py-3 font-medium">Role</th>
+                  <th className="px-4 py-3 font-medium">Last Sign In</th>
+                  <th className="px-4 py-3 font-medium text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user) => {
+                  const isSelf = user.id === session?.user.id;
+                  return (
+                    <tr key={user.id} className="border-b border-gray-100 last:border-0">
+                      <td className="px-4 py-3 text-gray-900">
+                        {user.email} {isSelf && <span className="text-xs text-gray-400">(you)</span>}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
+                          user.role === 'owner' ? 'bg-[var(--color-brand-forest)] text-white' : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          {user.role === 'owner' ? 'Owner' : 'Staff'}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-gray-500 text-xs">
+                        {user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString() : 'Never'}
+                      </td>
+                      <td className="px-4 py-3 text-right whitespace-nowrap">
+                        {!isSelf && (
+                          <>
+                            {isOwner && (
+                              <button
+                                onClick={() => handleToggleRole(user)}
+                                disabled={processingId === user.id}
+                                className="text-[var(--color-brand-forest)] hover:text-[var(--color-brand-forest)] font-medium text-xs mr-4 disabled:opacity-50"
+                              >
+                                {user.role === 'owner' ? 'Demote to Staff' : 'Promote to Owner'}
+                              </button>
+                            )}
+                            {isOwner && (
+                              <button
+                                onClick={() => handleRemove(user)}
+                                disabled={processingId === user.id}
+                                className="text-red-500 hover:text-red-600 font-medium text-xs disabled:opacity-50"
+                              >
+                                Remove
+                              </button>
+                            )}
+                          </>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="md:hidden space-y-3">
+            {users.map((user) => {
+              const isSelf = user.id === session?.user.id;
+              return (
+                <div key={user.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-gray-900 break-all">{user.email}</p>
+                      {isSelf && <p className="text-[11px] text-gray-400">(you)</p>}
+                    </div>
+                    <span className={`inline-flex items-center rounded-full px-2 py-1 text-[10px] font-semibold ${
+                      user.role === 'owner' ? 'bg-[var(--color-brand-forest)] text-white' : 'bg-gray-100 text-gray-600'
+                    }`}>
+                      {user.role === 'owner' ? 'Owner' : 'Staff'}
+                    </span>
+                  </div>
+
+                  <p className="mt-3 text-xs text-gray-500">
+                    Last sign in: {user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString() : 'Never'}
+                  </p>
+
+                  {!isSelf && (
+                    <div className="mt-4 flex gap-2">
+                      {isOwner && (
+                        <button
+                          onClick={() => handleToggleRole(user)}
+                          disabled={processingId === user.id}
+                          className="flex-1 text-center bg-[var(--color-brand-forest)] hover:opacity-95 text-white px-3 py-2.5 rounded-lg font-semibold text-sm disabled:opacity-50"
+                        >
+                          {user.role === 'owner' ? 'Demote' : 'Promote'}
+                        </button>
                       )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                      {isOwner && (
+                        <button
+                          onClick={() => handleRemove(user)}
+                          disabled={processingId === user.id}
+                          className="flex-1 text-center text-red-500 hover:text-red-600 font-medium text-sm py-2.5 rounded-lg border border-red-200 disabled:opacity-50"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
     </div>
   );
