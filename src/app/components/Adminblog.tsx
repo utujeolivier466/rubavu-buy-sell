@@ -79,59 +79,104 @@ function AdminBlog() {
           </Link>
         </div>
       ) : (
-        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr className="text-left text-gray-500">
-                <th className="px-4 py-3 font-medium">Title</th>
-                <th className="px-4 py-3 font-medium">Category</th>
-                <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3 font-medium">Date</th>
-                <th className="px-4 py-3 font-medium text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {posts.map((post) => (
-                <tr key={post.id} className="border-b border-gray-100 last:border-0">
-                  <td className="px-4 py-3">
-                    <p className="font-medium text-gray-900 line-clamp-1">{post.title}</p>
-                  </td>
-                  <td className="px-4 py-3 text-gray-600">{post.category}</td>
-                  <td className="px-4 py-3">
-                    <button
-                      onClick={() => togglePublished(post.id, !post.published)}
-                      className={`text-xs font-medium px-2.5 py-1 rounded-full transition-colors ${
-                        post.published ? 'bg-[#D56000]/10 text-[#D56000]' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                      }`}
-                    >
-                      {post.published ? 'Published' : 'Draft — click to publish'}
-                    </button>
-                  </td>
-                  <td className="px-4 py-3 text-gray-500 text-xs whitespace-nowrap">
-                    {new Date(post.created_at).toLocaleDateString()}
-                  </td>
-                  <td className="px-4 py-3 text-right whitespace-nowrap">
-                    <Link
-                      to={`/admin/blog/${post.id}/edit`}
-                      className="text-[#D56000] hover:text-[#A84A00] font-medium text-xs mr-4"
-                    >
-                      Edit
-                    </Link>
-                    {isOwner && (
-                      <button
-                        onClick={() => handleDelete(post.id, post.title)}
-                        disabled={deletingId === post.id}
-                        className="text-red-500 hover:text-red-600 font-medium text-xs disabled:opacity-50"
-                      >
-                        {deletingId === post.id ? 'Deleting…' : 'Delete'}
-                      </button>
-                    )}
-                  </td>
+        <>
+          <div className="hidden md:block bg-white border border-gray-200 rounded-lg overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr className="text-left text-gray-500">
+                  <th className="px-4 py-3 font-medium">Title</th>
+                  <th className="px-4 py-3 font-medium">Category</th>
+                  <th className="px-4 py-3 font-medium">Status</th>
+                  <th className="px-4 py-3 font-medium">Date</th>
+                  <th className="px-4 py-3 font-medium text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {posts.map((post) => (
+                  <tr key={post.id} className="border-b border-gray-100 last:border-0">
+                    <td className="px-4 py-3">
+                      <p className="font-medium text-gray-900 line-clamp-1">{post.title}</p>
+                    </td>
+                    <td className="px-4 py-3 text-gray-600">{post.category}</td>
+                    <td className="px-4 py-3">
+                      <button
+                        onClick={() => togglePublished(post.id, !post.published)}
+                        className={`text-xs font-medium px-2.5 py-1 rounded-full transition-colors ${
+                          post.published ? 'bg-[#D56000]/10 text-[#D56000]' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                        }`}
+                      >
+                        {post.published ? 'Published' : 'Draft — click to publish'}
+                      </button>
+                    </td>
+                    <td className="px-4 py-3 text-gray-500 text-xs whitespace-nowrap">
+                      {new Date(post.created_at).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-3 text-right whitespace-nowrap">
+                      <Link
+                        to={`/admin/blog/${post.id}/edit`}
+                        className="text-[#D56000] hover:text-[#A84A00] font-medium text-xs mr-4"
+                      >
+                        Edit
+                      </Link>
+                      {isOwner && (
+                        <button
+                          onClick={() => handleDelete(post.id, post.title)}
+                          disabled={deletingId === post.id}
+                          className="text-red-500 hover:text-red-600 font-medium text-xs disabled:opacity-50"
+                        >
+                          {deletingId === post.id ? 'Deleting…' : 'Delete'}
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="md:hidden space-y-3">
+            {posts.map((post) => (
+              <div key={post.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-gray-900 truncate">{post.title}</p>
+                    <p className="text-xs text-gray-500 mt-1">{post.category}</p>
+                  </div>
+                  <button
+                    onClick={() => togglePublished(post.id, !post.published)}
+                    className={`text-[10px] font-medium px-2 py-1 rounded-full whitespace-nowrap ${
+                      post.published ? 'bg-[#D56000]/10 text-[#D56000]' : 'bg-gray-100 text-gray-500'
+                    }`}
+                  >
+                    {post.published ? 'Published' : 'Draft'}
+                  </button>
+                </div>
+
+                <div className="mt-3 flex items-center justify-between text-xs text-gray-500">
+                  <span>{new Date(post.created_at).toLocaleDateString()}</span>
+                </div>
+
+                <div className="mt-4 flex gap-2">
+                  <Link
+                    to={`/admin/blog/${post.id}/edit`}
+                    className="flex-1 text-center bg-[#D56000] hover:bg-[#A84A00] text-white px-3 py-2.5 rounded-lg font-semibold text-sm"
+                  >
+                    Edit
+                  </Link>
+                  {isOwner && (
+                    <button
+                      onClick={() => handleDelete(post.id, post.title)}
+                      disabled={deletingId === post.id}
+                      className="flex-1 text-center text-red-500 hover:text-red-600 font-medium text-sm py-2.5 rounded-lg border border-red-200 disabled:opacity-50"
+                    >
+                      {deletingId === post.id ? 'Deleting…' : 'Delete'}
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

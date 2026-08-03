@@ -86,55 +86,93 @@ function AdminInquiries() {
       ) : filtered.length === 0 ? (
         <p className="text-gray-500 text-sm">No inquiries in this view yet.</p>
       ) : (
-        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr className="text-left text-gray-500">
-                <th className="px-4 py-3 font-medium">Contact</th>
-                <th className="px-4 py-3 font-medium">Property</th>
-                <th className="px-4 py-3 font-medium">Source</th>
-                <th className="px-4 py-3 font-medium">Message</th>
-                <th className="px-4 py-3 font-medium">Date</th>
-                <th className="px-4 py-3 font-medium">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((inquiry) => (
-                <tr key={inquiry.id} className="border-b border-gray-100 last:border-0 align-top">
-                  <td className="px-4 py-3">
-                    <p className="font-medium text-gray-900">{inquiry.name || '—'}</p>
-                    <p className="text-gray-500 text-xs">{inquiry.phone || inquiry.email || '—'}</p>
-                  </td>
-                  <td className="px-4 py-3 text-gray-700">
-                    {inquiry.properties?.title || <span className="text-gray-400">General inquiry</span>}
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                      {SOURCE_LABELS[inquiry.source] || inquiry.source}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-gray-600 max-w-xs">
-                    <p className="line-clamp-2">{inquiry.message}</p>
-                  </td>
-                  <td className="px-4 py-3 text-gray-500 text-xs whitespace-nowrap">
-                    {new Date(inquiry.created_at).toLocaleDateString()}
-                  </td>
-                  <td className="px-4 py-3">
-                    <select
-                      value={inquiry.status}
-                      onChange={(e) => updateStatus(inquiry.id, e.target.value as InquiryStatus)}
-                      className={`text-xs font-medium rounded-full px-2.5 py-1 border-0 focus:outline-none focus:ring-2 focus:ring-[#D56000] ${STATUS_STYLES[inquiry.status]}`}
-                    >
-                      <option value="new">New</option>
-                      <option value="contacted">Contacted</option>
-                      <option value="closed">Closed</option>
-                    </select>
-                  </td>
+        <>
+          <div className="hidden md:block bg-white border border-gray-200 rounded-lg overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr className="text-left text-gray-500">
+                  <th className="px-4 py-3 font-medium">Contact</th>
+                  <th className="px-4 py-3 font-medium">Property</th>
+                  <th className="px-4 py-3 font-medium">Source</th>
+                  <th className="px-4 py-3 font-medium">Message</th>
+                  <th className="px-4 py-3 font-medium">Date</th>
+                  <th className="px-4 py-3 font-medium">Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filtered.map((inquiry) => (
+                  <tr key={inquiry.id} className="border-b border-gray-100 last:border-0 align-top">
+                    <td className="px-4 py-3">
+                      <p className="font-medium text-gray-900">{inquiry.name || '—'}</p>
+                      <p className="text-gray-500 text-xs">{inquiry.phone || inquiry.email || '—'}</p>
+                    </td>
+                    <td className="px-4 py-3 text-gray-700">
+                      {inquiry.properties?.title || <span className="text-gray-400">General inquiry</span>}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                        {SOURCE_LABELS[inquiry.source] || inquiry.source}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-gray-600 max-w-xs">
+                      <p className="line-clamp-2">{inquiry.message}</p>
+                    </td>
+                    <td className="px-4 py-3 text-gray-500 text-xs whitespace-nowrap">
+                      {new Date(inquiry.created_at).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-3">
+                      <select
+                        value={inquiry.status}
+                        onChange={(e) => updateStatus(inquiry.id, e.target.value as InquiryStatus)}
+                        className={`text-xs font-medium rounded-full px-2.5 py-1 border-0 focus:outline-none focus:ring-2 focus:ring-[#D56000] ${STATUS_STYLES[inquiry.status]}`}
+                      >
+                        <option value="new">New</option>
+                        <option value="contacted">Contacted</option>
+                        <option value="closed">Closed</option>
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="md:hidden space-y-3">
+            {filtered.map((inquiry) => (
+              <div key={inquiry.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-gray-900">{inquiry.name || '—'}</p>
+                    <p className="text-xs text-gray-500">{inquiry.phone || inquiry.email || '—'}</p>
+                  </div>
+                  <span className={`inline-flex items-center rounded-full px-2 py-1 text-[10px] font-medium ${STATUS_STYLES[inquiry.status]}`}>
+                    {inquiry.status}
+                  </span>
+                </div>
+
+                <div className="mt-3 space-y-2 text-sm text-gray-700">
+                  <p><span className="text-gray-400">Property:</span> {inquiry.properties?.title || 'General inquiry'}</p>
+                  <p><span className="text-gray-400">Source:</span> {SOURCE_LABELS[inquiry.source] || inquiry.source}</p>
+                  <p><span className="text-gray-400">Date:</span> {new Date(inquiry.created_at).toLocaleDateString()}</p>
+                  <p className="text-gray-600"><span className="text-gray-400">Message:</span> {inquiry.message}</p>
+                </div>
+
+                <div className="mt-4">
+                  <label className="block text-[11px] font-medium text-gray-500 mb-1">Status</label>
+                  <select
+                    value={inquiry.status}
+                    onChange={(e) => updateStatus(inquiry.id, e.target.value as InquiryStatus)}
+                    className={`w-full text-sm font-medium rounded-lg px-2.5 py-2 border focus:outline-none focus:ring-2 focus:ring-[#D56000] ${STATUS_STYLES[inquiry.status]}`}
+                  >
+                    <option value="new">New</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="closed">Closed</option>
+                  </select>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
