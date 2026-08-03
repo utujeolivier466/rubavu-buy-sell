@@ -224,7 +224,7 @@ export function FeaturedProperties() {
                     className={`w-full h-full object-cover hover:scale-105 transition-transform duration-300 ${isUnavailable ? 'grayscale-[40%]' : ''}`}
                   />
                   {isSold ? (
-                    <div className="absolute top-3 right-3 z-10 pointer-events-none">
+                    <div className="absolute top-1.5 right-1.5 z-10 pointer-events-none rotate-[-7deg]">
                       <SoldStamp size="small" />
                     </div>
                   ) : (
