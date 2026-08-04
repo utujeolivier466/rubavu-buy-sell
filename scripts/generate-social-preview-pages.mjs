@@ -127,6 +127,36 @@ function todayIso() {
   return new Date().toISOString().slice(0, 10);
 }
 
+async function fetchAllRows(supabase, tableName, selectQuery, orderColumn, filters = []) {
+  const pageSize = 1000;
+  const rows = [];
+  let offset = 0;
+
+  while (true) {
+    let query = supabase.from(tableName).select(selectQuery).range(offset, offset + pageSize - 1);
+
+    if (orderColumn) {
+      query = query.order(orderColumn, { ascending: false });
+    }
+
+    for (const filter of filters) {
+      query = query[filter.method](filter.column, filter.value);
+    }
+
+    const { data, error } = await query;
+    if (error) throw error;
+
+    if (!data || data.length === 0) break;
+
+    rows.push(...data);
+
+    if (data.length < pageSize) break;
+    offset += pageSize;
+  }
+
+  return rows;
+}
+
 async function main() {
   try {
     const indexHtml = await readFile(indexPath, 'utf8');
@@ -239,59 +269,67 @@ async function main() {
     const sitemapDynamic = [];
 
     if (supabase) {
-      const { data: propertyData, error: propertyError } = await supabase
-        .from('properties')
-        .select('slug,title,description,cover_image_url,image_urls,location_text,updated_at')
-        .order('created_at', { ascending: false });
+      try {
+        const propertyData = await fetchAllRows(
+          supabase,
+          'properties',
+          'id,slug,title,description,cover_image_url,image_urls,location_text,updated_at,created_at',
+          'created_at',
+        );
 
-      if (propertyError) {
-        console.warn('Unable to load properties for social preview generation:', propertyError.message);
-      } else {
         for (const property of propertyData || []) {
-          if (!property?.slug) continue;
-          await writeRoutePage(`/properties/${property.slug}`, {
+          const routeSlug = property?.slug || property?.id;
+          if (!routeSlug) continue;
+
+          await writeRoutePage(`/properties/${routeSlug}`, {
             title: property.title,
             description: property.description || property.location_text || '',
             image: property.image_urls?.[0] || property.cover_image_url || '/heroimage.jpeg',
-            url: `${siteUrl}/properties/${property.slug}`,
+            url: `${siteUrl}/properties/${routeSlug}`,
             type: 'article',
           }, assetTags, generatedRoutes);
 
           sitemapDynamic.push({
-            loc: `${siteUrl}/properties/${property.slug}`,
+            loc: `${siteUrl}/properties/${routeSlug}`,
             changefreq: 'weekly',
             priority: '0.8',
-            lastmod: property.updated_at ? property.updated_at.slice(0, 10) : todayIso(),
+            lastmod: property.updated_at ? property.updated_at.slice(0, 10) : property.created_at ? property.created_at.slice(0, 10) : todayIso(),
           });
         }
+      } catch (propertyError) {
+        console.warn('Unable to load properties for social preview generation:', propertyError.message);
       }
 
-      const { data: blogData, error: blogError } = await supabase
-        .from('blog_posts')
-        .select('slug,title,excerpt,cover_image_url,updated_at')
-        .eq('published', true)
-        .order('published_at', { ascending: false });
+      try {
+        const blogData = await fetchAllRows(
+          supabase,
+          'blog_posts',
+          'id,slug,title,excerpt,cover_image_url,updated_at,published_at',
+          'published_at',
+          [{ method: 'eq', column: 'published', value: true }],
+        );
 
-      if (blogError) {
-        console.warn('Unable to load blog posts for social preview generation:', blogError.message);
-      } else {
         for (const post of blogData || []) {
-          if (!post?.slug) continue;
-          await writeRoutePage(`/blog/${post.slug}`, {
+          const routeSlug = post?.slug || post?.id;
+          if (!routeSlug) continue;
+
+          await writeRoutePage(`/blog/${routeSlug}`, {
             title: post.title,
             description: post.excerpt,
             image: post.cover_image_url || '/heroimage.jpeg',
-            url: `${siteUrl}/blog/${post.slug}`,
+            url: `${siteUrl}/blog/${routeSlug}`,
             type: 'article',
           }, assetTags, generatedRoutes);
 
           sitemapDynamic.push({
-            loc: `${siteUrl}/blog/${post.slug}`,
+            loc: `${siteUrl}/blog/${routeSlug}`,
             changefreq: 'monthly',
             priority: '0.7',
-            lastmod: post.updated_at ? post.updated_at.slice(0, 10) : todayIso(),
+            lastmod: post.updated_at ? post.updated_at.slice(0, 10) : post.published_at ? post.published_at.slice(0, 10) : todayIso(),
           });
         }
+      } catch (blogError) {
+        console.warn('Unable to load blog posts for social preview generation:', blogError.message);
       }
     }
 

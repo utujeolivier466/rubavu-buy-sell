@@ -243,10 +243,9 @@ function PropertyDetailPage() {
     property.has_internet && 'Internet',
   ].filter((v): v is string => Boolean(v));
 
-const isUnavailable = property.status === 'Sold' || property.status === 'Rented';
+  const isUnavailable = property.status === 'Sold' || property.status === 'Rented';
   const isSold = property.status === 'Sold';
 
-  // Sold is shown as an overlay stamp on the gallery photo, not a title-row badge.
   const statusBadge = isSold
     ? null
     : property.status === 'Rented'
@@ -339,7 +338,7 @@ const isUnavailable = property.status === 'Sold' || property.status === 'Rented'
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
                 {isSold && (
-                  <div className="absolute top-1.5 right-1.5 z-10 pointer-events-none rotate-[-7deg]">
+                  <div className="absolute top-3 right-3 z-10 pointer-events-none">
                     <SoldStamp size="small" />
                   </div>
                 )}
