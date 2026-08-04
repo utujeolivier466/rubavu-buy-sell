@@ -174,6 +174,30 @@ function AdminPropertyForm() {
     return uploadedUrls;
   }
 
+  async function triggerPropertyPreviewRebuild() {
+    const deployHookUrl =
+      import.meta.env.VITE_VERCEL_DEPLOY_HOOK_URL ||
+      import.meta.env.VERCEL_DEPLOY_HOOK_URL ||
+      '';
+
+    if (!deployHookUrl) {
+      return;
+    }
+
+    try {
+      await fetch(deployHookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'property-update',
+          source: 'admin-property-form',
+        }),
+      });
+    } catch (error) {
+      console.warn('Property preview rebuild trigger failed:', error);
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     if (!supabase) {
       setError('Supabase is not configured.');
@@ -235,6 +259,7 @@ function AdminPropertyForm() {
       return;
     }
 
+    await triggerPropertyPreviewRebuild();
     navigate('/admin/properties');
   }
 
