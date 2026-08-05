@@ -132,6 +132,20 @@ function AdminPropertyForm() {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
+  function generateSlug(value: string) {
+    return value
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 90);
+  }
+
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
       setNewFiles((prev) => [...prev, ...Array.from(e.target.files!)]);
@@ -216,9 +230,11 @@ function AdminPropertyForm() {
 
     const uploadedUrls = await uploadNewImages();
     const allImages = [...existingImages, ...uploadedUrls];
+    const generatedSlug = generateSlug(form.title.trim()) || `property-${Date.now()}`;
 
     const payload = {
       title: form.title.trim(),
+      slug: generatedSlug,
       description: form.description.trim() || null,
       property_type: form.property_type,
       listing_type: form.listing_type,

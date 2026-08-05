@@ -22,6 +22,20 @@ function escapeHtml(value = '') {
     .replace(/'/g, '&#39;');
 }
 
+function generateSlug(value = '') {
+  return String(value)
+    .toLowerCase()
+    .trim()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 90);
+}
+
 function normalizeImage(image) {
   if (!image) return null;
   if (/^https?:\/\//i.test(image)) return image;
@@ -278,7 +292,7 @@ async function main() {
         );
 
         for (const property of propertyData || []) {
-          const routeSlug = property?.slug || property?.id;
+          const routeSlug = property?.slug || generateSlug(property?.title) || property?.id;
           if (!routeSlug) continue;
 
           await writeRoutePage(`/properties/${routeSlug}`, {
