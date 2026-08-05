@@ -1,6 +1,16 @@
 {
-  
   "rewrites": [
+    {
+      "source": "/properties/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "facebookexternalhit|whatsapp|twitterbot|linkedinbot|slackbot|telegrambot|discordbot|googlebot|bingbot|pinterest|skypeuripreview|applebot"
+        }
+      ],
+      "destination": "/api/property-og?slug=:slug"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
