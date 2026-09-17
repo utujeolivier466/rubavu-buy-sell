@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import { compressImage } from '../../lib/compressImage';
+import { uploadImageToR2 } from '../../lib/uploadImageToR2';
 
 const CATEGORIES = ['Real Estate Tips', 'Investment Advice', 'Buying Guides', 'Market Updates', 'General'];
 
@@ -61,21 +62,12 @@ function AdminBlogForm() {
     if (!newFile) return existingImage;
 
     const compressedFile = await compressImage(newFile);
-    const fileName = `blog-${crypto.randomUUID()}.webp`;
-
-    // Reuses the property-images bucket — this upload is admin-only
-    // (behind the protected route), same access level as property photos.
-    const { error: uploadError } = await supabase!.storage
-      .from('property-images')
-      .upload(fileName, compressedFile, { contentType: 'image/webp', cacheControl: '31536000' });
-
-    if (uploadError) {
-      console.error('Cover image upload failed:', uploadError);
+    try {
+      return await uploadImageToR2(compressedFile, 'property-images', true);
+    } catch (error) {
+      console.error('Cover image upload failed:', error);
       return existingImage;
     }
-
-    const { data } = supabase!.storage.from('property-images').getPublicUrl(fileName);
-    return data.publicUrl;
   }
 
   async function handleSubmit(e: React.FormEvent) {
