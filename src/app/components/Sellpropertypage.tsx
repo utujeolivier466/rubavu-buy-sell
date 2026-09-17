@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import { compressImage } from '../../lib/compressImage';
+import { uploadImageToR2 } from '../../lib/uploadImageToR2';
 import { Progress } from './ui/progress';
 import SEOHead from './Seohead';
 
@@ -202,20 +203,12 @@ function SellPropertyPage() {
     const urls: string[] = [];
     for (const file of files) {
       const compressedFile = await compressImage(file);
-      const fileName = `${crypto.randomUUID()}.webp`;
-
-      const { error: uploadError } = await client.storage.from('submission-photos').upload(fileName, compressedFile, {
-        contentType: 'image/webp',
-        cacheControl: '31536000',
-      });
-
-      if (uploadError) {
-        console.error('Photo upload failed:', uploadError);
+      try {
+        urls.push(await uploadImageToR2(compressedFile, 'submission-photos'));
+      } catch (error) {
+        console.error('Photo upload failed:', error);
         continue;
       }
-
-      const { data } = client.storage.from('submission-photos').getPublicUrl(fileName);
-      urls.push(data.publicUrl);
     }
     return urls;
   }
