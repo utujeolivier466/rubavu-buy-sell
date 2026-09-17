@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "build": "vite build && node scripts/generate-social-preview-pages.mjs",
-    "dev": "vite"
+    "dev": "vite",
+    "compress:stored-images": "node scripts/compress-stored-images.mjs"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
+    "@img/sharp-win32-x64": "^0.35.4",
     "@mui/icons-material": "7.3.5",
     "@mui/material": "7.3.5",
     "@popperjs/core": "2.11.8",
@@ -40,11 +42,13 @@
     "@radix-ui/react-toggle-group": "1.1.2",
     "@radix-ui/react-tooltip": "1.1.8",
     "@supabase/supabase-js": "^2.110.8",
+    "browser-image-compression": "^2.0.2",
     "canvas-confetti": "1.9.4",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "cmdk": "1.1.1",
     "date-fns": "3.6.0",
+    "dotenv": "^17.4.2",
     "embla-carousel-react": "8.6.0",
     "input-otp": "1.4.2",
     "lucide-react": "0.487.0",
@@ -71,6 +75,7 @@
     "@tailwindcss/vite": "4.1.12",
     "@types/node": "^26.1.1",
     "@vitejs/plugin-react": "4.7.0",
+    "sharp": "^0.35.4",
     "supabase": "^2.109.1",
     "tailwindcss": "4.1.12",
     "typescript": "5.9.3",

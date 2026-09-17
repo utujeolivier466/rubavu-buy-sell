@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
+import { compressImage } from '../../lib/compressImage';
 import type { Agent } from '../../../lib/types';
 
 interface FormState {
@@ -166,12 +167,12 @@ function AdminPropertyForm() {
     const uploadedUrls: string[] = [];
 
     for (const file of newFiles) {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${crypto.randomUUID()}.${fileExt}`;
+      const compressedFile = await compressImage(file);
+      const fileName = `${crypto.randomUUID()}.webp`;
 
       const { error: uploadError } = await supabase.storage
         .from('property-images')
-        .upload(fileName, file);
+        .upload(fileName, compressedFile, { contentType: 'image/webp', cacheControl: '31536000' });
 
       if (uploadError) {
         console.error('Image upload failed:', uploadError);

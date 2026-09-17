@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
+import { compressImage } from '../../lib/compressImage';
 import { Progress } from './ui/progress';
 import SEOHead from './Seohead';
 
@@ -200,10 +201,13 @@ function SellPropertyPage() {
 
     const urls: string[] = [];
     for (const file of files) {
-      const ext = file.name.split('.').pop();
-      const fileName = `${crypto.randomUUID()}.${ext}`;
+      const compressedFile = await compressImage(file);
+      const fileName = `${crypto.randomUUID()}.webp`;
 
-      const { error: uploadError } = await client.storage.from('submission-photos').upload(fileName, file);
+      const { error: uploadError } = await client.storage.from('submission-photos').upload(fileName, compressedFile, {
+        contentType: 'image/webp',
+        cacheControl: '31536000',
+      });
 
       if (uploadError) {
         console.error('Photo upload failed:', uploadError);

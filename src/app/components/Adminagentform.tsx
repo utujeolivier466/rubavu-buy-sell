@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
+import { compressImage } from '../../lib/compressImage';
 
 function AdminAgentForm() {
   const { id } = useParams<{ id: string }>();
@@ -51,13 +52,13 @@ function AdminAgentForm() {
   async function uploadPhoto(): Promise<string | null> {
     if (!newFile) return existingPhoto;
 
-    const ext = newFile.name.split('.').pop();
-    const fileName = `agent-${crypto.randomUUID()}.${ext}`;
+    const compressedFile = await compressImage(newFile);
+    const fileName = `agent-${crypto.randomUUID()}.webp`;
 
     // Reuses the property-images bucket — admin-only upload, same trust level.
     const { error: uploadError } = await supabase!.storage
       .from('property-images')
-      .upload(fileName, newFile);
+      .upload(fileName, compressedFile, { contentType: 'image/webp', cacheControl: '31536000' });
 
     if (uploadError) {
       console.error('Photo upload failed:', uploadError);

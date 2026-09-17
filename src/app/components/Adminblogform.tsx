@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
+import { compressImage } from '../../lib/compressImage';
 
 const CATEGORIES = ['Real Estate Tips', 'Investment Advice', 'Buying Guides', 'Market Updates', 'General'];
 
@@ -59,14 +60,14 @@ function AdminBlogForm() {
   async function uploadCoverImage(): Promise<string | null> {
     if (!newFile) return existingImage;
 
-    const ext = newFile.name.split('.').pop();
-    const fileName = `blog-${crypto.randomUUID()}.${ext}`;
+    const compressedFile = await compressImage(newFile);
+    const fileName = `blog-${crypto.randomUUID()}.webp`;
 
     // Reuses the property-images bucket — this upload is admin-only
     // (behind the protected route), same access level as property photos.
     const { error: uploadError } = await supabase!.storage
       .from('property-images')
-      .upload(fileName, newFile);
+      .upload(fileName, compressedFile, { contentType: 'image/webp', cacheControl: '31536000' });
 
     if (uploadError) {
       console.error('Cover image upload failed:', uploadError);

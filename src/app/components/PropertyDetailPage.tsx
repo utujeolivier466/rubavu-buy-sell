@@ -69,7 +69,7 @@ function PropertyDetailPage() {
     const targetSlug = slug?.trim() || '';
     const { data, error } = await supabase
       .from('properties')
-      .select('*, agents(name, position, photo_url, phone)')
+      .select('id, slug, title, description, property_type, listing_type, status, is_lakefront, price, currency, size_sqm, bedrooms, bathrooms, zoning, location_text, city, latitude, longitude, has_pool, has_parking, has_garden, has_electricity, has_water, has_internet, cover_image_url, image_urls, video_url, youtube_url, is_featured, is_hot_deal, agent_id, created_at, updated_at, agents(name, position, photo_url, phone)')
       .eq('slug', targetSlug)
       .maybeSingle();
 
@@ -91,7 +91,7 @@ function PropertyDetailPage() {
 
   const { data, error } = await supabase
     .from('properties')
-    .select('*')
+    .select('id, slug, title, location_text, city, property_type, bedrooms, bathrooms, cover_image_url')
     .neq('id', current.id)
     .limit(20); // pull a wider pool, then filter client-side
 

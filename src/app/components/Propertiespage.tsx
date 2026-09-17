@@ -29,7 +29,10 @@ function Propertiespage() {
     setLoading(true);
     setError(null);
 
-    let query = supabase.from('properties').select('*').eq('status', 'Available');
+    let query = supabase
+      .from('properties')
+      .select('id, slug, title, location_text, city, price, currency, property_type, size_sqm, bedrooms, bathrooms, cover_image_url, image_urls, listing_type, is_lakefront, has_pool, has_parking, has_garden, has_electricity, has_water, has_internet, created_at')
+      .eq('status', 'Available');
 
     const listingType = searchParams.get('listing_type');
     const q = searchParams.get('q');
@@ -100,7 +103,7 @@ function Propertiespage() {
 
     const { data, error } = await supabase
       .from('properties')
-      .select('*')
+      .select('id, slug, title, location_text, city, price, currency, property_type, size_sqm, bedrooms, bathrooms, cover_image_url, image_urls, listing_type, created_at')
       .eq('status', 'Available')
       .eq('is_featured', true)
       .order('created_at', { ascending: false })
