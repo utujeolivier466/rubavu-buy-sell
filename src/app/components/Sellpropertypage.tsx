@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
-import { compressImage } from '../../lib/compressImage';
+import { generateImageVariants } from '../../lib/compressImage';
 import { Progress } from './ui/progress';
 import SEOHead from './Seohead';
-import { getStorageImageUrl } from '../lib/storageImageUrl';
+import { getGeneratedImageUrl, getStorageImageUrl } from '../lib/storageImageUrl';
 
 // Set these to match your actual Supabase project
 const SUPABASE_URL = (import.meta as any).env.VITE_SUPABASE_URL;
@@ -202,24 +202,34 @@ function SellPropertyPage() {
 
     const urls: string[] = [];
     for (const file of files) {
-      const compressedFile = await compressImage(file);
-      const fileName = `${crypto.randomUUID()}.webp`;
+      const fileName = crypto.randomUUID();
+      const variants = await generateImageVariants(file);
+      const uploadSet = [
+        { key: `${fileName}.webp`, file: variants.full },
+        { key: `${fileName}-medium.webp`, file: variants.medium },
+        { key: `${fileName}-thumbnail.webp`, file: variants.thumbnail },
+      ];
 
-      const { error: uploadError } = await client.storage.from('submission-photos').upload(fileName, compressedFile, {
-        contentType: 'image/webp',
-        cacheControl: '31536000',
-      });
+      const uploadedVariantUrls: string[] = [];
+      for (const upload of uploadSet) {
+        const { error: uploadError } = await client.storage.from('submission-photos').upload(upload.key, upload.file, {
+          contentType: 'image/webp',
+          cacheControl: '31536000',
+        });
 
-      if (uploadError) {
-        console.error('Photo upload failed:', uploadError);
-        continue;
+        if (uploadError) {
+          console.error('Photo upload failed:', uploadError);
+          continue;
+        }
+
+        const { data } = client.storage.from('submission-photos').getPublicUrl(upload.key);
+        if (data?.publicUrl) {
+          uploadedVariantUrls.push(data.publicUrl);
+        }
       }
 
-      // Keep the canonical Supabase object URL in storage and let the display layer
-      // rewrite it through getStorageImageUrl() for the right width/quality per page.
-      const { data } = client.storage.from('submission-photos').getPublicUrl(fileName);
-      if (data?.publicUrl) {
-        urls.push(data.publicUrl);
+      if (uploadedVariantUrls.length > 0) {
+        urls.push(uploadedVariantUrls[0]);
       }
     }
     return urls;

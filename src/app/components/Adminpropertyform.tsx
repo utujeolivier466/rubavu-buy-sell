@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
-import { compressImage } from '../../lib/compressImage';
+import { generateImageVariants } from '../../lib/compressImage';
 import type { Agent } from '../../../lib/types';
 
 interface FormState {
@@ -167,27 +167,36 @@ function AdminPropertyForm() {
     const uploadedUrls: string[] = [];
 
     for (const file of newFiles) {
-      const compressedFile = await compressImage(file);
-      const fileName = `${crypto.randomUUID()}.webp`;
+      const fileName = crypto.randomUUID();
+      const variants = await generateImageVariants(file);
+      const uploads = [
+        { key: `${fileName}.webp`, file: variants.full },
+        { key: `${fileName}-medium.webp`, file: variants.medium },
+        { key: `${fileName}-thumbnail.webp`, file: variants.thumbnail },
+      ];
 
-      const { error: uploadError } = await supabase.storage
-        .from('property-images')
-        .upload(fileName, compressedFile, { contentType: 'image/webp', cacheControl: '31536000' });
+      const uploadedVariantUrls: string[] = [];
+      for (const upload of uploads) {
+        const { error: uploadError } = await supabase.storage
+          .from('property-images')
+          .upload(upload.key, upload.file, { contentType: 'image/webp', cacheControl: '31536000' });
 
-      if (uploadError) {
-        console.error('Image upload failed:', uploadError);
-        continue;
+        if (uploadError) {
+          console.error('Image upload failed:', uploadError);
+          continue;
+        }
+
+        const { data: publicUrlData } = supabase.storage
+          .from('property-images')
+          .getPublicUrl(upload.key);
+
+        if (publicUrlData?.publicUrl) {
+          uploadedVariantUrls.push(publicUrlData.publicUrl);
+        }
       }
 
-      // Store the canonical Supabase object URL, not a baked-in resized URL.
-      // The render layer is responsible for converting it to /render/image/public/...
-      // with width/quality values appropriate for the current context.
-      const { data: publicUrlData } = supabase.storage
-        .from('property-images')
-        .getPublicUrl(fileName);
-
-      if (publicUrlData?.publicUrl) {
-        uploadedUrls.push(publicUrlData.publicUrl);
+      if (uploadedVariantUrls.length > 0) {
+        uploadedUrls.push(uploadedVariantUrls[0]);
       }
     }
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import { useAuth } from '../context/Authcontext';
-import { getStorageImageUrl } from '../lib/storageImageUrl';
+import { getGeneratedImageUrl } from '../lib/storageImageUrl';
 import type { Property } from '../../../lib/types';
 
 const STATUS_STYLES: Record<string, string> = {
@@ -110,7 +110,7 @@ function AdminProperties() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <img
-                          src={getStorageImageUrl(property.cover_image_url || (property.image_urls && property.image_urls[0]), { width: 160, quality: 75 }) || ''}
+                          src={getGeneratedImageUrl(property.cover_image_url || (property.image_urls && property.image_urls[0]), 'thumbnail') || ''}
                           alt={property.title}
                           className="w-12 h-12 rounded object-cover bg-gray-100 shrink-0"
                         />
@@ -173,7 +173,7 @@ function AdminProperties() {
               <div key={property.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
                 <div className="flex items-start gap-3">
                   <img
-                    src={getStorageImageUrl(property.cover_image_url || (property.image_urls && property.image_urls[0]), { width: 180, quality: 75 }) || ''}
+                    src={getGeneratedImageUrl(property.cover_image_url || (property.image_urls && property.image_urls[0]), 'thumbnail') || ''}
                     alt={property.title}
                     className="w-16 h-16 rounded-lg object-cover bg-gray-100 shrink-0"
                   />
