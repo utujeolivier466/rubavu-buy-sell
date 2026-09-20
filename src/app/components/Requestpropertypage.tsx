@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import SEOHead from './Seohead';
+import { getStorageImageUrl } from '../lib/storageImageUrl';
 
 type SubmitState = 'idle' | 'submitting' | 'success' | 'error';
 type RequestType = 'Buy' | 'Rent';
@@ -331,7 +332,7 @@ function RequestPropertyPage() {
                     >
                       <div className="h-16 w-16 overflow-hidden rounded-2xl bg-gray-100 shrink-0">
                         <img
-                          src={listing.cover_image_url || ''}
+                          src={getStorageImageUrl(listing.cover_image_url, { width: 320, quality: 75 })}
                           alt={listing.title}
                           loading="lazy"
                           className="h-full w-full object-cover"

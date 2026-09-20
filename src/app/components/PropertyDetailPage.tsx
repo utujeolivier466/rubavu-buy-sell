@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { Property } from '../../../lib/types';
 import SEOHead from './Seohead';
+import { getStorageImageUrl, getStorageImageUrls } from '../lib/storageImageUrl';
 import { SoldStamp } from './Soldstamp';
 
 const WHATSAPP_NUMBER = '250782424382';
@@ -160,9 +161,10 @@ function PropertyDetailPage() {
     }
   }
 
-  const images: string[] = property?.image_urls && property.image_urls.length > 0
+  const rawImages: string[] = property?.image_urls && property.image_urls.length > 0
     ? property.image_urls
     : [property?.cover_image_url].filter((v): v is string => Boolean(v));
+  const images = getStorageImageUrls(rawImages, { width: 1600, quality: 82 });
 
   const showNextImage = () => {
     if (images.length <= 1) return;
@@ -234,7 +236,7 @@ function PropertyDetailPage() {
     property.has_garden && 'Garden',
   ].filter((v): v is string => Boolean(v));
 
-  const seoImage = images[0] || property.cover_image_url || undefined;
+  const seoImage = getStorageImageUrl(images[0] || property.cover_image_url, { width: 1200, quality: 80 }) || undefined;
   const seoDescription = (property.description || property.location_text || '').slice(0, 160);
 
   const utilityList = [
@@ -628,7 +630,7 @@ function PropertyDetailPage() {
               <div className="pt-4 mt-4 border-t border-gray-200 flex items-center gap-3">
                 {property.agents.photo_url && (
                   <img
-                    src={property.agents.photo_url}
+                    src={getStorageImageUrl(property.agents.photo_url, { width: 160, quality: 80 })}
                     alt={property.agents.name}
                     className="w-12 h-12 rounded-full object-cover"
                   />
@@ -657,7 +659,11 @@ function PropertyDetailPage() {
               >
                 <div className="h-40 bg-gray-100">
                   {p.cover_image_url && (
-                    <img src={p.cover_image_url} alt={p.title} className="w-full h-full object-cover" />
+                    <img
+                      src={getStorageImageUrl(p.cover_image_url, { width: 640, quality: 78 })}
+                      alt={p.title}
+                      className="w-full h-full object-cover"
+                    />
                   )}
                 </div>
                 <div className="p-3">

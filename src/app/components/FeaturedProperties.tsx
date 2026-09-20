@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { MessageCircle, MapPin, Maximize2 } from 'lucide-react';
 import { supabase } from '../../../lib/libsupabaseClient';
 import { SoldStamp } from './Soldstamp';
+import { getStorageImageUrl } from '../lib/storageImageUrl';
 
 const WHATSAPP_NUMBER = '250782424382';
 
@@ -85,7 +86,7 @@ function mapProperty(property: { slug: any; status: any; cover_image_url: any; i
     slug: property.slug || property.id,
     status: property.status || 'Available',
     title: property.title || property.name || property.property_title || 'Luxury Property in Rubavu',
-    image: getImageUrl(),
+    image: getStorageImageUrl(getImageUrl(), { width: 640, quality: 78 }),
     size: property.size_sqm
       ? `${Number(property.size_sqm).toLocaleString()} SQM`
       : property.size || 'Size available on request',

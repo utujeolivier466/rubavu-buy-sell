@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { getStorageImageUrl } from '../lib/storageImageUrl';
 
 interface SEOHeadProps {
   title: string;
@@ -17,7 +18,10 @@ const SITE_URL = 'https://www.rubavubuyandsell.com';
 function SEOHead({ title, description, image, url, type = 'website', jsonLd, noindex }: SEOHeadProps) {
   const fullTitle = `${title} | ${SITE_NAME}`;
   const resolvedImage = image ? image : DEFAULT_IMAGE;
-  const ogImage = resolvedImage.startsWith('http') ? resolvedImage : `${SITE_URL}${resolvedImage}`;
+  const ogImage = getStorageImageUrl(
+    resolvedImage.startsWith('http') ? resolvedImage : `${SITE_URL}${resolvedImage}`,
+    { width: 1200, quality: 80 },
+  );
   const canonicalUrl = url ? `${SITE_URL}${url}` : SITE_URL;
 
   const jsonLdArray = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
