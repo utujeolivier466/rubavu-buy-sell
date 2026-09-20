@@ -32,23 +32,6 @@ function normalizeImage(image?: string | null) {
   return `${SITE_URL}/${image}`;
 }
 
-function transformImage(image?: string | null) {
-  const normalized = normalizeImage(image);
-  try {
-    const url = new URL(normalized);
-    url.pathname = url.pathname.replace(
-      '/storage/v1/object/public/',
-      '/storage/v1/render/image/public/',
-    );
-    url.searchParams.set('width', '1200');
-    url.searchParams.set('quality', '80');
-    url.searchParams.set('resize', 'contain');
-    return url.toString();
-  } catch {
-    return normalized;
-  }
-}
-
 function shouldServeOgTags(userAgent = '') {
   const ua = userAgent.toLowerCase();
   return BOT_PATTERNS.some((pattern) => ua.includes(pattern));
@@ -64,7 +47,7 @@ function renderPropertyHtml(property: {
 }) {
   const title = property.title || 'Property Listing';
   const description = (property.description || property.location_text || 'View this property listing on Rubavu Buy and Sell.').slice(0, 160);
-  const image = transformImage(property.image_urls?.[0] || property.cover_image_url || '/heroimage.jpeg');
+  const image = normalizeImage(property.image_urls?.[0] || property.cover_image_url || '/heroimage.jpeg');
   const canonicalUrl = `${SITE_URL}/properties/${property.slug || ''}`;
 
   return `<!DOCTYPE html>

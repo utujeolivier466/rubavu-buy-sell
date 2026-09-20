@@ -3,7 +3,6 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { Property } from '../../../lib/types';
 import SEOHead from './Seohead';
-import { getStorageImageUrl } from '../lib/storageImageUrl';
 
 function Propertiespage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -127,7 +126,7 @@ function Propertiespage() {
       position: i + 1,
       url: `https://www.rubavubuyandsell.com/properties/${p.slug}`,
       name: p.title,
-      image: getStorageImageUrl(p.cover_image_url || (p.image_urls && p.image_urls[0]), { width: 1200, quality: 80 }) || undefined,
+      image: p.cover_image_url || (p.image_urls && p.image_urls[0]) || undefined,
     })),
   };
 
@@ -194,7 +193,7 @@ function Propertiespage() {
                     >
                       <div className="relative h-44 overflow-hidden bg-gray-100">
                         <img
-                          src={getStorageImageUrl(property.cover_image_url || (property.image_urls && property.image_urls[0]), { width: 640, quality: 78 })}
+                          src={property.cover_image_url || (property.image_urls && property.image_urls[0]) || ''}
                           alt={property.title}
                           loading="lazy"
                           decoding="async"
@@ -235,7 +234,7 @@ function Propertiespage() {
               >
                 <div className="relative h-44 overflow-hidden bg-gray-100">
                   <img
-                          src={getStorageImageUrl(property.cover_image_url || (property.image_urls && property.image_urls[0]), { width: 640, quality: 78 })}
+                    src={property.cover_image_url || (property.image_urls && property.image_urls[0]) || ''}
                     alt={property.title}
                     loading="lazy"
                     decoding="async"

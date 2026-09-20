@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { BlogPost } from '../../../lib/types';
 import SEOHead from './Seohead';
-import { getStorageImageUrl } from '../lib/storageImageUrl';
 
 function BlogListPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -93,7 +92,7 @@ function BlogListPage() {
                 >
                   <div className="w-full h-48 bg-gradient-to-br from-[#D56000] to-[#D56000] flex items-center justify-center">
                     {post.cover_image_url ? (
-                      <img src={getStorageImageUrl(post.cover_image_url, { width: 640, quality: 78 })} alt={post.title} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+                      <img src={post.cover_image_url} alt={post.title} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                     ) : (
                       <div className="text-white text-center">
                         <div className="text-4xl font-bold opacity-50">{post.category?.[0] || 'B'}</div>

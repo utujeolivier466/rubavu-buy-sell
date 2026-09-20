@@ -4,7 +4,6 @@ import { supabase } from '../../../lib/libsupabaseClient';
 import { compressImage } from '../../lib/compressImage';
 import { Progress } from './ui/progress';
 import SEOHead from './Seohead';
-import { getStorageImageUrl } from '../lib/storageImageUrl';
 
 // Set these to match your actual Supabase project
 const SUPABASE_URL = (import.meta as any).env.VITE_SUPABASE_URL;
@@ -215,12 +214,8 @@ function SellPropertyPage() {
         continue;
       }
 
-      // Keep the canonical Supabase object URL in storage and let the display layer
-      // rewrite it through getStorageImageUrl() for the right width/quality per page.
       const { data } = client.storage.from('submission-photos').getPublicUrl(fileName);
-      if (data?.publicUrl) {
-        urls.push(data.publicUrl);
-      }
+      urls.push(data.publicUrl);
     }
     return urls;
   }
@@ -584,7 +579,7 @@ function SellPropertyPage() {
                   >
                     <div className="h-16 w-16 overflow-hidden rounded-2xl bg-gray-100">
                       <img
-                        src={getStorageImageUrl(listing.cover_image_url, { width: 320, quality: 75 }) || 'https://via.placeholder.com/80x80?text=Home'}
+                        src={listing.cover_image_url || 'https://via.placeholder.com/80x80?text=Home'}
                         alt={listing.title}
                         className="h-full w-full object-cover"
                       />
