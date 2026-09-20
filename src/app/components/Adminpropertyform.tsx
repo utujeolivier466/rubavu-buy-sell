@@ -163,7 +163,7 @@ function AdminPropertyForm() {
 
   async function uploadNewImages(): Promise<string[]> {
     if (!supabase) return [];
-
+    
     const uploadedUrls: string[] = [];
 
     for (const file of newFiles) {
@@ -176,19 +176,14 @@ function AdminPropertyForm() {
 
       if (uploadError) {
         console.error('Image upload failed:', uploadError);
-        continue;
+        continue; // skip this file, keep going with the rest
       }
 
-      // Store the canonical Supabase object URL, not a baked-in resized URL.
-      // The render layer is responsible for converting it to /render/image/public/...
-      // with width/quality values appropriate for the current context.
       const { data: publicUrlData } = supabase.storage
         .from('property-images')
         .getPublicUrl(fileName);
 
-      if (publicUrlData?.publicUrl) {
-        uploadedUrls.push(publicUrlData.publicUrl);
-      }
+      uploadedUrls.push(publicUrlData.publicUrl);
     }
 
     return uploadedUrls;

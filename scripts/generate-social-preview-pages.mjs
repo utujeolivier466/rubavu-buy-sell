@@ -43,29 +43,10 @@ function normalizeImage(image) {
   return `${siteUrl}/${image}`;
 }
 
-function transformImage(image) {
-  const normalized = normalizeImage(image);
-  if (!normalized) return null;
-
-  try {
-    const url = new URL(normalized);
-    url.pathname = url.pathname.replace(
-      '/storage/v1/object/public/',
-      '/storage/v1/render/image/public/',
-    );
-    url.searchParams.set('width', '1200');
-    url.searchParams.set('quality', '80');
-    url.searchParams.set('resize', 'contain');
-    return url.toString();
-  } catch {
-    return normalized;
-  }
-}
-
 function buildHeadTags({ title, description, image, url, type = 'website' }) {
   const resolvedTitle = escapeHtml(title || 'Rubavu Buy and Sell');
   const resolvedDescription = escapeHtml((description || '').slice(0, 160));
-  const resolvedImage = transformImage(image || '/heroimage.jpeg');
+  const resolvedImage = normalizeImage(image || '/heroimage.jpeg');
   const resolvedUrl = url || siteUrl;
 
   return `

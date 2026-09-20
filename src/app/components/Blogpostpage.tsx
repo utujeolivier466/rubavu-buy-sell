@@ -3,7 +3,6 @@ import { Link, useParams } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { BlogPost } from '../../../lib/types';
 import SEOHead from './Seohead';
-import { getStorageImageUrl } from '../lib/storageImageUrl';
 
 function BlogPostPage() {
   const { slug } = useParams();
@@ -71,7 +70,11 @@ function BlogPostPage() {
         '@type': 'Article',
         headline: post.title,
         description: post.excerpt || '',
-        image: getStorageImageUrl(post.cover_image_url, { width: 1200, quality: 80 }) || 'https://www.rubavubuyandsell.com/heroimage.jpeg',
+        image: post.cover_image_url
+          ? post.cover_image_url.startsWith('http')
+            ? post.cover_image_url
+            : `https://www.rubavubuyandsell.com${post.cover_image_url}`
+          : 'https://www.rubavubuyandsell.com/heroimage.jpeg',
         datePublished: post.published_at || post.created_at,
         dateModified: post.updated_at || post.created_at,
         author: {
@@ -131,7 +134,7 @@ function BlogPostPage() {
                 By {post.author_name} • {new Date(post.published_at || post.created_at).toLocaleDateString()}
               </p>
               {post.cover_image_url && (
-                <img src={getStorageImageUrl(post.cover_image_url, { width: 1200, quality: 80 })} alt={post.title} className="mb-8 h-64 w-full rounded-2xl object-cover" />
+                <img src={post.cover_image_url} alt={post.title} className="mb-8 h-64 w-full rounded-2xl object-cover" />
               )}
               <div className="whitespace-pre-line text-base leading-relaxed text-gray-700">
                 {post.content}
