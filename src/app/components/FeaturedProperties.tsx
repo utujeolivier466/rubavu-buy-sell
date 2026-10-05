@@ -162,7 +162,7 @@ export function FeaturedProperties() {
     };
   }, []);
 
-  function handleQuickWhatsApp(property: { id: any; title: string; location: string; price: string; status?: string }) {
+  function handleQuickWhatsApp(property: { id: any; slug?: string | number; title: string; location: string; price: string; status?: string }) {
     if (!isMockData && supabase) {
       supabase.from('inquiries').insert({
         property_id: property.id,
@@ -173,8 +173,9 @@ export function FeaturedProperties() {
       });
     }
 
+    const propertyUrl = `${window.location.origin}/properties/${property.slug ?? property.id}`;
     const message = encodeURIComponent(
-      `Hi, I'm interested in "${property.title}" (${property.location}) listed at ${property.price}. Is it still available?`
+      `Hi, I'm interested in "${property.title}" (${property.location}) listed at ${property.price}. Is it still available? Property link: ${propertyUrl}`
     );
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
   }

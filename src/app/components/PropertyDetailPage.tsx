@@ -125,8 +125,9 @@ function PropertyDetailPage() {
   function handleWhatsAppInquiry() {
     if (!property) return;
     logInquiry('whatsapp');
+    const propertyUrl = `${window.location.origin}/properties/${property.slug}`;
     const message = encodeURIComponent(
-      `Hi, I'm interested in "${property.title}" (${property.location_text}) listed at ${property.currency} ${Number(property.price).toLocaleString()}. Is it still available?`
+      `Hi, I'm interested in "${property.title}" (${property.location_text}) listed at ${property.currency} ${Number(property.price).toLocaleString()}. Is it still available? Property link: ${propertyUrl}`
     );
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
   }
@@ -134,8 +135,9 @@ function PropertyDetailPage() {
   function handleBookSiteVisit() {
     if (!property) return;
     logInquiry('site_visit');
+    const propertyUrl = `${window.location.origin}/properties/${property.slug}`;
     const message = encodeURIComponent(
-      `Hi, I'd like to book a site visit for "${property.title}" (${property.location_text}).`
+      `Hi, I'd like to book a site visit for "${property.title}" (${property.location_text}). Property link: ${propertyUrl}`
     );
     window.open(`https://wa.me/?text=${message}`, '_blank');
   }
