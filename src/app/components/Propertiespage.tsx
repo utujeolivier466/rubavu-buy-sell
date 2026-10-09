@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { Property } from '../../../lib/types';
+import { getThumbnailUrl } from '../../lib/thumbnailUrl';
 import SEOHead from './Seohead';
 
 function Propertiespage() {
@@ -193,7 +194,7 @@ function Propertiespage() {
                     >
                       <div className="relative h-44 overflow-hidden bg-gray-100">
                         <img
-                          src={property.cover_image_url || (property.image_urls && property.image_urls[0]) || ''}
+                          src={getThumbnailUrl(property.cover_thumb_url || property.cover_image_url || (property.image_urls && property.image_urls[0]) || '')}
                           alt={property.title}
                           loading="lazy"
                           decoding="async"
@@ -234,7 +235,7 @@ function Propertiespage() {
               >
                 <div className="relative h-44 overflow-hidden bg-gray-100">
                   <img
-                    src={property.cover_image_url || (property.image_urls && property.image_urls[0]) || ''}
+                    src={getThumbnailUrl(property.cover_thumb_url || property.cover_image_url || (property.image_urls && property.image_urls[0]) || '')}
                     alt={property.title}
                     loading="lazy"
                     decoding="async"

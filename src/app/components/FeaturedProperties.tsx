@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle, MapPin, Maximize2 } from 'lucide-react';
 import { supabase } from '../../../lib/libsupabaseClient';
+import { getThumbnailUrl } from '../../lib/thumbnailUrl';
 import { SoldStamp } from './Soldstamp';
 
 const WHATSAPP_NUMBER = '250782424382';
@@ -68,8 +69,30 @@ function formatPrice(value: string | null | undefined) {
   return String(value);
 }
 
-function mapProperty(property: { slug: any; status: any; cover_image_url: any; image_urls: string | any[]; image_url: any; image: any; photo_url: any; id: any; title: any; name: any; property_title: any; size_sqm: any; size: any; city: any; location: any; property_type: any; category: any; price: string | null | undefined; projected_gain: any; }) {
+function mapProperty(property: {
+  slug: any;
+  status: any;
+  cover_image_url: any;
+  cover_thumb_url?: string | null;
+  image_urls: string | any[];
+  image_url: any;
+  image: any;
+  photo_url: any;
+  id: any;
+  title: any;
+  name: any;
+  property_title: any;
+  size_sqm: any;
+  size: any;
+  city: any;
+  location: any;
+  property_type: any;
+  category: any;
+  price: string | null | undefined;
+  projected_gain: any;
+}) {
   const getImageUrl = () => {
+    if (property.cover_thumb_url) return property.cover_thumb_url;
     if (property.cover_image_url) return property.cover_image_url;
     if (Array.isArray(property.image_urls) && property.image_urls.length > 0) {
       return property.image_urls[0];
@@ -218,7 +241,7 @@ export function FeaturedProperties() {
               <div key={property.id} className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                 <div className="relative h-40 sm:h-48 overflow-hidden">
                   <img
-                    src={property.image}
+                    src={getThumbnailUrl(property.image)}
                     alt={property.title}
                     loading="lazy"
                     decoding="async"
