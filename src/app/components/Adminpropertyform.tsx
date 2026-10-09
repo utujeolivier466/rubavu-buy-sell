@@ -163,7 +163,7 @@ function AdminPropertyForm() {
 
   async function uploadNewImages(): Promise<string[]> {
     if (!supabase) return [];
-    
+
     const uploadedUrls: string[] = [];
 
     for (const file of newFiles) {
@@ -176,7 +176,7 @@ function AdminPropertyForm() {
 
       if (uploadError) {
         console.error('Image upload failed:', uploadError);
-        continue; // skip this file, keep going with the rest
+        continue;
       }
 
       const { data: publicUrlData } = supabase.storage
@@ -184,6 +184,19 @@ function AdminPropertyForm() {
         .getPublicUrl(fileName);
 
       uploadedUrls.push(publicUrlData.publicUrl);
+
+      const thumbBlob = await compressImage(file, 480, 0.7);
+      const thumbName = `thumb_${crypto.randomUUID()}.webp`;
+      const { error: thumbUploadError } = await supabase.storage
+        .from('property-images')
+        .upload(thumbName, thumbBlob, { contentType: 'image/webp', cacheControl: '31536000' });
+
+      if (!thumbUploadError) {
+        const { data: thumbPublicUrlData } = supabase.storage
+          .from('property-images')
+          .getPublicUrl(thumbName);
+        uploadedUrls.push(thumbPublicUrlData.publicUrl);
+      }
     }
 
     return uploadedUrls;

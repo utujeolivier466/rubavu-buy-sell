@@ -6,7 +6,8 @@
   "scripts": {
     "build": "vite build && node scripts/generate-social-preview-pages.mjs",
     "dev": "vite",
-    "compress:stored-images": "node scripts/compress-stored-images.mjs"
+    "compress:stored-images": "node scripts/recompress-cover-images.mjs",
+    "backfill:cover-thumbs": "node scripts/backfill-cover-thumbs.mjs"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",

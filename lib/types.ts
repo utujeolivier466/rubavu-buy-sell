@@ -39,6 +39,7 @@ export interface Property {
   has_internet: boolean;
 
   cover_image_url?: string | null;
+  cover_thumb_url?: string | null;
   image_urls?: string[] | null;
   video_url?: string | null;
   youtube_url?: string | null;
