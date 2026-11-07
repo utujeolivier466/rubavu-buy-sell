@@ -268,8 +268,8 @@ export function FeaturedProperties() {
                       <Maximize2 className="w-3 h-3 sm:w-4 sm:h-4 text-[#0D4F2A] flex-shrink-0" />
                       <span>{property.size}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-[#0D4F2A] flex-shrink-0" />
+                    <div className="flex items-center gap-2 text-sm sm:text-base font-semibold text-[#0D4F2A]">
+                      <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-[#0D4F2A] flex-shrink-0" />
                       <span>{property.location}</span>
                     </div>
                     <div className="text-xs bg-[#0D4F2A]/10 text-[#0D4F2A] px-2 py-1 rounded inline-block">
