@@ -2,7 +2,8 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import type { Session } from '@supabase/supabase-js';
 import { supabase } from '../../../lib/libsupabaseClient';
 
-const ROLE_FUNCTION_URL = `${import.meta.env.VITE_SUPABASE_URL || import.meta.env.NEXT_PUBLIC_SUPABASE_URL || ''}/functions/v1/get-admin-role`;
+const env = (import.meta as any).env || {};
+const ROLE_FUNCTION_URL = `${env.VITE_SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL || ''}/functions/v1/get-admin-role`;
 
 type Role = 'owner' | 'staff' | null;
 

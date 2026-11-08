@@ -70,6 +70,7 @@ function AdminPropertyForm() {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [agents, setAgents] = useState<Agent[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>([]);
+  const [existingCoverThumbUrl, setExistingCoverThumbUrl] = useState<string | null>(null);
   const [newFiles, setNewFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);
@@ -126,6 +127,7 @@ function AdminPropertyForm() {
       agent_id: data.agent_id || '',
     });
     setExistingImages(data.image_urls || []);
+    setExistingCoverThumbUrl(data.cover_thumb_url || null);
     setLoading(false);
   }
 
@@ -161,18 +163,19 @@ function AdminPropertyForm() {
     setNewFiles((prev) => prev.filter((_, i) => i !== index));
   }
 
-  async function uploadNewImages(): Promise<string[]> {
-    if (!supabase) return [];
+  async function uploadNewImages(): Promise<{ fullUrls: string[]; thumbUrls: string[] }> {
+    if (!supabase) return { fullUrls: [], thumbUrls: [] };
 
-    const uploadedUrls: string[] = [];
+    const fullUrls: string[] = [];
+    const thumbUrls: string[] = [];
 
     for (const file of newFiles) {
-      const compressedFile = await compressImage(file);
-      const fileName = `${crypto.randomUUID()}.webp`;
+      const fullBlob = await compressImage(file, 1200, 0.7);
+      const fullName = `${crypto.randomUUID()}.webp`;
 
       const { error: uploadError } = await supabase.storage
         .from('property-images')
-        .upload(fileName, compressedFile, { contentType: 'image/webp', cacheControl: '31536000' });
+        .upload(fullName, fullBlob, { contentType: 'image/webp', cacheControl: '31536000' });
 
       if (uploadError) {
         console.error('Image upload failed:', uploadError);
@@ -181,11 +184,11 @@ function AdminPropertyForm() {
 
       const { data: publicUrlData } = supabase.storage
         .from('property-images')
-        .getPublicUrl(fileName);
+        .getPublicUrl(fullName);
 
-      uploadedUrls.push(publicUrlData.publicUrl);
+      fullUrls.push(publicUrlData.publicUrl);
 
-      const thumbBlob = await compressImage(file, 480, 0.7);
+      const thumbBlob = await compressImage(file, 400, 0.6);
       const thumbName = `thumb_${crypto.randomUUID()}.webp`;
       const { error: thumbUploadError } = await supabase.storage
         .from('property-images')
@@ -195,17 +198,18 @@ function AdminPropertyForm() {
         const { data: thumbPublicUrlData } = supabase.storage
           .from('property-images')
           .getPublicUrl(thumbName);
-        uploadedUrls.push(thumbPublicUrlData.publicUrl);
+        thumbUrls.push(thumbPublicUrlData.publicUrl);
       }
     }
 
-    return uploadedUrls;
+    return { fullUrls, thumbUrls };
   }
 
   async function triggerPropertyPreviewRebuild() {
+    const env = (import.meta as any).env || {};
     const deployHookUrl =
-      import.meta.env.VITE_VERCEL_DEPLOY_HOOK_URL ||
-      import.meta.env.VERCEL_DEPLOY_HOOK_URL ||
+      env.VITE_VERCEL_DEPLOY_HOOK_URL ||
+      env.VERCEL_DEPLOY_HOOK_URL ||
       '';
 
     if (!deployHookUrl) {
@@ -242,9 +246,10 @@ function AdminPropertyForm() {
       return;
     }
 
-    const uploadedUrls = await uploadNewImages();
-    const allImages = [...existingImages, ...uploadedUrls];
+    const { fullUrls: uploadedFullUrls, thumbUrls: uploadedThumbUrls } = await uploadNewImages();
+    const allImages = [...existingImages, ...uploadedFullUrls];
     const generatedSlug = generateSlug(form.title.trim()) || `property-${Date.now()}`;
+    const coverThumbUrl = uploadedThumbUrls[0] || existingCoverThumbUrl || null;
 
     const payload = {
       title: form.title.trim(),
@@ -276,6 +281,7 @@ function AdminPropertyForm() {
       agent_id: form.agent_id || null,
       image_urls: allImages,
       cover_image_url: allImages[0] || null,
+      cover_thumb_url: coverThumbUrl,
     };
 
     const result = isEdit

@@ -65,20 +65,22 @@ for (const file of selectedFiles) {
     writeFileSync(backupPath, originalBuffer);
 
     let transformed = sharp(originalBuffer).rotate().resize({
-      width: 1280,
+      width: 1200,
+      height: 1200,
+      fit: 'inside',
       withoutEnlargement: true,
     });
 
     let contentType = 'image/webp';
 
     if (ext === 'png') {
-      transformed = transformed.png({ palette: true, quality: 75, compressionLevel: 9 });
+      transformed = transformed.png({ palette: true, quality: 70, compressionLevel: 9 });
       contentType = 'image/png';
     } else if (ext === 'jpg' || ext === 'jpeg') {
-      transformed = transformed.jpeg({ quality: 75, mozjpeg: true });
+      transformed = transformed.jpeg({ quality: 70, mozjpeg: true });
       contentType = 'image/jpeg';
     } else {
-      transformed = transformed.webp({ quality: 75 });
+      transformed = transformed.webp({ quality: 70 });
       contentType = 'image/webp';
     }
 

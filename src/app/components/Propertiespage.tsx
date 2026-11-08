@@ -32,7 +32,7 @@ function Propertiespage() {
 
     let query = supabase
       .from('properties')
-      .select('id, slug, title, location_text, city, price, currency, property_type, size_sqm, bedrooms, bathrooms, cover_image_url, image_urls, listing_type, is_lakefront, has_pool, has_parking, has_garden, has_electricity, has_water, has_internet, created_at')
+      .select('id, slug, title, location_text, city, price, currency, property_type, size_sqm, bedrooms, bathrooms, cover_image_url, cover_thumb_url, image_urls, listing_type, is_lakefront, has_pool, has_parking, has_garden, has_electricity, has_water, has_internet, created_at')
       .eq('status', 'Available');
 
     const listingType = searchParams.get('listing_type');
@@ -104,7 +104,7 @@ function Propertiespage() {
 
     const { data, error } = await supabase
       .from('properties')
-      .select('id, slug, title, location_text, city, price, currency, property_type, size_sqm, bedrooms, bathrooms, cover_image_url, image_urls, listing_type, created_at')
+      .select('id, slug, title, location_text, city, price, currency, property_type, size_sqm, bedrooms, bathrooms, cover_image_url, cover_thumb_url, image_urls, listing_type, created_at')
       .eq('status', 'Available')
       .eq('is_featured', true)
       .order('created_at', { ascending: false })
@@ -194,7 +194,7 @@ function Propertiespage() {
                     >
                       <div className="relative h-44 overflow-hidden bg-gray-100">
                         <img
-                          src={getThumbnailUrl(property.cover_thumb_url || property.cover_image_url || (property.image_urls && property.image_urls[0]) || '')}
+                          src={getThumbnailUrl(property.cover_thumb_url ?? property.cover_image_url ?? (property.image_urls && property.image_urls[0]) ?? '')}
                           alt={property.title}
                           loading="lazy"
                           decoding="async"
@@ -235,7 +235,7 @@ function Propertiespage() {
               >
                 <div className="relative h-44 overflow-hidden bg-gray-100">
                   <img
-                    src={getThumbnailUrl(property.cover_thumb_url || property.cover_image_url || (property.image_urls && property.image_urls[0]) || '')}
+                    src={getThumbnailUrl(property.cover_thumb_url ?? property.cover_image_url ?? (property.image_urls && property.image_urls[0]) ?? '')}
                     alt={property.title}
                     loading="lazy"
                     decoding="async"

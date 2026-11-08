@@ -143,7 +143,7 @@ export function FeaturedProperties() {
 
         const { data, error } = await supabase
           .from('properties')
-          .select('id, slug, title, status, cover_image_url, image_urls, price, currency, location_text, city, property_type, size_sqm, bedrooms, bathrooms')
+          .select('id, slug, title, status, cover_image_url, cover_thumb_url, image_urls, price, currency, location_text, city, property_type, size_sqm, bedrooms, bathrooms')
           .eq('is_featured', true)
           .order('created_at', { ascending: false });
 
