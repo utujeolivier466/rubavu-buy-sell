@@ -1,11 +1,26 @@
 // fix-all.mjs  —  npm i @supabase/supabase-js sharp
+import fs from 'fs'
+import dotenv from 'dotenv'
 import { createClient } from '@supabase/supabase-js'
 import sharp from 'sharp'
-import fs from 'fs'
 
-const sb = createClient(process.env.SUPABASE_URL, process.env.SERVICE_ROLE_KEY)
+dotenv.config()
+
+const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL
+const serviceRoleKey = process.env.SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY
+
+if (!supabaseUrl || !serviceRoleKey) {
+  throw new Error('Set SUPABASE_URL (or VITE_SUPABASE_URL) and SERVICE_ROLE_KEY (or SUPABASE_SERVICE_ROLE_KEY) before running the fix.')
+}
+
+const sb = createClient(supabaseUrl, serviceRoleKey)
 const BUCKET = 'property-images'
-const LIMIT = Number(process.env.LIMIT || 3)
+const LIMIT = Number.parseInt(process.env.LIMIT || process.env.MAX_FILES || '1000', 10)
+
+if (!Number.isFinite(LIMIT) || LIMIT <= 0) {
+  throw new Error('Image processing limit must be a positive number. Default is 1000.')
+}
+
 fs.mkdirSync('./backup', { recursive: true })
 
 const { data: files, error } = await sb.storage.from(BUCKET).list('', { limit: 1000 })

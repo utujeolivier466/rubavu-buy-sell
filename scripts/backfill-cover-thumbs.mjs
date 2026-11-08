@@ -68,8 +68,8 @@ for (const property of properties ?? []) {
 
     const thumbBuffer = await sharp(originalBuffer)
       .rotate()
-      .resize({ width: 480, height: 360, fit: 'cover', withoutEnlargement: true })
-      .webp({ quality: 80 })
+      .resize({ width: 400, withoutEnlargement: true })
+      .webp({ quality: 60 })
       .toBuffer();
 
     const { error: uploadError } = await supabase.storage
