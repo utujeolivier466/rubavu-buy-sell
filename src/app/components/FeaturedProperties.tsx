@@ -6,6 +6,7 @@ import { getThumbnailUrl } from '../../lib/thumbnailUrl';
 import { SoldStamp } from './Soldstamp';
 
 const WHATSAPP_NUMBER = '250782424382';
+const PAGE_SIZE = 12;
 
 const fallbackProperties = [
   {
@@ -74,7 +75,6 @@ function mapProperty(property: {
   status: any;
   cover_image_url: any;
   cover_thumb_url?: string | null;
-  image_urls: string | any[];
   image_url: any;
   image: any;
   photo_url: any;
@@ -94,9 +94,6 @@ function mapProperty(property: {
   const getImageUrl = () => {
     if (property.cover_thumb_url) return property.cover_thumb_url;
     if (property.cover_image_url) return property.cover_image_url;
-    if (Array.isArray(property.image_urls) && property.image_urls.length > 0) {
-      return property.image_urls[0];
-    }
     if (property.image_url) return property.image_url;
     if (property.image) return property.image;
     if (property.photo_url) return property.photo_url;
@@ -124,8 +121,10 @@ function mapProperty(property: {
 export function FeaturedProperties() {
   const [properties, setProperties] = useState(fallbackProperties);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState('');
   const [isMockData, setIsMockData] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -143,9 +142,10 @@ export function FeaturedProperties() {
 
         const { data, error } = await supabase
           .from('properties')
-          .select('id, slug, title, status, cover_image_url, cover_thumb_url, image_urls, price, currency, location_text, city, property_type, size_sqm, bedrooms, bathrooms')
+          .select('id, slug, title, status, cover_image_url, cover_thumb_url, price, currency, location_text, city, property_type, size_sqm, bedrooms, bathrooms')
           .eq('is_featured', true)
-          .order('created_at', { ascending: false });
+          .order('created_at', { ascending: false })
+          .range(0, PAGE_SIZE - 1);
 
         if (!isMounted) return;
 
@@ -160,9 +160,11 @@ export function FeaturedProperties() {
         if (data?.length) {
           setProperties(data.map(mapProperty));
           setIsMockData(false);
+          setHasMore(data.length === PAGE_SIZE);
         } else {
           setProperties(fallbackProperties);
           setIsMockData(true);
+          setHasMore(false);
         }
       } catch (err) {
         console.error('Featured properties fetch failed:', err);
@@ -170,6 +172,7 @@ export function FeaturedProperties() {
           setError('Unable to load featured properties right now.');
           setProperties(fallbackProperties);
           setIsMockData(true);
+          setHasMore(false);
         }
       } finally {
         if (isMounted) {
@@ -184,6 +187,31 @@ export function FeaturedProperties() {
       isMounted = false;
     };
   }, []);
+
+  async function loadMoreFeaturedProperties() {
+    if (!supabase || loadingMore || !hasMore) return;
+
+    setLoadingMore(true);
+    setError('');
+
+    const { data, error } = await supabase
+      .from('properties')
+      .select('id, slug, title, status, cover_image_url, cover_thumb_url, price, currency, location_text, city, property_type, size_sqm, bedrooms, bathrooms')
+      .eq('is_featured', true)
+      .order('created_at', { ascending: false })
+      .range(properties.length, properties.length + PAGE_SIZE - 1);
+
+    if (error) {
+      console.error('Error fetching more featured properties:', error);
+      setError('Unable to load more featured properties right now.');
+    } else {
+      const results = data ?? [];
+      setProperties((current) => [...current, ...results.map(mapProperty)]);
+      setHasMore(results.length === PAGE_SIZE);
+    }
+
+    setLoadingMore(false);
+  }
 
   function handleQuickWhatsApp(property: { id: any; slug?: string | number; title: string; location: string; price: string; status?: string }) {
     if (!isMockData && supabase) {
@@ -307,6 +335,18 @@ export function FeaturedProperties() {
             );
           })}
         </div>
+        {hasMore && (
+          <div className="mt-8 text-center">
+            <button
+              type="button"
+              onClick={() => void loadMoreFeaturedProperties()}
+              disabled={loadingMore}
+              className="px-6 py-3 bg-[#0D4F2A] hover:bg-[#0A3B21] disabled:opacity-60 text-white rounded-lg font-medium"
+            >
+              {loadingMore ? 'Loading…' : 'Load more'}
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

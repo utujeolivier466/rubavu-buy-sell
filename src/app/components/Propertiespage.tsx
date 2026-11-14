@@ -5,34 +5,52 @@ import type { Property } from '../../../lib/types';
 import { getThumbnailUrl } from '../../lib/thumbnailUrl';
 import SEOHead from './Seohead';
 
+const PAGE_SIZE = 12;
+
 function Propertiespage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [properties, setProperties] = useState<Property[]>([]);
   const [suggested, setSuggested] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+  const [typeFilter, setTypeFilter] = useState(searchParams.get('type') ?? '');
+  const [cityFilter, setCityFilter] = useState(searchParams.get('city') ?? '');
+  const [minPriceFilter, setMinPriceFilter] = useState(searchParams.get('min_price') ?? '');
+  const [maxPriceFilter, setMaxPriceFilter] = useState(searchParams.get('max_price') ?? '');
 
   useEffect(() => {
-    void fetchProperties();
+    setTypeFilter(searchParams.get('type') ?? '');
+    setCityFilter(searchParams.get('city') ?? '');
+    setMinPriceFilter(searchParams.get('min_price') ?? '');
+    setMaxPriceFilter(searchParams.get('max_price') ?? '');
+    void fetchProperties(0, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
-  async function fetchProperties() {
+  async function fetchProperties(from = 0, append = false) {
     if (!supabase) {
       setError('Supabase is not configured yet.');
-      setLoading(false);
-      setProperties([]);
-      setSuggested([]);
+      if (append) setLoadingMore(false);
+      else {
+        setLoading(false);
+        setProperties([]);
+        setSuggested([]);
+      }
       return;
     }
 
-    setLoading(true);
+    if (append) setLoadingMore(true);
+    else {
+      setLoading(true);
+      setHasMore(false);
+    }
     setError(null);
 
     let query = supabase
       .from('properties')
-      .select('id, slug, title, location_text, city, price, currency, property_type, size_sqm, bedrooms, bathrooms, cover_image_url, cover_thumb_url, image_urls, listing_type, is_lakefront, has_pool, has_parking, has_garden, has_electricity, has_water, has_internet, created_at')
+      .select('id, slug, title, location_text, city, price, currency, property_type, size_sqm, bedrooms, bathrooms, cover_image_url, cover_thumb_url, listing_type, is_lakefront, has_pool, has_parking, has_garden, has_electricity, has_water, has_internet, created_at')
       .eq('status', 'Available');
 
     const listingType = searchParams.get('listing_type');
@@ -80,23 +98,44 @@ function Propertiespage() {
     else if (sort === 'price_desc') query = query.order('price', { ascending: false });
     else query = query.order('created_at', { ascending: false });
 
-    const { data, error } = await query;
+    const { data, error } = await query.range(from, from + PAGE_SIZE - 1);
 
     if (error) {
       console.error('Property search failed:', error);
       setError('Something went wrong loading properties. Please try again.');
-      setProperties([]);
+      if (!append) setProperties([]);
+      setHasMore(false);
     } else {
       const results = (data ?? []) as Property[];
-      setProperties(results);
-      if (results.length === 0) {
+      setProperties((current) => append ? [...current, ...results] : results);
+      setHasMore(results.length === PAGE_SIZE);
+      if (!append && results.length === 0) {
         void fetchSuggestions();
-      } else {
+      } else if (!append) {
         setSuggested([]);
       }
     }
 
-    setLoading(false);
+    if (append) setLoadingMore(false);
+    else setLoading(false);
+  }
+
+  function handleFilterSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const params = new URLSearchParams(searchParams);
+    const filters = [
+      ['type', typeFilter],
+      ['city', cityFilter],
+      ['min_price', minPriceFilter],
+      ['max_price', maxPriceFilter],
+    ];
+
+    filters.forEach(([key, value]) => {
+      if (value) params.set(key, value);
+      else params.delete(key);
+    });
+
+    setSearchParams(params);
   }
 
   async function fetchSuggestions() {
@@ -104,7 +143,7 @@ function Propertiespage() {
 
     const { data, error } = await supabase
       .from('properties')
-      .select('id, slug, title, location_text, city, price, currency, property_type, size_sqm, bedrooms, bathrooms, cover_image_url, cover_thumb_url, image_urls, listing_type, created_at')
+      .select('id, slug, title, location_text, city, price, currency, property_type, size_sqm, bedrooms, bathrooms, cover_image_url, cover_thumb_url, listing_type, created_at')
       .eq('status', 'Available')
       .eq('is_featured', true)
       .order('created_at', { ascending: false })
@@ -127,7 +166,7 @@ function Propertiespage() {
       position: i + 1,
       url: `https://www.rubavubuyandsell.com/properties/${p.slug}`,
       name: p.title,
-      image: p.cover_image_url || (p.image_urls && p.image_urls[0]) || undefined,
+      image: p.cover_image_url || undefined,
     })),
   };
 
@@ -170,6 +209,61 @@ function Propertiespage() {
           </div>
         )}
 
+        <form onSubmit={handleFilterSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
+          <label className="text-sm text-gray-700">
+            Property type
+            <select
+              value={typeFilter}
+              onChange={(event) => setTypeFilter(event.target.value)}
+              className="mt-1 w-full border border-gray-300 rounded-lg p-2.5"
+            >
+              <option value="">All types</option>
+              <option value="House">House</option>
+              <option value="Apartment">Apartment</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Land">Land</option>
+            </select>
+          </label>
+          <label className="text-sm text-gray-700">
+            Location / city
+            <input
+              type="text"
+              value={cityFilter}
+              onChange={(event) => setCityFilter(event.target.value)}
+              placeholder="Any city"
+              className="mt-1 w-full border border-gray-300 rounded-lg p-2.5"
+            />
+          </label>
+          <label className="text-sm text-gray-700">
+            Minimum price
+            <input
+              type="number"
+              min="0"
+              value={minPriceFilter}
+              onChange={(event) => setMinPriceFilter(event.target.value)}
+              placeholder="No minimum"
+              className="mt-1 w-full border border-gray-300 rounded-lg p-2.5"
+            />
+          </label>
+          <label className="text-sm text-gray-700">
+            Maximum price
+            <input
+              type="number"
+              min="0"
+              value={maxPriceFilter}
+              onChange={(event) => setMaxPriceFilter(event.target.value)}
+              placeholder="No maximum"
+              className="mt-1 w-full border border-gray-300 rounded-lg p-2.5"
+            />
+          </label>
+          <button
+            type="submit"
+            className="self-end bg-[#0D4F2A] hover:bg-[#0A3B21] text-white rounded-lg px-4 py-2.5 font-medium"
+          >
+            Apply filters
+          </button>
+        </form>
+
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[...Array(4)].map((_, index) => (
@@ -194,7 +288,7 @@ function Propertiespage() {
                     >
                       <div className="relative h-44 overflow-hidden bg-gray-100">
                         <img
-                          src={getThumbnailUrl(property.cover_thumb_url ?? property.cover_image_url ?? (property.image_urls && property.image_urls[0]) ?? '')}
+                          src={getThumbnailUrl(property.cover_thumb_url ?? property.cover_image_url ?? '')}
                           alt={property.title}
                           loading="lazy"
                           decoding="async"
@@ -235,7 +329,7 @@ function Propertiespage() {
               >
                 <div className="relative h-44 overflow-hidden bg-gray-100">
                   <img
-                    src={getThumbnailUrl(property.cover_thumb_url ?? property.cover_image_url ?? (property.image_urls && property.image_urls[0]) ?? '')}
+                    src={getThumbnailUrl(property.cover_thumb_url ?? property.cover_image_url ?? '')}
                     alt={property.title}
                     loading="lazy"
                     decoding="async"
@@ -257,6 +351,18 @@ function Propertiespage() {
                 </div>
               </Link>
             ))}
+          </div>
+        )}
+        {!loading && properties.length > 0 && hasMore && (
+          <div className="mt-8 text-center">
+            <button
+              type="button"
+              onClick={() => void fetchProperties(properties.length, true)}
+              disabled={loadingMore}
+              className="px-6 py-3 bg-[#0D4F2A] hover:bg-[#0A3B21] disabled:opacity-60 text-white rounded-lg font-medium"
+            >
+              {loadingMore ? 'Loading…' : 'Load more'}
+            </button>
           </div>
         )}
       </div>
