@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle, MapPin, Maximize2 } from 'lucide-react';
 import { supabase } from '../../../lib/libsupabaseClient';
@@ -121,10 +121,13 @@ function mapProperty(property: {
 export function FeaturedProperties() {
   const [properties, setProperties] = useState(fallbackProperties);
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState('');
   const [isMockData, setIsMockData] = useState(true);
   const [hasMore, setHasMore] = useState(false);
+  const [fetchingMore, setFetchingMore] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const fetchingRef = useRef(false);
+  const nextFromRef = useRef(PAGE_SIZE);
 
   useEffect(() => {
     let isMounted = true;
@@ -145,6 +148,7 @@ export function FeaturedProperties() {
           .select('id, slug, title, status, cover_image_url, cover_thumb_url, price, currency, location_text, city, property_type, size_sqm, bedrooms, bathrooms')
           .eq('is_featured', true)
           .order('created_at', { ascending: false })
+          .order('id', { ascending: false })
           .range(0, PAGE_SIZE - 1);
 
         if (!isMounted) return;
@@ -154,6 +158,7 @@ export function FeaturedProperties() {
           setError('Unable to load featured properties right now.');
           setProperties(fallbackProperties);
           setIsMockData(true);
+          setHasMore(false);
           return;
         }
 
@@ -161,10 +166,12 @@ export function FeaturedProperties() {
           setProperties(data.map(mapProperty));
           setIsMockData(false);
           setHasMore(data.length === PAGE_SIZE);
+          nextFromRef.current = data.length;
         } else {
           setProperties(fallbackProperties);
           setIsMockData(true);
           setHasMore(false);
+          nextFromRef.current = 0;
         }
       } catch (err) {
         console.error('Featured properties fetch failed:', err);
@@ -189,29 +196,66 @@ export function FeaturedProperties() {
   }, []);
 
   async function loadMoreFeaturedProperties() {
-    if (!supabase || loadingMore || !hasMore) return;
+    if (!supabase || fetchingRef.current || !hasMore || loading) return;
 
-    setLoadingMore(true);
+    fetchingRef.current = true;
+    setFetchingMore(true);
     setError('');
 
-    const { data, error } = await supabase
-      .from('properties')
-      .select('id, slug, title, status, cover_image_url, cover_thumb_url, price, currency, location_text, city, property_type, size_sqm, bedrooms, bathrooms')
-      .eq('is_featured', true)
-      .order('created_at', { ascending: false })
-      .range(properties.length, properties.length + PAGE_SIZE - 1);
+    try {
+      const { data, error } = await supabase
+        .from('properties')
+        .select('id, slug, title, status, cover_image_url, cover_thumb_url, price, currency, location_text, city, property_type, size_sqm, bedrooms, bathrooms')
+        .eq('is_featured', true)
+        .order('created_at', { ascending: false })
+        .order('id', { ascending: false })
+        .range(nextFromRef.current, nextFromRef.current + PAGE_SIZE - 1);
 
-    if (error) {
-      console.error('Error fetching more featured properties:', error);
+      if (error) {
+        console.error('Error fetching more featured properties:', error);
+        setError('Unable to load more featured properties right now.');
+        setHasMore(false);
+      } else {
+        const results = data ?? [];
+        nextFromRef.current += results.length;
+        setProperties((current) => {
+          const seenIds = new Set(current.map((property) => property.id));
+          const newProperties = results.filter((property) => {
+            if (seenIds.has(property.id)) return false;
+            seenIds.add(property.id);
+            return true;
+          });
+          return [...current, ...newProperties.map(mapProperty)];
+        });
+        setHasMore(results.length === PAGE_SIZE);
+      }
+    } catch (err) {
+      console.error('Featured properties fetch failed:', err);
       setError('Unable to load more featured properties right now.');
-    } else {
-      const results = data ?? [];
-      setProperties((current) => [...current, ...results.map(mapProperty)]);
-      setHasMore(results.length === PAGE_SIZE);
+      setHasMore(false);
+    } finally {
+      fetchingRef.current = false;
+      setFetchingMore(false);
     }
-
-    setLoadingMore(false);
   }
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || loading || !hasMore || isMockData || fetchingMore) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          void loadMoreFeaturedProperties();
+        }
+      },
+      { rootMargin: '0px 0px 400px 0px' },
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchingMore, hasMore, isMockData, loading, properties.length]);
 
   function handleQuickWhatsApp(property: { id: any; slug?: string | number; title: string; location: string; price: string; status?: string }) {
     if (!isMockData && supabase) {
@@ -335,17 +379,13 @@ export function FeaturedProperties() {
             );
           })}
         </div>
-        {hasMore && (
-          <div className="mt-8 text-center">
-            <button
-              type="button"
-              onClick={() => void loadMoreFeaturedProperties()}
-              disabled={loadingMore}
-              className="px-6 py-3 bg-[#0D4F2A] hover:bg-[#0A3B21] disabled:opacity-60 text-white rounded-lg font-medium"
-            >
-              {loadingMore ? 'Loading…' : 'Load more'}
-            </button>
-          </div>
+        {!loading && properties.length > 0 && !isMockData && (
+          <>
+            <div ref={sentinelRef} aria-hidden="true" className="h-px" />
+            <p className="py-4 text-center text-sm text-gray-500" aria-live="polite">
+              {fetchingMore ? 'Loading…' : !hasMore && !error ? 'You’ve seen all properties' : ''}
+            </p>
+          </>
         )}
       </div>
     </section>

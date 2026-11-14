@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { supabase } from '../../../lib/libsupabaseClient';
 import type { Property } from '../../../lib/types';
@@ -6,6 +6,7 @@ import { getThumbnailUrl } from '../../lib/thumbnailUrl';
 import SEOHead from './Seohead';
 
 const PAGE_SIZE = 12;
+const SCROLL_STATE_KEY = 'properties-page-state';
 
 function Propertiespage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -15,57 +16,141 @@ function Propertiespage() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [typeFilter, setTypeFilter] = useState(searchParams.get('type') ?? '');
-  const [cityFilter, setCityFilter] = useState(searchParams.get('city') ?? '');
-  const [minPriceFilter, setMinPriceFilter] = useState(searchParams.get('min_price') ?? '');
-  const [maxPriceFilter, setMaxPriceFilter] = useState(searchParams.get('max_price') ?? '');
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const nextFromRef = useRef(0);
+  const fetchingRef = useRef(false);
+  const restoreScrollYRef = useRef<number | null>(null);
 
   useEffect(() => {
-    setTypeFilter(searchParams.get('type') ?? '');
-    setCityFilter(searchParams.get('city') ?? '');
-    setMinPriceFilter(searchParams.get('min_price') ?? '');
-    setMaxPriceFilter(searchParams.get('max_price') ?? '');
-    void fetchProperties(0, false);
+    let cancelled = false;
+    let restoreCount = PAGE_SIZE;
+    const stateKey = `${SCROLL_STATE_KEY}:${searchParams.toString()}`;
+    restoreScrollYRef.current = null;
+
+    try {
+      const savedState = sessionStorage.getItem(stateKey);
+      if (savedState) {
+        const parsedState = JSON.parse(savedState) as { count?: number; scrollY?: number };
+        if (typeof parsedState.count === 'number' && parsedState.count >= 0) {
+          if (parsedState.count > 0) restoreCount = parsedState.count;
+          restoreScrollYRef.current =
+            typeof parsedState.scrollY === 'number' ? parsedState.scrollY : 0;
+        }
+      }
+    } catch (restoreError) {
+      console.error('Failed to restore properties page position:', restoreError);
+    }
+
+    setProperties([]);
+    setSuggested([]);
+    setLoading(true);
+    setLoadingMore(false);
+    setHasMore(false);
+    setError(null);
+    nextFromRef.current = 0;
+    fetchingRef.current = true;
+
+    async function loadInitialPages() {
+      const loaded: Property[] = [];
+      let from = 0;
+      let moreAvailable = true;
+
+      try {
+        do {
+          const { data, error } = await fetchPage(from, searchParams);
+          if (cancelled) return;
+          if (error) {
+            console.error('Property search failed:', error);
+            setError('Something went wrong loading properties. Please try again.');
+            moreAvailable = false;
+            break;
+          }
+
+          const results = (data ?? []) as Property[];
+          const seenIds = new Set(loaded.map((property) => property.id));
+          for (const property of results) {
+            if (!seenIds.has(property.id)) {
+              seenIds.add(property.id);
+              loaded.push(property);
+            }
+          }
+          from += results.length;
+          moreAvailable = results.length === PAGE_SIZE;
+          if (!moreAvailable) break;
+        } while (loaded.length < restoreCount);
+
+        if (cancelled) return;
+        nextFromRef.current = from;
+        setProperties(loaded);
+        setHasMore(moreAvailable);
+        if (loaded.length === 0) {
+          void fetchSuggestions();
+        }
+      } catch (fetchError) {
+        console.error('Property search failed:', fetchError);
+        if (!cancelled) {
+          setError(
+            supabase
+              ? 'Something went wrong loading properties. Please try again.'
+              : 'Supabase is not configured yet.',
+          );
+          setProperties([]);
+          setHasMore(false);
+        }
+      } finally {
+        if (!cancelled) {
+          fetchingRef.current = false;
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadInitialPages();
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
-  async function fetchProperties(from = 0, append = false) {
-    if (!supabase) {
-      setError('Supabase is not configured yet.');
-      if (append) setLoadingMore(false);
-      else {
-        setLoading(false);
-        setProperties([]);
-        setSuggested([]);
-      }
-      return;
-    }
+  useEffect(() => {
+    if (loading || restoreScrollYRef.current === null) return;
 
-    if (append) setLoadingMore(true);
-    else {
-      setLoading(true);
-      setHasMore(false);
+    const scrollY = restoreScrollYRef.current;
+    const frame = window.requestAnimationFrame(() => {
+      window.scrollTo(0, scrollY);
+      try {
+        sessionStorage.removeItem(`${SCROLL_STATE_KEY}:${searchParams.toString()}`);
+      } catch (removeError) {
+        console.error('Failed to clear restored properties page position:', removeError);
+      }
+      restoreScrollYRef.current = null;
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [loading, properties.length, searchParams]);
+
+  async function fetchPage(from: number, params: URLSearchParams) {
+    if (!supabase) {
+      throw new Error('Supabase is not configured yet.');
     }
-    setError(null);
 
     let query = supabase
       .from('properties')
       .select('id, slug, title, location_text, city, price, currency, property_type, size_sqm, bedrooms, bathrooms, cover_image_url, cover_thumb_url, listing_type, is_lakefront, has_pool, has_parking, has_garden, has_electricity, has_water, has_internet, created_at')
       .eq('status', 'Available');
 
-    const listingType = searchParams.get('listing_type');
-    const q = searchParams.get('q');
-    const city = searchParams.get('city');
-    const bedrooms = searchParams.get('bedrooms');
-    const minPrice = searchParams.get('min_price');
-    const maxPrice = searchParams.get('max_price');
-    const bathrooms = searchParams.get('bathrooms');
-    const type = searchParams.get('type');
-    const minSize = searchParams.get('min_size');
-    const sort = searchParams.get('sort');
-    const features = searchParams.getAll('feature');
-    const utilities = searchParams.getAll('utility');
-    const lakefront = searchParams.get('lakefront');
+    const listingType = params.get('listing_type');
+    const q = params.get('q');
+    const city = params.get('city');
+    const bedrooms = params.get('bedrooms');
+    const minPrice = params.get('min_price');
+    const maxPrice = params.get('max_price');
+    const bathrooms = params.get('bathrooms');
+    const type = params.get('type');
+    const minSize = params.get('min_size');
+    const features = params.getAll('feature');
+    const utilities = params.getAll('utility');
+    const lakefront = params.get('lakefront');
 
     if (listingType) query = query.eq('listing_type', listingType);
     if (city) query = query.eq('city', city);
@@ -94,48 +179,76 @@ function Propertiespage() {
     if (utilities.includes('water')) query = query.eq('has_water', true);
     if (utilities.includes('internet')) query = query.eq('has_internet', true);
 
-    if (sort === 'price_asc') query = query.order('price', { ascending: true });
-    else if (sort === 'price_desc') query = query.order('price', { ascending: false });
-    else query = query.order('created_at', { ascending: false });
-
-    const { data, error } = await query.range(from, from + PAGE_SIZE - 1);
-
-    if (error) {
-      console.error('Property search failed:', error);
-      setError('Something went wrong loading properties. Please try again.');
-      if (!append) setProperties([]);
-      setHasMore(false);
-    } else {
-      const results = (data ?? []) as Property[];
-      setProperties((current) => append ? [...current, ...results] : results);
-      setHasMore(results.length === PAGE_SIZE);
-      if (!append && results.length === 0) {
-        void fetchSuggestions();
-      } else if (!append) {
-        setSuggested([]);
-      }
-    }
-
-    if (append) setLoadingMore(false);
-    else setLoading(false);
+    return query
+      .order('created_at', { ascending: false })
+      .order('id', { ascending: false })
+      .range(from, from + PAGE_SIZE - 1);
   }
 
-  function handleFilterSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const params = new URLSearchParams(searchParams);
-    const filters = [
-      ['type', typeFilter],
-      ['city', cityFilter],
-      ['min_price', minPriceFilter],
-      ['max_price', maxPriceFilter],
-    ];
+  async function loadNextPage() {
+    if (fetchingRef.current || !hasMore || loading) return;
 
-    filters.forEach(([key, value]) => {
-      if (value) params.set(key, value);
-      else params.delete(key);
-    });
+    fetchingRef.current = true;
+    setLoadingMore(true);
+    setError(null);
+    try {
+      const { data, error } = await fetchPage(nextFromRef.current, searchParams);
+      if (error) {
+        console.error('Property search failed:', error);
+        setError('Something went wrong loading properties. Please try again.');
+        setHasMore(false);
+        return;
+      }
 
-    setSearchParams(params);
+      const results = (data ?? []) as Property[];
+      setProperties((current) => {
+        const seenIds = new Set(current.map((property) => property.id));
+        const newProperties = results.filter((property) => {
+          if (seenIds.has(property.id)) return false;
+          seenIds.add(property.id);
+          return true;
+        });
+        return [...current, ...newProperties];
+      });
+      nextFromRef.current += results.length;
+      setHasMore(results.length === PAGE_SIZE);
+    } catch (fetchError) {
+      console.error('Property search failed:', fetchError);
+      setError('Something went wrong loading properties. Please try again.');
+      setHasMore(false);
+    } finally {
+      fetchingRef.current = false;
+      setLoadingMore(false);
+    }
+  }
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || loading || !hasMore) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          void loadNextPage();
+        }
+      },
+      { rootMargin: '0px 0px 400px 0px' },
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasMore, loading, searchParams]);
+
+  function saveReturnPosition() {
+    try {
+      sessionStorage.setItem(
+        `${SCROLL_STATE_KEY}:${searchParams.toString()}`,
+        JSON.stringify({ count: Math.max(properties.length, PAGE_SIZE), scrollY: window.scrollY }),
+      );
+    } catch (saveError) {
+      console.error('Failed to save properties page position:', saveError);
+    }
   }
 
   async function fetchSuggestions() {
@@ -147,6 +260,7 @@ function Propertiespage() {
       .eq('status', 'Available')
       .eq('is_featured', true)
       .order('created_at', { ascending: false })
+      .order('id', { ascending: false })
       .limit(4);
 
     if (!error) {
@@ -183,7 +297,7 @@ function Propertiespage() {
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-              {loading ? 'Searching…' : `${properties.length} ${properties.length === 1 ? 'Property' : 'Properties'} Found`}
+              Properties
             </h1>
             <p className="text-sm text-gray-500 mt-1">
               {loading
@@ -209,61 +323,6 @@ function Propertiespage() {
           </div>
         )}
 
-        <form onSubmit={handleFilterSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
-          <label className="text-sm text-gray-700">
-            Property type
-            <select
-              value={typeFilter}
-              onChange={(event) => setTypeFilter(event.target.value)}
-              className="mt-1 w-full border border-gray-300 rounded-lg p-2.5"
-            >
-              <option value="">All types</option>
-              <option value="House">House</option>
-              <option value="Apartment">Apartment</option>
-              <option value="Commercial">Commercial</option>
-              <option value="Land">Land</option>
-            </select>
-          </label>
-          <label className="text-sm text-gray-700">
-            Location / city
-            <input
-              type="text"
-              value={cityFilter}
-              onChange={(event) => setCityFilter(event.target.value)}
-              placeholder="Any city"
-              className="mt-1 w-full border border-gray-300 rounded-lg p-2.5"
-            />
-          </label>
-          <label className="text-sm text-gray-700">
-            Minimum price
-            <input
-              type="number"
-              min="0"
-              value={minPriceFilter}
-              onChange={(event) => setMinPriceFilter(event.target.value)}
-              placeholder="No minimum"
-              className="mt-1 w-full border border-gray-300 rounded-lg p-2.5"
-            />
-          </label>
-          <label className="text-sm text-gray-700">
-            Maximum price
-            <input
-              type="number"
-              min="0"
-              value={maxPriceFilter}
-              onChange={(event) => setMaxPriceFilter(event.target.value)}
-              placeholder="No maximum"
-              className="mt-1 w-full border border-gray-300 rounded-lg p-2.5"
-            />
-          </label>
-          <button
-            type="submit"
-            className="self-end bg-[#0D4F2A] hover:bg-[#0A3B21] text-white rounded-lg px-4 py-2.5 font-medium"
-          >
-            Apply filters
-          </button>
-        </form>
-
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[...Array(4)].map((_, index) => (
@@ -284,6 +343,7 @@ function Propertiespage() {
                     <Link
                       key={property.id}
                       to={`/properties/${property.slug}`}
+                      onClick={saveReturnPosition}
                       className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group"
                     >
                       <div className="relative h-44 overflow-hidden bg-gray-100">
@@ -325,6 +385,7 @@ function Propertiespage() {
               <Link
                 key={property.id}
                 to={`/properties/${property.slug}`}
+                onClick={saveReturnPosition}
                 className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group"
               >
                 <div className="relative h-44 overflow-hidden bg-gray-100">
@@ -353,17 +414,13 @@ function Propertiespage() {
             ))}
           </div>
         )}
-        {!loading && properties.length > 0 && hasMore && (
-          <div className="mt-8 text-center">
-            <button
-              type="button"
-              onClick={() => void fetchProperties(properties.length, true)}
-              disabled={loadingMore}
-              className="px-6 py-3 bg-[#0D4F2A] hover:bg-[#0A3B21] disabled:opacity-60 text-white rounded-lg font-medium"
-            >
-              {loadingMore ? 'Loading…' : 'Load more'}
-            </button>
-          </div>
+        {!loading && properties.length > 0 && (
+          <>
+            <div ref={sentinelRef} aria-hidden="true" className="h-px" />
+            <p className="py-4 text-center text-sm text-gray-500" aria-live="polite">
+              {loadingMore ? 'Loading…' : !hasMore && !error ? 'You’ve seen all properties' : ''}
+            </p>
+          </>
         )}
       </div>
     </>
