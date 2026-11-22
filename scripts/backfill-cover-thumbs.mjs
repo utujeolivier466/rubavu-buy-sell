@@ -1,19 +1,26 @@
 import { createClient } from '@supabase/supabase-js';
-import { config } from 'dotenv';
+import dotenv from 'dotenv';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
-config();
-
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: join(scriptDirectory, '..', '.env') });
+
 const backupDirectory = join(scriptDirectory, 'backups', 'property-cover-thumbs');
-const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl =
+  process.env.SUPABASE_URL ||
+  process.env.VITE_SUPABASE_URL ||
+  process.env.NEXT_PUBLIC_SUPABASE_URL;
+const serviceRoleKey =
+  process.env.SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !serviceRoleKey) {
-  throw new Error('Set VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY before running the backfill.');
+  throw new Error(
+    'Set SUPABASE_URL (or VITE_SUPABASE_URL) and SERVICE_ROLE_KEY (or SUPABASE_SERVICE_ROLE_KEY) in the environment or project .env file.',
+  );
 }
 
 const supabase = createClient(supabaseUrl, serviceRoleKey, {
@@ -68,8 +75,9 @@ for (const property of properties ?? []) {
 
     const thumbBuffer = await sharp(originalBuffer)
       .rotate()
-      .resize({ width: 400, withoutEnlargement: true })
-      .webp({ quality: 60 })
+      .resize({ width: 720, withoutEnlargement: true, kernel: 'lanczos3' })
+      .sharpen({ sigma: 0.6 })
+      .webp({ quality: 78, effort: 5, smartSubsample: true })
       .toBuffer();
 
     const { error: uploadError } = await supabase.storage

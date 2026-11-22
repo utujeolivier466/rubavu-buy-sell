@@ -188,7 +188,7 @@ function AdminPropertyForm() {
 
       fullUrls.push(publicUrlData.publicUrl);
 
-      const thumbBlob = await compressImage(file, 400, 0.6, null);
+      const thumbBlob = await compressImage(file, 720, 0.78, null);
       const thumbName = `thumb_${crypto.randomUUID()}.webp`;
       const { error: thumbUploadError } = await supabase.storage
         .from('property-images')
