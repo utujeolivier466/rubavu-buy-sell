@@ -18,6 +18,8 @@ export async function compressImage(
     throw new Error('Unable to create image canvas context');
   }
 
+  context.imageSmoothingEnabled = true;
+  context.imageSmoothingQuality = 'high';
   context.drawImage(bitmap, 0, 0, width, height);
   bitmap.close();
 
