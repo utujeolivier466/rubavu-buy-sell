@@ -95,6 +95,7 @@ function SellPropertyPage() {
   const [listingError, setListingError] = useState<string>('');
   const [status, setStatus] = useState<SubmitState>('idle');
   const [error, setError] = useState<string | null>(null);
+  const [submitMessage, setSubmitMessage] = useState('');
 
   useEffect(() => {
     void fetchLatestListings();
@@ -200,10 +201,12 @@ function SellPropertyPage() {
     }
 
     const urls: string[] = [];
-    for (const file of files) {
+    for (const [index, file] of files.entries()) {
+      setSubmitMessage(`Preparing photo ${index + 1} of ${files.length}…`);
       const compressedFile = await compressImage(file);
       const fileName = `${crypto.randomUUID()}.webp`;
 
+      setSubmitMessage(`Uploading photo ${index + 1} of ${files.length}…`);
       const { error: uploadError } = await client.storage.from('submission-photos').upload(fileName, compressedFile, {
         contentType: 'image/webp',
         cacheControl: '31536000',
@@ -211,7 +214,7 @@ function SellPropertyPage() {
 
       if (uploadError) {
         console.error('Photo upload failed:', uploadError);
-        continue;
+        throw new Error('A photo could not be uploaded. Check your connection and try again.');
       }
 
       const { data } = client.storage.from('submission-photos').getPublicUrl(fileName);
@@ -233,9 +236,11 @@ function SellPropertyPage() {
 
     setStatus('submitting');
     setError(null);
+    setSubmitMessage('');
 
     try {
       const photoUrls = await uploadPhotos();
+      setSubmitMessage('Saving your property submission…');
 
       const submission = {
         full_name: fullName.trim(),
@@ -290,7 +295,12 @@ function SellPropertyPage() {
       setEmailError('');
     } catch (err) {
       console.error('Submission failed:', err);
-      setError('Something went wrong submitting your property. Please try again, or contact us directly.');
+      setError(
+        err instanceof Error && err.message.startsWith('A photo could not be uploaded.')
+          ? err.message
+          : 'Something went wrong submitting your property. Please try again, or contact us directly.',
+      );
+      setSubmitMessage('');
       setStatus('error');
     }
   }
@@ -553,7 +563,7 @@ function SellPropertyPage() {
                   disabled={!isValid || status === 'submitting'}
                   className="w-full bg-[#D56000] hover:bg-[#A94A00] disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-6 py-3 rounded-full font-semibold text-sm transition-colors"
                 >
-                  {status === 'submitting' ? 'Submitting…' : 'Submit Property'}
+                  {status === 'submitting' ? submitMessage || 'Submitting…' : 'Submit Property'}
                 </button>
               </form>
             )}
