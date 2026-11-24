@@ -74,6 +74,7 @@ const fallbackListings: Listing[] = [
 
 const bedroomOptions = ['1', '2', '3', '4', '5', '6', '7', '8+'];
 const bathroomOptions = ['1', '2', '3', '4+'];
+const MAX_PHOTOS = 14;
 
 function SellPropertyPage() {
   const [requestType, setRequestType] = useState<RequestType>('Sale');
@@ -91,6 +92,7 @@ function SellPropertyPage() {
   const [emailError, setEmailError] = useState('');
   const [website, setWebsite] = useState(''); // honeypot — real users never see or fill this
   const [files, setFiles] = useState<File[]>([]);
+  const [fileError, setFileError] = useState<string | null>(null);
   const [latestListings, setLatestListings] = useState<Listing[]>(fallbackListings);
   const [listingError, setListingError] = useState<string>('');
   const [status, setStatus] = useState<SubmitState>('idle');
@@ -187,11 +189,20 @@ function SellPropertyPage() {
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const selectedFiles = e.target.files;
     if (!selectedFiles) return;
-    setFiles((prev) => [...prev, ...Array.from(selectedFiles)]);
+    const remainingSlots = Math.max(0, MAX_PHOTOS - files.length);
+    const newFiles = Array.from(selectedFiles);
+    setFiles((prev) => [...prev, ...newFiles.slice(0, remainingSlots)]);
+    setFileError(
+      newFiles.length > remainingSlots
+        ? `You can upload up to ${MAX_PHOTOS} photos. ${remainingSlots} more ${remainingSlots === 1 ? 'photo is' : 'photos are'} allowed.`
+        : null,
+    );
+    e.target.value = '';
   }
 
   function removeFile(index: number) {
     setFiles((prev) => prev.filter((_, i) => i !== index));
+    setFileError(null);
   }
 
   async function uploadPhotos(): Promise<string[]> {
@@ -203,7 +214,13 @@ function SellPropertyPage() {
     const urls: string[] = [];
     for (const [index, file] of files.entries()) {
       setSubmitMessage(`Preparing photo ${index + 1} of ${files.length}…`);
-      const compressedFile = await compressImage(file);
+      let compressedFile: Blob;
+      try {
+        compressedFile = await compressImage(file);
+      } catch (err) {
+        console.error(`Photo ${index + 1} preparation failed:`, err);
+        throw new Error(`Could not prepare photo ${index + 1}. Please try a JPEG or PNG photo.`);
+      }
       const fileName = `${crypto.randomUUID()}.webp`;
 
       setSubmitMessage(`Uploading photo ${index + 1} of ${files.length}…`);
@@ -214,7 +231,7 @@ function SellPropertyPage() {
 
       if (uploadError) {
         console.error('Photo upload failed:', uploadError);
-        throw new Error('A photo could not be uploaded. Check your connection and try again.');
+        throw new Error(`Could not upload photo ${index + 1}. Check your connection and try again.`);
       }
 
       const { data } = client.storage.from('submission-photos').getPublicUrl(fileName);
@@ -236,7 +253,8 @@ function SellPropertyPage() {
 
     setStatus('submitting');
     setError(null);
-    setSubmitMessage('');
+    setFileError(null);
+    setSubmitMessage(files.length ? 'Starting photo upload…' : 'Saving your property submission…');
 
     try {
       const photoUrls = await uploadPhotos();
@@ -296,7 +314,8 @@ function SellPropertyPage() {
     } catch (err) {
       console.error('Submission failed:', err);
       setError(
-        err instanceof Error && err.message.startsWith('A photo could not be uploaded.')
+        err instanceof Error &&
+        (err.message.startsWith('Could not prepare photo ') || err.message.startsWith('Could not upload photo '))
           ? err.message
           : 'Something went wrong submitting your property. Please try again, or contact us directly.',
       );
@@ -472,7 +491,7 @@ function SellPropertyPage() {
                     <div>
                       <p className="text-sm font-semibold text-gray-900">Upload Property Photos</p>
                       <p className="text-sm text-gray-500">
-                        Add up to 8 images for better buyer confidence.
+                        Add up to {MAX_PHOTOS} images for better buyer confidence.
                       </p>
                     </div>
                     <label
@@ -516,6 +535,7 @@ function SellPropertyPage() {
                       No photos selected yet.
                     </div>
                   )}
+                  {fileError && <p className="mt-3 text-sm text-red-600" role="alert">{fileError}</p>}
                 </div>
 
                 <div className="rounded-3xl border border-gray-200 bg-slate-50 p-5">
@@ -556,7 +576,18 @@ function SellPropertyPage() {
                   </div>
                 </div>
 
-                {error && <p className="text-sm text-red-600">{error}</p>}
+                {status === 'submitting' && (
+                  <p
+                    className="flex items-center gap-2 rounded-lg bg-orange-50 px-4 py-3 text-sm font-medium text-[#A94A00]"
+                    role="status"
+                    aria-live="polite"
+                    aria-atomic="true"
+                  >
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#D56000] border-r-transparent" aria-hidden="true" />
+                    {submitMessage}
+                  </p>
+                )}
+                {error && <p className="text-sm text-red-600" role="alert">{error}</p>}
 
                 <button
                   type="submit"
